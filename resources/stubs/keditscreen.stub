@@ -1,0 +1,144 @@
+<?php
+
+namespace DummyNamespace;
+
+use Kamansoft\Klorchid\Screens\KeditScreen;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
+use Orchid\Screen\Action;
+use Orchid\Support\Facades\Alert;
+use Illuminate\Support\Facades\Log;
+
+
+use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
+
+
+class DummyClass extends KeditScreen
+{
+    use
+    /**
+     * Display header name.
+     *
+     * @var string
+     */
+    public $name = 'DummyClass';
+
+    /**
+     * Display header description.
+     *
+     * @var string
+     */
+    public $description = 'DummyClass';
+
+
+    /**
+     * Set the permition group where the actions of this screen module belongs
+     *
+     * @var string
+     */
+    public $permissions_group = 'DummyClass';
+
+
+    public bool $exists = false;
+
+
+
+    /**
+     * Query data.
+     *
+     * @return array
+     */
+    public function query(Model $model): array
+    {
+        $this->action = $this->formFunctionality($model);
+        $this->model = &$model;
+        //$this->exists = $this->model->exists;
+        //$this->status = $this->model->status;
+
+
+        return [
+            'delete_confirmation_attribute_name' => 'element.id',
+            'form_action' => $this->action,
+            'element' => $model
+        ];
+    }
+
+    /**
+     * Button commands (status change buttons will be prepended)
+     * and save button will be appended to all elements on the
+     * returned array of this method, the save button will appear
+     * only if the method save is implemented in this constructor.
+     *
+     * @return Action[]
+     */
+    public function keditCommandBar(): array{
+        return [];
+    }
+    /*
+    public function invalidate(Currency $model, Request $request){
+        return $this->_invalidate($model,$request);
+
+    }*/
+    /*
+    public function statusToggle(Currency $model, Request $request){
+        return $this->_statusToggle($model,$request);
+    }*/
+    /*
+    public function delete(Currency $model,Request $request){
+        return $this->_delete($model, $request);
+    }*/
+    /*
+    public function statusSet(Currency $model, Request $request)
+    {
+        return $this->_statusSet($model, $request);
+    }*/
+
+    public function save(Model $model, Request $request){ //chancge the Model Type by the one relate to screen
+        $action = $this->formFunctionality($model);
+
+        $validation = [];
+        if ($action == 'create') {
+            $validation = $this->validateOnCreate($model, $request);
+        } elseif ($action == 'edit') {
+
+            $validation = $this->validateOnEdit($model, $request);
+        } else {
+            Alert::error(__("You have not :object :permission permission", [
+                "object" => __($this->name),
+                "permission" => __("save"),
+            ]));
+            return back();
+        }
+        try {
+            $model->fill($validation['element']);
+
+            $model->save();
+            Alert::success(__("Success on :action :object ", [
+                "object" => __($this->name),
+                "action" => __($action),
+            ]));
+        } catch (\Exception $e) {
+            Alert::error(__("Can't :action  :object", [
+                    "object" => __($this->name),
+                    "action" => __($action),
+                ]) . '<br><br>');
+            Log::error('cant save: '.$this->name);
+            Log::error($e->getMessage() . '');
+         }
+         return back();
+    }
+
+
+
+
+    /**
+     * Views.
+     * Status change modal will be appended
+     *
+     * @return Layout[]
+     */
+    public function keditLayout(): array{
+        return [];
+    }
+}
