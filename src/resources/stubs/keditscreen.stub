@@ -16,7 +16,7 @@ use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
 
 class DummyClass extends KeditScreen
 {
-    use
+
     /**
      * Display header name.
      *

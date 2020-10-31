@@ -14,14 +14,14 @@ class KeditScreenCommand extends ScreenCommand
      *
      * @var string
      */
-    protected $signature = 'kaman:editscreen {name?} ';
+    protected $signature = 'klorchid:editscreen {name? : The name of the screen class } {--useAppNamePath}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate a new edit screen';
+    protected $description = 'Generate a new klorchid edit screen';
 
     /**
      * The type of class being generated.
@@ -38,7 +38,8 @@ class KeditScreenCommand extends ScreenCommand
      */
     protected function getStub(): string
     {
-        return app_path('Kaman/resources/stubs/keditscreen.stub');
+        //return app_path('Kaman/resources/stubs/keditscreen.stub');
+        return __DIR__ .'/../../resources/stubs/keditscreen.stub';
     }
 
         /**
@@ -50,10 +51,18 @@ class KeditScreenCommand extends ScreenCommand
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        $app_name = Str::upper((config('app.name')));
-    
-        //DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.
-        return $rootNamespace.'\\'.$app_name.'\Screens';
+
+        $app_name_path = '';
+        $path_to_return  = $rootNamespace;
+
+        if ($this->option('useAppNamePath')) {
+            $app_name = Str::studly((config('app.name')));
+            $app_name_screens_path = '\\'.$app_name.'\Screens';
+            $path_to_return = $path_to_return.'\\'.$app_name_screens_path;
+        }
+
+        return $path_to_return;
+
     }
 
 

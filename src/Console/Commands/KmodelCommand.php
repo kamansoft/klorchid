@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+
 class KmodelCommand extends Command
 {
     /**
@@ -12,7 +13,7 @@ class KmodelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'kaman:model {name} {--keditscreen} {--migration}';
+    protected $signature = 'klorchid:model {name} {--keditscreen} {--migration}';
 
     /**
      * The console command description.

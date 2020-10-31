@@ -11,7 +11,7 @@ class KmigrationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'kaman:migration';
+    protected $signature = 'klorchid:migration';
 
     /**
      * The console command description.
