@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kamansoft\Klorchid\Screens\User;
+namespace Kamansoft\klorchid\Screens\User;
 
 use App\Orchid\Layouts\User\UserEditLayout;
 use App\Orchid\Layouts\User\UserFiltersLayout;
 use App\Orchid\Layouts\User\UserListLayout;
+
 use Illuminate\Http\Request;
-//use Orchid\Platform\Models\User;
-use Kamansoft\Klorchid\Models\Kuser as User;
-use Orchid\Screen\Layout;
+use Orchid\Platform\Models\User;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 
 class KuserListScreen extends Screen
 {
@@ -42,7 +44,6 @@ class KuserListScreen extends Screen
      */
     public function query(): array
     {
-
         return [
             'users' => User::with('roles')
                 ->filters()
@@ -55,17 +56,20 @@ class KuserListScreen extends Screen
     /**
      * Button commands.
      *
-     * @return Action[]
+     * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): array
     {
-        return [];
+        return [
+            Link::make(__('Add'))
+            ->route('platform.systems.users.create')
+        ];
     }
 
     /**
      * Views.
      *
-     * @return Layout[]
+     * @return \Orchid\Screen\Layout[]
      */
     public function layout(): array
     {
@@ -103,19 +107,15 @@ class KuserListScreen extends Screen
             'user.email' => 'required|unique:users,email,'.$user->id,
         ]);
 
-        $user->fill($request->get('user'))
+        $user->fill($request->input('user'))
             ->replaceRoles($request->input('user.roles'))
             ->save();
 
         Toast::info(__('User was saved.'));
-
-        return back();
     }
 
     /**
      * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function remove(Request $request)
     {
@@ -123,7 +123,5 @@ class KuserListScreen extends Screen
             ->delete();
 
         Toast::info(__('User was removed'));
-
-        return back();
     }
 }

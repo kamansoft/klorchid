@@ -14,13 +14,13 @@ class Kuser extends User
     protected $casts = [
         'permissions'          => 'array',
         'email_verified_at'    => 'datetime',
-        'last_login'           => 'datetime',
-        'uses_two_factor_auth' => 'boolean',
-        'status' => 'boolean',
-        'selfsetpass' => 'boolean'
+        //'last_login'           => 'datetime',
+        //'uses_two_factor_auth' => 'boolean',
+        'status'=> 'boolean',
+        'asigned_pass' => 'boolean'
 
     ];
-    protected  $attributes =[
+    /*protected  $attributes =[
         'uses_two_factor_auth' => False
-    ];
+    ];*/
 }

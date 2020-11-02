@@ -1,37 +1,24 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Kamansoft\Klorchid\Screens\User;
 
 use App\Orchid\Layouts\Role\RolePermissionLayout;
-use Kamansoft\Klorchid\Layouts\User\UserCreateLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
+use App\Orchid\Layouts\User\UserRoleLayout;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Orchid\Access\UserSwitch;
-use Orchid\Platform\Dashboard;
-
-//use Orchid\Platform\Models\User;
-use Kamansoft\Klorchid\Models\Kuser as User;
+use Orchid\Platform\Models\User;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Actions\DropDown;
-use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Fields\Password;
-use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
-use Orchid\Support\Color;
-use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Toast;
+
 
 class KuserEditScreen extends Screen
 {
-
-    public $exists = false;
-    public $invalid = false;
     /**
      * Display header name.
      *
@@ -49,12 +36,13 @@ class KuserEditScreen extends Screen
     /**
      * @var string
      */
-    public $permission = 'platform.systems.users';
-
-    /**
-     * @var User
-     */
-    protected $user;
+    public $permission = [
+        'platform.systems.users',
+        'platform.systems.users.edit',
+        'platform.systems.users.create',
+        'platform.systems.users.invalidate',
+        'platform.systems.users.statuschange'
+    ];
 
     /**
      * Query data.
@@ -65,18 +53,17 @@ class KuserEditScreen extends Screen
      */
     public function query(User $user): array
     {
-        $this->exists = $user->exists;
 
-        if (!$this->exists) {
+        $this->exists= $user->exists;
+
+            if (!$this->exists) {
             $this->description = __("Create the new :object ", ["object" => __("User")]);
         }
 
         $user->load(['roles']);
 
-        $this->user = $user;
-
         return [
-            'user' => $user,
+            'user'       => $user,
             'permission' => $user->getStatusPermission(),
         ];
     }
@@ -89,176 +76,35 @@ class KuserEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-
-            DropDown::make(__('Settings'))
-                ->icon('icon-open')
-                ->canSee($this->exists)
-                ->list([
-                    Button::make(__('Login as user'))
-                        ->icon('icon-login')
-                        ->method('loginAs'),
-
-                    ModalToggle::make(__('Change Password'))
-                        ->icon('icon-lock-open')
-                        ->method('changePassword')
-                        ->modal('password'),
-
-                    /*ModalToggle::make(__('Two Factor Authentication'))
-                        ->icon('icon-screen-smartphone')
-                        ->method('enableTwoFactorAuth')
-                        ->modal('twoFactorEnabled')
-                        ->canSee(! $this->user->uses_two_factor_auth,true)
-                        ->asyncParameters([
-                            'users' => $this->user->id,
-                        ]),
-
-                    ModalToggle::make(__('Two Factor Authentication'))
-                        ->icon('icon-screen-smartphone')
-                        ->method('disableTwoFactorAuth')
-                        ->canSee($this->user->uses_two_factor_auth,false)
-                        ->modal('twoFactorDisabled')
-                        ->asyncParameters([
-                            'users' => $this->user->id,
-                        ]),*/
-
-                ]),
+            Button::make(__('Login as user'))
+                ->icon('login')
+                ->method('loginAs'),
 
             Button::make(__('Save'))
-                ->icon('icon-check')
+                ->icon('check')
                 ->method('save'),
 
             Button::make(__('Remove'))
-                ->icon('icon-trash')
+                ->icon('trash')
                 ->confirm('Are you sure you want to delete the user?')
-                ->canSee($this->exists)
                 ->method('remove'),
         ];
     }
 
     /**
-     * @return Layout[]
-     * @throws \Throwable
-     *
+     * @return \Orchid\Screen\Layout[]
      */
     public function layout(): array
     {
-
-        if (config('app.debug')) {
-            $permissions = RolePermissionLayout::class;
-        } else {
-            $permissions = Layout::rows([]);
-        }
-
-        if ($this->exists) {
-            $mainform = UserEditLayout::class;
-        } else {
-            $mainform = UserCreateLayout::class;
-        }
-
-
         return [
-
-            $mainform,
-            $permissions,
-
-            Layout::modal('password', [
-                Layout::rows([
-                    Password::make('password')
-                        ->placeholder(__('Enter your password'))
-                        ->required()
-                        ->title(__('Password')),
-                ]),
-            ])->title(__('Change Password')),
-
-            Layout::modal('twoFactorEnabled', [Layout::view('platform::auth.settings.enable-two-factor-auth')])
-                ->title(__('Two Factor Authentication'))
-                ->applyButton(__('Enable two-factor authentication'))
-                ->async('asyncGenerateTwoFactorCode'),
-
-            Layout::modal('twoFactorDisabled', [Layout::view('platform::auth.settings.disable-two-factor-auth')])
-                ->title(__('Are you sure you wish to disable two-factor authentication?'))
-                ->applyButton(__('Disable two-factor authentication')),
+            UserEditLayout::class,
+            UserRoleLayout::class,
+            RolePermissionLayout::class,
         ];
     }
 
     /**
-     * @param User $user
-     * @param Dashboard $dashboard
-     *
-     * @return array
-     */
-    public function asyncGenerateTwoFactorCode(User $user, Dashboard $dashboard): array
-    {
-        $generator = $dashboard->getTwoFactor();
-
-        return [
-            'secret' => $generator->getSecretKey(),
-            'image' => $generator->getQrCode(config('app.name'), $user->email),
-        ];
-    }
-
-    /**
-     * Enable two-factor authentication for the user.
-     *
-     * @param User $user
-     * @param Request $request
-     * @param Dashboard $dashboard
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function enableTwoFactorAuth(User $user, Request $request, Dashboard $dashboard)
-    {
-        $request->validate([
-            'token' => 'required|string',
-        ]);
-
-        $generator = $dashboard->getTwoFactor();
-        $secret = $request->get('secret');
-        $generator->setSecretKey($secret);
-
-        if (!$generator->verify($request->get('token'))) {
-            return back()->withErrors([
-                'token' => __('This value is not valid'),
-            ]);
-        }
-
-        $user->forceFill([
-            'uses_two_factor_auth' => true,
-            'two_factor_secret_code' => $request->get('secret'),
-            'two_factor_recovery_code' => Str::random(8),
-        ])->save();
-
-        Toast::success(__('Two-factor authentication has been enabled.'));
-
-        Alert::view('platform::auth.settings.two-factor-generator-message', Color::SECONDARY(), [
-            'code' => $user->two_factor_recovery_code,
-        ]);
-
-        return back();
-    }
-
-    /**
-     * Disable two-factor authentication for the given user.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function disableTwoFactorAuth(User $user)
-    {
-        $user->forceFill([
-            'uses_two_factor_auth' => false,
-            'two_factor_secret_code' => null,
-            'two_factor_recovery_code' => null,
-        ])->save();
-
-        Toast::success(__('Two-factor authentication has been disabled.'));
-
-        return back();
-    }
-
-    /**
-     * @param User $user
+     * @param User    $user
      * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -266,51 +112,38 @@ class KuserEditScreen extends Screen
     public function save(User $user, Request $request)
     {
         $request->validate([
-            'user.email' => 'required|unique:users,email,' . $user->id,
+            'user.email' => [
+                'required',
+                Rule::unique(User::class, 'email')->ignore($user),
+            ],
         ]);
 
-        if (config('app.debug')) {
-
-            $permissions = collect($request->get('permissions'))
-                ->map(function ($value, $key) {
-                    return [base64_decode($key) => $value];
-                })
-                ->collapse()
-                ->toArray();
-            //added to allow user edit screen to add nuew user
-        } else {
-            $permissions = $user->permissions;
-        }
-
+        $permissions = collect($request->get('permissions'))
+            ->map(function ($value, $key) {
+                return [base64_decode($key) => $value];
+            })
+            ->collapse()
+            ->toArray();
 
         $user
             ->fill($request->get('user'))
             ->replaceRoles($request->input('user.roles'))
             ->fill([
                 'permissions' => $permissions,
-            ]);
-        if (!$user->exists) {
-            $user->fill(['password' => Hash::make($request->get('user')['password'])]);
-        }
+            ])
+            ->save();
 
-        try {
-            $user->save();
-            Toast::info(__('User was saved.'));
-            return redirect()->route('platform.systems.users');
-        } catch (\Exeption $e) {
-            Alert::error("Cant save user data " . $e->getMessage());
-            return back();
-        }
+        Toast::info(__('User was saved.'));
 
-
+        return redirect()->route('platform.systems.users');
     }
 
     /**
      * @param User $user
      *
-     * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function remove(User $user)
     {
@@ -331,21 +164,5 @@ class KuserEditScreen extends Screen
         UserSwitch::loginAs($user);
 
         return redirect()->route(config('platform.index'));
-    }
-
-    /**
-     * @param User $user
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function changePassword(User $user, Request $request)
-    {
-        $user->password = Hash::make($request->get('password'));
-        $user->save();
-
-        Toast::info(__('User was saved.'));
-
-        return back();
     }
 }
