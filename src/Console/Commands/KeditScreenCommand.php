@@ -14,7 +14,9 @@ class KeditScreenCommand extends ScreenCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:editscreen {name? : The name of the screen class } {--useAppNamePath}';
+    protected $signature = 'klorchid:editscreen 
+        {name? : The name of the screen class } 
+        {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}';
 
     /**
      * The console command description.
@@ -59,6 +61,8 @@ class KeditScreenCommand extends ScreenCommand
             $app_name = Str::studly((config('app.name')));
             $app_name_screens_path = '\\'.$app_name.'\Screens';
             $path_to_return = $path_to_return.'\\'.$app_name_screens_path;
+        }else{
+            $path_to_return = $path_to_return.'\Screens';
         }
 
         return $path_to_return;

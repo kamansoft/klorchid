@@ -2,18 +2,23 @@
 
 namespace Kamansoft\Klorchid\Console\Commands;
 
-use Illuminate\Console\Command;
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 
 
-class KmodelCommand extends Command
+class KmodelCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'klorchid:model {name} {--keditscreen} {--migration}';
+    protected $signature = 'klorchid:model 
+        {name? : The name of the Model Class} 
+        {--m|migration : Create a migration file using the name of the model} 
+        {--e|editscreen : Create a EditScreen class file using model class name} 
+        {--l|listscreen : Create ListScreen class file using model class name} 
+        {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}';
 
     /**
      * The console command description.
@@ -27,10 +32,46 @@ class KmodelCommand extends Command
      *
      * @return void
      */
-    public function __construct()
+
+    protected $type = 'Model';
+
+
+        /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub(): string
     {
-        parent::__construct();
+        return __DIR__ .'/../../resources/stubs/kmodel.stub';
     }
+
+        /**
+     * Get the default namespace for the class.
+     *
+     * @param string $rootNamespace
+     *
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace): string
+    {
+        $app_name_path = '';
+        $path_to_return  = $rootNamespace;
+
+        if ($this->option('useAppNamePath')) {
+            $app_name = Str::studly((config('app.name')));
+            $app_name_screens_path = '\\'.$app_name.'\Models';
+            $path_to_return = $path_to_return.'\\'.$app_name_screens_path;
+        }else{
+            $path_to_return = $path_to_return.'\Models';
+        }
+
+        return $path_to_return;
+
+    }
+
+
+
 
     /**
      * Execute the console command.
@@ -39,11 +80,18 @@ class KmodelCommand extends Command
      */
     public function handle()
     {
-        if ($this->option('keditscreen')) {
-            $this->createKeditScreen();
+        //parent::handle();
+        if ($this->option('editscreen')) {
+            echo "kedit screen runned";
+            // $this->createKeditScreen();
         }
         if ($this->option('migration')) {
-            $this->createKmigration();
+            echo "migration runned";
+            //$this->createKmigration();
+        }
+
+        if ($this->option('useAppNamePath')){
+            echo "use appname config var ";
         }
         return 0;
     }
@@ -52,6 +100,7 @@ class KmodelCommand extends Command
         $screen_folder_name = Str::studly(class_basename($this->argument('name')));
 
         $modelName = $this->qualifyClass($this->getNameInput());
+
 
         $this->call('kaman:editscreen', array_filter([
             'name'  => "{$screen_folder_name}EditScreen",
@@ -78,29 +127,6 @@ class KmodelCommand extends Command
     }
 
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub(): string
-    {
-        return app_path('Kaman/resources/stubs/kmodel.stub');
-    }
-
-        /**
-     * Get the default namespace for the class.
-     *
-     * @param string $rootNamespace
-     *
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace): string
-    {
-        $app_name = ucfirst(config('app.name'));
-        //DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.
-        return $rootNamespace.'\\'.$app_name.'\Screens';
-    }
 
 
 
