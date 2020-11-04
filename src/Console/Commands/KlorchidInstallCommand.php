@@ -6,11 +6,15 @@ namespace Kamansoft\Klorchid\Console\Commands;
 
 use Illuminate\Console\Command;
 use Orchid\Platform\Dashboard;
+
 //use Orchid\Platform\Events\InstallEvent;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 class KlorchidInstallCommand extends Command
 {
+
+
     /**
      * The console command signature.
      *
@@ -37,29 +41,50 @@ class KlorchidInstallCommand extends Command
         $this->info('Installation started. Please wait...');
         //$this->info('Version: '.Dashboard::VERSION);
 
+
         $this
             ->executeCommand('vendor:publish', [
                 '--provider' => KlorchidServiceProvider::class,
-                '--force'    => true
+                '--force' => true
             ])
-            ->executeCommand('migrate');
-            //->executeCommand('storage:link')
-            //->changeUserModel();
+            ->executeCommand('migrate')
+            ->settingSystemUserEnvVars();
+        //->executeCommand('storage:link')
+        //->changeUserModel();
+
 
         $this->info('Completed!');
-
-        $this
-            ->setValueEnv('SYSTEM_USER_ID','1');
-            //->comment("To create a user, run 'artisan orchid:admin'");
 
         $this->line("To start the embedded server, run 'artisan serve'");
 
         //event(new InstallEvent($this));
     }
 
+    public function settingSystemUserEnvVars()
+    {
+        $user = $this->getSystemUser();
+        if (!empty($user)) {
+            $this
+                ->setValueEnv('SYSTEM_USER_ID', strval($user->id))
+                ->setValueEnv('SYSTEM_USER_NAME', $user->name)
+                ->setValueEnv('SYSTEM_USER_EMAIL', $user->email);
+            $this->info("Env var setted");
+        } else {
+            throw new \Exception('Cant find System user, instalation fail and can not continue');
+
+        }
+        return $this ;
+    }
+
+    public function getSystemUser()
+    {
+        $this->info(config('klorchid.system_user_name'));
+        return DB::table('users')->where('name', config('klorchid.system_user_name'))->first();
+    }
+
     /**
      * @param string $command
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return $this
      */
@@ -85,7 +110,7 @@ class KlorchidInstallCommand extends Command
     {
         $this->info('Attempting to set ORCHID User model as parent to App\User');
 
-        if (! file_exists(app_path($path))) {
+        if (!file_exists(app_path($path))) {
             $this->warn('Unable to locate "app/Models/User.php".  Did you move this file?');
             $this->warn('You will need to update this manually.');
 
@@ -108,7 +133,7 @@ class KlorchidInstallCommand extends Command
         $str = $this->fileGetContent(app_path('../.env'));
 
         if ($str !== false && strpos($str, $constant) === false) {
-            file_put_contents(app_path('../.env'), $str.PHP_EOL.$constant.'='.$value.PHP_EOL);
+            file_put_contents(app_path('../.env'), $str . PHP_EOL . $constant . '=' . $value . PHP_EOL);
         }
 
         return $this;
@@ -121,7 +146,7 @@ class KlorchidInstallCommand extends Command
      */
     private function fileGetContent(string $file)
     {
-        if (! is_file($file)) {
+        if (!is_file($file)) {
             return '';
         }
 

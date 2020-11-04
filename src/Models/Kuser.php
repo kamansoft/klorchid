@@ -17,6 +17,7 @@ class Kuser extends User
         //'last_login'           => 'datetime',
         //'uses_two_factor_auth' => 'boolean',
         'status'=> 'boolean',
+        'cur_status_reason' = 'string'
         'asigned_pass' => 'boolean'
 
     ];

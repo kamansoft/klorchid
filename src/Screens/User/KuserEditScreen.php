@@ -51,7 +51,7 @@ class KuserEditScreen extends Screen
      *
      * @return array
      */
-    public function query(User $user): array
+    public function query(?User $user): array
     {
 
         $this->exists= $user->exists;
@@ -78,7 +78,8 @@ class KuserEditScreen extends Screen
         return [
             Button::make(__('Login as user'))
                 ->icon('login')
-                ->method('loginAs'),
+                ->method('loginAs')
+                ->canSee($this->exists),
 
             Button::make(__('Save'))
                 ->icon('check')
@@ -143,7 +144,7 @@ class KuserEditScreen extends Screen
      *
      * @throws \Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponPpse
      */
     public function remove(User $user)
     {

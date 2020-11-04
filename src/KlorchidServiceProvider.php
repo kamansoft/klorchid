@@ -32,23 +32,23 @@ class KlorchidServiceProvider extends ServiceProvider
     {
 
         $this->registerConfig()
+            ->registerCommands()
+            ->registerMigrations()
             ->registerRoutes();
-        if ($this->app->runningInConsole()) {
-            $this->commands($this->commands);
-        }
+
 
         $dashboard->registerPermissions(
             ItemPermission::group('Systems Users')
-                ->addPermission('systems.users.list','List')
-                ->addPermission('systems.users.create', 'Create')
+                ->addPermission('systems.users.list', 'List')
+                ->addPermission('systems.users.add', __('Add'))
                 ->addPermission('systems.users.edit', 'Edit')
                 ->addPermission('systems.users.invalidate', 'Invalidate')
                 ->addPermission('systems.users.statuschange', 'Status Change')
         );
         $dashboard->registerPermissions(
             ItemPermission::group('Systems Roles')
-                ->addPermission('systems.roles.list','List')
-                ->addPermission('systems.roles.create', 'Create')
+                ->addPermission('systems.roles.list', 'List')
+                ->addPermission('systems.roles.add', __('Add'))
                 ->addPermission('systems.roles.edit', 'Edit')
                 ->addPermission('systems.roles.invalidate', 'Invalidate')
                 ->addPermission('systems.roles.statuschange', 'Status Change')
@@ -56,13 +56,45 @@ class KlorchidServiceProvider extends ServiceProvider
 
     }
 
+    protected function registerCommands(): self
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
+        return $this;
+    }
+
+    protected function registerMigrations(): self
+    {
+
+        if ($this->app->runningInConsole()) {
+            // Export the migration
+
+
+
+            $this->publishes([
+                    __DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
+                    // you can add any number of migrations here
+                    __DIR__ . '/../database/migrations/2020_11_03_155648_add_klorchid_blaming_fields_to_users_table.php' => database_path('migrations/2020_11_03_155648_add_klorchid_blaming_fields_to_users_table.php')
+            ], 'migrations');
+
+            /*if (!class_exists('Kuser')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/add_klorchid_blaming_fields_to_users_table.php.stub .stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_posts_table.php'),
+                    // you can add any number of migrations here
+                ], 'migrations');
+            }*/
+        }
+
+        //$this->loadMigrationsFrom(__DIR__ .'../database/migrations');
+        return $this;
+    }
 
     protected function registerRoutes(): self
     {
 
 
-        $this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php');
-
+        //a$this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php','platform');
 
         return $this;
 

@@ -11,5 +11,3 @@ use App\Orchid\Screens\TestScreen;
 Route::screen('test', TestScreen::class)
     ->name('platform.test');*/
 
-
-Route::screen('test', \App\Orchid\Screens\TestScreen::class,'platform.screens.test');
