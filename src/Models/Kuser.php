@@ -3,7 +3,7 @@
 namespace Kamansoft\Klorchid\Models;
 
 
-use App\User;
+use App\Models\User;
 
 
 class Kuser extends User
@@ -16,9 +16,9 @@ class Kuser extends User
         'email_verified_at'    => 'datetime',
         //'last_login'           => 'datetime',
         //'uses_two_factor_auth' => 'boolean',
-        'status'=> 'boolean',
-        'cur_status_reason' = 'string'
-        'asigned_pass' => 'boolean'
+        //'status'=> 'boolean',
+        //'cur_status_reason' = 'string',
+        //'asigned_pass' => 'boolean',
 
     ];
     /*protected  $attributes =[

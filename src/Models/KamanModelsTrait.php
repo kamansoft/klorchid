@@ -77,6 +77,17 @@ trait KamanModelsTrait
     }
 
 
+    public function getMysqlNextAutoincrementalNumber(){
+         $next = DB::table('INFORMATION_SCHEMA.TABLES')
+            ->select('AUTO_INCREMENT')
+            ->where([
+                'TABLE_SCHEMA' => config('database.connections.mysql.host'),
+                'TABLE_NAME' => $this->getTable()
+            ])->first();
+        return $next->AUTO_INCREMENT;
+    }
+
+
 
 
 

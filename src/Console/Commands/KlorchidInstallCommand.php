@@ -47,8 +47,9 @@ class KlorchidInstallCommand extends Command
                 '--provider' => KlorchidServiceProvider::class,
                 '--force' => true
             ])
-            ->executeCommand('migrate')
-            ->settingSystemUserEnvVars();
+            ->executeCommand('klorchid:systemuser')
+            ->executeCommand('migrate');
+            //->settingSystemUserEnvVars();
         //->executeCommand('storage:link')
         //->changeUserModel();
 
@@ -62,6 +63,7 @@ class KlorchidInstallCommand extends Command
 
     public function settingSystemUserEnvVars()
     {
+
         $user = $this->getSystemUser();
         if (!empty($user)) {
             $this

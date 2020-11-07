@@ -14,6 +14,8 @@ use Orchid\Platform\ItemPermission;
 
 class KlorchidServiceProvider extends ServiceProvider
 {
+
+    static public $blaming_fields_migration_filename = "2020_11_03_155648_add_klorchid_blaming_fields_to_users_table";
     /**
      * The available command shortname.
      *
@@ -33,7 +35,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $this->registerConfig()
             ->registerCommands()
-            ->registerMigrations()
+            //->registerMigrations()
             ->registerRoutes();
 
 
@@ -73,9 +75,8 @@ class KlorchidServiceProvider extends ServiceProvider
 
 
             $this->publishes([
-                    __DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
-                    // you can add any number of migrations here
-                    __DIR__ . '/../database/migrations/2020_11_03_155648_add_klorchid_blaming_fields_to_users_table.php' => database_path('migrations/2020_11_03_155648_add_klorchid_blaming_fields_to_users_table.php')
+                    //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
+                    __DIR__ . '/../database/migrations/'.Self::$blaming_fields_migration_filename.'.php' => database_path('migrations/'.Self::$blaming_fields_migration_filename.'.php')
             ], 'migrations');
 
             /*if (!class_exists('Kuser')) {

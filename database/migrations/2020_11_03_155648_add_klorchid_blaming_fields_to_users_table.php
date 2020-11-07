@@ -24,9 +24,14 @@ class AddKlorchidBlamingFieldsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('updated_by')->default(null)->change();
             $table->unsignedBigInteger('created_by')->default(null)->change();
+            //$table->foreignId('created_by')->constrained();
+            //$table->foreign('updated_by')->references('id')->on('users');
+            //$table->foreign('created_by')->references('id')->on('users');
+
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('created_by')->references('id')->on('users');
-
         });
     }
 
@@ -39,8 +44,8 @@ class AddKlorchidBlamingFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            //$table->dropForeign('users_updated_by_foreign');
-            //$table->dropForeign('users_created_by_foreign');
+            $table->dropForeign('users_updated_by_foreign');
+            $table->dropForeign('users_created_by_foreign');
             $table->dropColumn('updated_by');
             $table->dropColumn('created_by');
 
