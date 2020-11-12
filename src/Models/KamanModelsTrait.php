@@ -17,7 +17,7 @@ trait KamanModelsTrait
         if (Auth::check()) {
             return Auth::user()->id;
         } else {
-            return config('klorchid.system_user.id');
+            return config('klorchid.system_user_id');
         }
     }
 

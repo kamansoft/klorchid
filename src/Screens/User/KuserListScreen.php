@@ -62,7 +62,7 @@ class KuserListScreen extends Screen
     {
         return [
             Link::make(__('Add'))
-            ->route('platform.systems.users.create')
+            ->route('platform.systems.users.add')
         ];
     }
 

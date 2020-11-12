@@ -43,6 +43,8 @@ class UserCreateLayout extends Rows
                 ->required()
                 ->title(__('Password')),
 
+            Password::make('user.')
+
 
             Select::make('user.roles.')
                 ->fromModel(Role::class, 'name')

@@ -45,10 +45,16 @@ class KlorchidInstallCommand extends Command
         $this
             ->executeCommand('vendor:publish', [
                 '--provider' => KlorchidServiceProvider::class,
-                '--force' => true
+                '--force' => true,
+                '--tag'      => [
+                    'kmigrations',
+                    'kroutes'
+                ],
+
             ])
-            ->executeCommand('klorchid:systemuser')
-            ->executeCommand('migrate');
+            ->executeCommand('migrate')
+            ->executeCommand('klorchid:systemuser');
+
             //->settingSystemUserEnvVars();
         //->executeCommand('storage:link')
         //->changeUserModel();
@@ -59,29 +65,6 @@ class KlorchidInstallCommand extends Command
         $this->line("To start the embedded server, run 'artisan serve'");
 
         //event(new InstallEvent($this));
-    }
-
-    public function settingSystemUserEnvVars()
-    {
-
-        $user = $this->getSystemUser();
-        if (!empty($user)) {
-            $this
-                ->setValueEnv('SYSTEM_USER_ID', strval($user->id))
-                ->setValueEnv('SYSTEM_USER_NAME', $user->name)
-                ->setValueEnv('SYSTEM_USER_EMAIL', $user->email);
-            $this->info("Env var setted");
-        } else {
-            throw new \Exception('Cant find System user, instalation fail and can not continue');
-
-        }
-        return $this ;
-    }
-
-    public function getSystemUser()
-    {
-        $this->info(config('klorchid.system_user_name'));
-        return DB::table('users')->where('name', config('klorchid.system_user_name'))->first();
     }
 
     /**

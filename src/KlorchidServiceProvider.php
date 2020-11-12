@@ -8,6 +8,10 @@ use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KmigrationCommand;
 use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
+use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
+use Kamansoft\Klorchid\Providers\KlorchidPlatformProvider;
+use Kamansoft\Klorchid\Providers\PlatformProvider;
+use Orchid\Platform\Commands\AdminCommand;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 
@@ -22,9 +26,10 @@ class KlorchidServiceProvider extends ServiceProvider
      * @var array
      */
     public $commands = [
+        SystemUserAddCommand::class,
         BackupAction::class,
         KeditScreenCommand::class,
-        KmigrationCommand::class,
+        //KmigrationCommand::class,
         KmodelCommand::class,
         KlorchidInstallCommand::class
     ];
@@ -35,8 +40,9 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $this->registerConfig()
             ->registerCommands()
-            //->registerMigrations()
-            ->registerRoutes();
+            ->registerMigrations()
+            ->registerRoutes()
+            ->registerProviders();
 
 
         $dashboard->registerPermissions(
@@ -77,7 +83,7 @@ class KlorchidServiceProvider extends ServiceProvider
             $this->publishes([
                     //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
                     __DIR__ . '/../database/migrations/'.Self::$blaming_fields_migration_filename.'.php' => database_path('migrations/'.Self::$blaming_fields_migration_filename.'.php')
-            ], 'migrations');
+            ], 'kmigrations');
 
             /*if (!class_exists('Kuser')) {
                 $this->publishes([
@@ -91,11 +97,13 @@ class KlorchidServiceProvider extends ServiceProvider
         return $this;
     }
 
+
     protected function registerRoutes(): self
     {
 
 
         //a$this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php','platform');
+        $this->publishes([__DIR__ . '/resources/stubs/platform.stub.php' => base_path('routes/platform.php')],'kroutes');
 
         return $this;
 
@@ -197,5 +205,17 @@ class KlorchidServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/klorchid_config.php', 'klorchid'
         );
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides(): array
+    {
+        return [
+            KlorchidPlatformProvider::class
+        ];
     }
 }
