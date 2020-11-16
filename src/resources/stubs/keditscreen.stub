@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use Kamansoft\Klorchid\Screens\KeditScreen;
-use Illuminate\Database\Eloquent\Model;
+use DummyModelFullClassName;
 use Illuminate\Http\Request;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Action;
@@ -49,7 +49,7 @@ class DummyClass extends KeditScreen
      *
      * @return array
      */
-    public function query(Model $model): array
+    public function query(DummyModelClassName $model): array
     {
         $this->action = $this->formFunctionality($model);
         $this->model = &$model;
@@ -94,7 +94,7 @@ class DummyClass extends KeditScreen
         return $this->_statusSet($model, $request);
     }*/
 
-    public function save(Model $model, Request $request){ //chancge the Model Type by the one relate to screen
+    public function save(DummyModelClassName $model, Request $request){ //chancge the DummyModelClassName Type by the one relate to screen
         $action = $this->formFunctionality($model);
 
         $validation = [];

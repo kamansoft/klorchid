@@ -47,19 +47,21 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $dashboard->registerPermissions(
             ItemPermission::group('Systems Users')
-                ->addPermission('systems.users.list', 'List')
-                ->addPermission('systems.users.add', __('Add'))
-                ->addPermission('systems.users.edit', 'Edit')
-                ->addPermission('systems.users.invalidate', 'Invalidate')
-                ->addPermission('systems.users.statuschange', 'Status Change')
+                ->addPermission('platform.systems.users.list','List')
+                ->addPermission('platform.systems.users.view','View')
+                ->addPermission('platform.systems.users.create', __('Create'))
+                ->addPermission('platform.systems.users.edit', 'Edit')
+                ->addPermission('platform.systems.users.invalidate', 'Invalidate')
+                ->addPermission('platform.systems.users.statuschange', 'Status Change')
         );
         $dashboard->registerPermissions(
             ItemPermission::group('Systems Roles')
-                ->addPermission('systems.roles.list', 'List')
-                ->addPermission('systems.roles.add', __('Add'))
-                ->addPermission('systems.roles.edit', 'Edit')
-                ->addPermission('systems.roles.invalidate', 'Invalidate')
-                ->addPermission('systems.roles.statuschange', 'Status Change')
+                ->addPermission('platform.systems.roles.list', 'List')
+                ->addPermission('platform.systems.roles.view','View')
+                ->addPermission('platform.systems.roles.create', __('Create'))
+                ->addPermission('platform.systems.roles.edit', 'Edit')
+                ->addPermission('platform.systems.roles.invalidate', 'Invalidate')
+                ->addPermission('platform.systems.roles.statuschange', 'Status Change')
         );
 
     }
@@ -79,10 +81,10 @@ class KlorchidServiceProvider extends ServiceProvider
             // Export the migration
 
 
-
             $this->publishes([
-                    //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
-                    __DIR__ . '/../database/migrations/'.Self::$blaming_fields_migration_filename.'.php' => database_path('migrations/'.Self::$blaming_fields_migration_filename.'.php')
+                //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
+                __DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
+                __DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php')
             ], 'kmigrations');
 
             /*if (!class_exists('Kuser')) {
@@ -103,7 +105,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
 
         //a$this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php','platform');
-        $this->publishes([__DIR__ . '/resources/stubs/platform.stub.php' => base_path('routes/platform.php')],'kroutes');
+        $this->publishes([__DIR__ . '/routes/platform.php' => base_path('routes/platform.php')], 'kroutes');
 
         return $this;
 
