@@ -44,22 +44,22 @@ trait ScreensPermissionsTrait {
 				return $permissions->put($item['slug'], true);
 			}, collect())->all();*/
 	}
-	private function permExist($perm): bool {
+	private function permExist($perm): bool{
 
 		/*if (property_exists($this, 'permissionsList') and count($this->permissionsList) > 0) {
-			$permissions_list = $this->permissionsList;
+				$permissions_list = $this->permissionsList;
+			} else {
+				$permissions_list = $this->getDasboardPermissions();
+			}
+			\Debugbar::info($permissions_list);
+			\Debugbar::info('permission list');
+		*/
+		$key_exists = $this->_dashboard_permissions_list->contains($perm);
+		if ($key_exists) {
+			return $this->_dashboard_permissions_list[$perm];
 		} else {
-			$permissions_list = $this->getDasboardPermissions();
+			return false;
 		}
-		\Debugbar::info($permissions_list);
-		\Debugbar::info('permission list');
-		return array_key_exists($perm, $permissions_list);*/
-        $key_exists =$this->_dashboard_permissions_list->contains($perm);
-        if ($key_exists){
-            return $this->_dashboard_permissions_list[$perm];
-        }else{
-            return false;
-        }
 	}
 
 	/**
@@ -80,7 +80,7 @@ trait ScreensPermissionsTrait {
 			$permission_prefix = $this->permissions_group;
 
 			$candidate_guessed = $permission_prefix . '.' . $tail;
-            $perm_exists = $this->permExist($candidate_guessed);
+			$perm_exists = $this->permExist($candidate_guessed);
 			if ($perm_exists) {
 				$to_return = $candidate_guessed;
 			} else {

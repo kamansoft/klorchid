@@ -48,7 +48,8 @@ class KlorchidInstallCommand extends Command
                 '--force' => true,
                 '--tag'      => [
                     'kmigrations',
-                    'kroutes'
+                    'kroutes',
+                    'views'
                 ],
 
             ])

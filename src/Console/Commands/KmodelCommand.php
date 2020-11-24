@@ -43,7 +43,7 @@ class KmodelCommand extends GeneratorCommand
      */
     protected function getStub(): string
     {
-        return __DIR__ .'/../../resources/stubs/kmodel.stub';
+        return __DIR__ . '/../../resources/stubs/kmodel.stub';
     }
 
         /**

@@ -75,24 +75,25 @@ class DummyClass extends KeditScreen
     public function keditCommandBar(): array{
         return [];
     }
-    /*
-    public function invalidate(Currency $model, Request $request){
-        return $this->_invalidate($model,$request);
 
-    }*/
-    /*
-    public function statusToggle(Currency $model, Request $request){
-        return $this->_statusToggle($model,$request);
-    }*/
-    /*
-    public function delete(Currency $model,Request $request){
-        return $this->_delete($model, $request);
-    }*/
-    /*
-    public function statusSet(Currency $model, Request $request)
-    {
-        return $this->_statusSet($model, $request);
-    }*/
+    //public function invalidate(DummyModelClassName $model, Request $request)
+    //{
+    //  return $this->_invalidate($model,$request);
+    //}
+    //public function statusSet(DummyModelClassName $model, Request $request)
+    //{
+    //    return $this->_statusSet($model, $request);
+    //}
+    //public function statusToggle(DummyModelClassName $model, Request $request)
+    //{
+    //    return $this->_statusToggle($model,$request);
+    //}
+    //public function delete(DummyModelClassName $model,Request $request)
+    //{
+    //    return $this->_delete($model, $request);
+    //}
+
+
 
     public function save(DummyModelClassName $model, Request $request){ //chancge the DummyModelClassName Type by the one relate to screen
         $action = $this->formFunctionality($model);

@@ -42,7 +42,7 @@ class KeditScreenCommand extends ScreenCommand
     protected function getStub(): string
     {
         //return app_path('Kaman/resources/stubs/keditscreen.stub');
-        return __DIR__ .'/../../resources/stubs/keditscreen.stub';
+        return __DIR__ . '/../../resources/stubs/keditscreen.stub';
     }
 
         /**

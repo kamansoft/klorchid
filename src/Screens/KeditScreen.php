@@ -4,6 +4,7 @@ namespace Kamansoft\Klorchid\Screens;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
 use Kamansoft\Klorchid\Screens\ScreensDeleteTrait;
@@ -13,7 +14,6 @@ use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
-use Illuminate\Support\Collection;
 
 abstract class KeditScreen extends Screen {
 
@@ -113,7 +113,6 @@ abstract class KeditScreen extends Screen {
 
 		return $layouts;
 	}
-
 	/**
 	 * Button commands (status change buttons will be prepended)
 	 * and save button will be appended to all elements on the

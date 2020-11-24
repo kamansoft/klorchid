@@ -36,7 +36,7 @@ class KmigrationCommand extends MigrateMakeCommand
         parent::__construct(
             new MigrationCreator(
                 $migrationCreator->getFilesystem(),
-            __DIR__.'/../../resources/stubs'), $composer);
+                __DIR__ . '/../../resources/stubs'), $composer);
 
 
     }

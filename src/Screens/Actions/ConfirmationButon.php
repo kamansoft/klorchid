@@ -9,6 +9,6 @@ use Orchid\Screen\Actions\Button;
 
 class ConfirmationButon extends Button
 {
-    protected $view = 'platform::actions.confirmation';
+    protected $view = 'klorchid::actions.confirmation';
 
 }
