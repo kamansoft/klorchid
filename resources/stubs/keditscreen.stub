@@ -7,8 +7,8 @@ use DummyModelFullClassName;
 use Illuminate\Http\Request;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Action;
+use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Alert;
-use Illuminate\Support\Facades\Log;
 
 
 use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
@@ -37,7 +37,12 @@ class DummyClass extends KeditScreen
      *
      * @var string
      */
-    public $permissions_group = 'DummyClass';
+    public $permissions_group = '';
+
+    /**
+     * @var string
+     */
+    public $permission = [];
 
 
     public bool $exists = false;
@@ -60,7 +65,8 @@ class DummyClass extends KeditScreen
         return [
             'delete_confirmation_attribute_name' => 'element.id',
             'form_action' => $this->action,
-            'element' => $model
+            'element' => $model,
+            'permission' => $model->getStatusPermission(),
         ];
     }
 
@@ -100,9 +106,10 @@ class DummyClass extends KeditScreen
 
         $validation = [];
         if ($action == 'create') {
+            $this->hasPermOrRedirect($this->permissions_group . 'create');
             $validation = $this->validateOnCreate($model, $request);
         } elseif ($action == 'edit') {
-
+            $this->hasPermOrRedirect($this->permissions_group . 'edit');
             $validation = $this->validateOnEdit($model, $request);
         } else {
             Alert::error(__("You have not :object :permission permission", [
@@ -112,6 +119,9 @@ class DummyClass extends KeditScreen
             return back();
         }
         try {
+
+            //main saving logic start here
+            
             $model->fill($validation['element']);
 
             $model->save();
@@ -119,6 +129,9 @@ class DummyClass extends KeditScreen
                 "object" => __($this->name),
                 "action" => __($action),
             ]));
+
+            //saving logic eends here
+
         } catch (\Exception $e) {
             Alert::error(__("Can't :action  :object", [
                     "object" => __($this->name),

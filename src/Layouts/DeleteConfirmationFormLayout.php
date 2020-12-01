@@ -22,6 +22,9 @@ class DeleteConfirmationFormLayout extends Rows
     public function fields(): array
     {
         $attribute_name =$this->query->get('delete_confirmation_attribute_name');
+        \Debugbar::info($attribute_name);
+        \Debugbar::info('delete confirmation form layout $attribute name ');
+
         $model =$this->query->get('element');
         return [
             Input::make('element.'.$attribute_name)

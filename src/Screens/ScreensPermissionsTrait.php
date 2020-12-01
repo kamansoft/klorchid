@@ -6,6 +6,7 @@ namespace Kamansoft\Klorchid\Screens;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Dashboard;
 
@@ -40,19 +41,20 @@ trait ScreensPermissionsTrait {
 		return $to_return;
 
 		/*return Dashboard::getPermission()->collapse()
-			->reduce(static function ($p:rmissions, array $item) {
-				return $permissions->put($item['slug'], true);
-			}, collect())->all();*/
+			            ->reduce(static function ($p:rmissions, array $item) {
+			                return $permissions->put($item['slug'], true);
+		*/
 	}
+
 	private function permExist($perm): bool{
 
 		/*if (property_exists($this, 'permissionsList') and count($this->permissionsList) > 0) {
-				$permissions_list = $this->permissionsList;
-			} else {
-				$permissions_list = $this->getDasboardPermissions();
-			}
-			\Debugbar::info($permissions_list);
-			\Debugbar::info('permission list');
+			                $permissions_list = $this->permissionsList;
+			            } else {
+			                $permissions_list = $this->getDasboardPermissions();
+			            }
+			            \Debugbar::info($permissions_list);
+			            \Debugbar::info('permission list');
 		*/
 		$key_exists = $this->_dashboard_permissions_list->contains($perm);
 		if ($key_exists) {
@@ -195,5 +197,22 @@ trait ScreensPermissionsTrait {
 			"object" => __($object),
 			"permission" => __($permission_name),
 		]));
+	}
+
+/**
+ * check if has acces otherwise returns to route name or back
+ * @param  string      $pem_string the string name of the orchid permission to check
+ * @param  string|null $route_name the name of the route to redirect
+ * @return void
+ */
+	public function hasPermOrRedirect(string $pem_string, string $route_name = null): void {
+		if (!$this->hasPermission($pem_string)) {
+			$this->setPermissionErrorAlert('', $pem_string);
+			if (!empty($route_name)) {
+				redirect($route_name);
+			} else {
+				redirect()->back();
+			}
+		}
 	}
 }

@@ -40,7 +40,7 @@ abstract class KeditScreen extends Screen {
 	public function getListActionBtn() {
 		return Link::make(__('List'))
 			->route($this->routes_group . '.list')
-			->canSee($this->hasPermission('app_setting.list'))
+			->canSee($this->hasPermission($this->permissions_group . 'list'))
 			->icon('icon-list');
 	}
 
@@ -80,11 +80,11 @@ abstract class KeditScreen extends Screen {
 			$save_btn = ConfirmationButon::make(__('Save'))
 				->icon('icon-check')
 				->method('save')
-				->novalidate(false)
-				->canSee(
+				->novalidate(false);
+			/*->canSee(
 					$this->action == 'create'
 					or $this->action == 'edit'
-				);
+				);*/
 			array_push($to_return, $save_btn);
 		}
 
@@ -132,6 +132,7 @@ abstract class KeditScreen extends Screen {
 	abstract public function keditLayout(): array;
 
 	public function validateOnCreate(Model $model, Request $request) {
+
 		return $this->validateWith($model->getCreateValidationRules($request));
 	}
 

@@ -57,11 +57,25 @@ class Kuser extends User
 
     public function getEditValidationRules(Request $request){
         return [
+            'element.name'=>'required',
             'element.email' => [
                 'required',
                 Rule::unique($this->getTable(), 'email')->ignore($this)
 
             ]
+        ];
+    }
+
+    public function getCreateValidationRules(Request $request){
+        return [
+            'element.name'=>'required',
+            'element.email' => [
+                'required',
+                Rule::unique($this->getTable(), 'email')->ignore($this)
+
+            ],
+            'element.password'=>'required|confirmed'
+
         ];
     }
 

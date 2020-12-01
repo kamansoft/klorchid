@@ -36,7 +36,7 @@ trait ScreensDeleteTrait {
 	}
 
 	public function getDeleteActionBtn() {
-		$can_see = (Auth::user()->hasAccess($this->permissions_group . '.delete') and $this->action != 'create');
+		$can_see = (Auth::user()->hasAccess($this->permissions_group . '.delete') and $this->action !== 'create');
 
 		\Debugbar::info($this->action !='create');
 		\Debugbar::info("action is diferent from create");

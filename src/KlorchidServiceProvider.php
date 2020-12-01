@@ -44,12 +44,13 @@ class KlorchidServiceProvider extends ServiceProvider {
 
 		$dashboard->registerPermissions(
 			ItemPermission::group('Systems Users')
-				->addPermission('platform.systems.users.list', 'List')
+				->addPermission('platform.systems.users.list', __('List'))
 				->addPermission('platform.systems.users.view', 'View')
 				->addPermission('platform.systems.users.delete', 'Delete')
 				->addPermission('platform.systems.users.create', __('Create'))
 				->addPermission('platform.systems.users.edit', 'Edit')
 				->addPermission('platform.systems.users.invalidate', 'Invalidate')
+				->addPermission('platform.systems.users.permissions.edit', 'Edit Permissions')
 				->addPermission('platform.systems.users.statuschange', 'Status Change')
 		);
 		$dashboard->registerPermissions(
@@ -59,7 +60,7 @@ class KlorchidServiceProvider extends ServiceProvider {
 				->addPermission('platform.systems.roles.delete', 'Delete')
 				->addPermission('platform.systems.roles.create', __('Create'))
 				->addPermission('platform.systems.roles.edit', 'Edit')
-				->addPermission('platform.systems.roles.invalidate', 'Invalidate')
+				->addPermission('platform.systems.roles.invalidat', 'Invalidate')
 				->addPermission('platform.systems.roles.statuschange', 'Status Change')
 		);
 

@@ -2,14 +2,16 @@
 
 namespace Kamansoft\klorchid\Screens\User;
 
-use App\Orchid\Layouts\Role\RolePermissionLayout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Kamansoft\Klorchid\Layouts\Role\KrolePermissionLayout;
 use Kamansoft\Klorchid\Layouts\User\KuserCreateLayout;
 use Kamansoft\Klorchid\Layouts\User\KuserEditLayout;
 use Kamansoft\Klorchid\Layouts\User\KuserRoleLayout;
 use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Screens\KeditScreen;
+use Orchid\Access\UserSwitch;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -22,14 +24,14 @@ class KuserEditScreen extends KeditScreen {
 	 *
 	 * @var string
 	 */
-	public $name = 'KuserEditScreenb';
+	public $name = 'User';
 
 	/**
 	 * Display header description.
 	 *
 	 * @var string
 	 */
-	public $description = 'KuserEditScreenb';
+	public $description = 'Details such as name, email and password';
 
 	/**
 	 * Set the permition group where the actions of this screen module belongs
@@ -43,11 +45,13 @@ class KuserEditScreen extends KeditScreen {
 	 */
 	public $permission = [
 		'platform.systems.users',
+		'platform.systems.users.view',
 		'platform.systems.users.edit',
 		'platform.systems.users.add',
 		'platform.systems.users.delete',
 		'platform.systems.users.invalidate',
 		'platform.systems.users.statuschange',
+		'platform.systems.users.permissions.edit',
 	];
 
 	public bool $exists = false;
@@ -69,7 +73,7 @@ class KuserEditScreen extends KeditScreen {
 		$model->load(['roles']);
 
 		return [
-			'delete_confirmation_attribute_name' => 'element.id',
+			'delete_confirmation_attribute_name' => 'name',
 			'form_action' => $this->action,
 			'element' => $model,
 			'permission' => $model->getStatusPermission(),
@@ -89,16 +93,15 @@ class KuserEditScreen extends KeditScreen {
 		return [
 			Button::make(__('Login as user'))
 				->icon('login')
+				->canSee($this->action != 'create')
 				->method('loginAs'),
 
 		];
 	}
 
-	/*
-		                    public function invalidate(Currency $model, Request $request){
-		                        return $this->_invalidate($model,$request);
-
-	*/
+	public function invalidate(Kuser $model, Request $request) {
+		return $this->_invalidate($model, $request);
+	}
 
 	public function statusToggle(Kuser $model, Request $request) {
 		return $this->_statusToggle($model, $request);
@@ -109,9 +112,9 @@ class KuserEditScreen extends KeditScreen {
 	}
 
 	/*
-		                    public function statusSet(Currency $model, Request $request)
-		                    {
-		                        return $this->_statusSet($model, $request);
+		                            public function statusSet(Currency $model, Request $request)
+		                            {
+		                                return $this->_statusSet($model, $request);
 	*/
 
 	public function save(Kuser $model, Request $request) {
@@ -119,18 +122,24 @@ class KuserEditScreen extends KeditScreen {
 		$action = $this->formFunctionality($model);
 
 		$validation = [];
-		if ($action == 'create') {
-			$validation = $this->validateOnCreate($model, $request);
-		} elseif ($action == 'edit') {
-			$validation = $this->validateOnEdit($model, $request);
-		} else {
-			Alert::error(__("You have not :object :permission permission", [
-				"object" => __($this->name),
-				"permission" => __("save"),
-			]));
-			return back();
-		}
 		try {
+			if ($action == 'create') {
+				$this->hasPermOrRedirect($this->permissions_group . 'create');
+				$validation = $this->validateOnCreate($model, $request);
+				\Debugbar::info($validation);
+				$validation['element']['password'] = Hash::make($validation['element']['password']);
+			} elseif ($action == 'edit') {
+				$this->hasPermOrRedirect($this->permissions_group . 'edit');
+				$validation = $this->validateOnEdit($model, $request);
+				unset($validation['element']['password']);
+
+			} else {
+				Alert::error(__("You have not :object :permission permission", [
+					"object" => __($this->name),
+					"permission" => __("save"),
+				]));
+				return back();
+			}
 
 			$permissions = collect($request->get('permissions'))
 				->map(function ($value, $key) {
@@ -138,14 +147,16 @@ class KuserEditScreen extends KeditScreen {
 				})
 				->collapse()
 				->toArray();
-			$model
-				->fill($validation['element'])
-				->replaceRoles($request->input('element.roles'))
-				->fill([
-					'permissions' => $permissions,
-				])
-				->save();
+			$model->fill($validation['element'])->replaceRoles($request->input('element.roles'));
 
+			\Debugbar::info($this->permissions_group . '.permissions.edit');
+			if ($this->hasPermission($this->permissions_group . '.permissions.edit')) {
+				\Debugbar::info('user has permission to edid permissions');
+				\Debugbar::info($permissions);
+				$model->fill(['permissions' => $permissions]);
+
+			};
+			\DebugBar::info($model);
 			$model->save();
 			Alert::success(__("Success on :action :object ", [
 				"object" => __($this->name),
@@ -171,12 +182,32 @@ class KuserEditScreen extends KeditScreen {
 	 */
 	public function keditLayout(): array
 	{
-
+		$to_return = [];
 		$main_form_layout_class = ($this->action == 'create') ? KuserCreateLayout::class : KuserEditLayout::class;
-		return [
-			$main_form_layout_class,
-			KuserRoleLayout::class,
-			RolePermissionLayout::class,
-		];
+
+		if ($this->action !== 'simple') {
+			$to_return = [
+				$main_form_layout_class,
+				KuserRoleLayout::class,
+				KrolePermissionLayout::class,
+			];
+		} else {
+			$to_return = [
+				KuserEditLayout::class,
+			];
+		}
+		return $to_return;
+
+	}
+
+	/**
+	 * @param User $user
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function loginAs(Kuser $user) {
+		UserSwitch::loginAs($user);
+
+		return redirect()->route(config('platform.index'));
 	}
 }

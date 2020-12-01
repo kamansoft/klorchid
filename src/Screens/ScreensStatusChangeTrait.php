@@ -48,6 +48,7 @@ trait ScreensStatusChangeTrait
     public function getStatusSetActionBtn()
     {
         $can_see = Auth::user()->hasAccess($this->permissions_group . '.statuschange') and $this->action == 'edit';
+        //$can_see = Auth::user()->hasAccess($this->permissions_group . '.statuschange') ;
 
         return ModalToggle::make(__('Status Set'))
             ->modal('statusset-modal')
@@ -81,7 +82,7 @@ trait ScreensStatusChangeTrait
 
     public function getStatusToggleActionBtn()
     {
-        $can_see = Auth::user()->hasAccess($this->permissions_group . '.statuschange') and $this->action == 'edit';
+        $can_see = (Auth::user()->hasAccess($this->permissions_group . '.statuschange') and $this->action !== 'create') ;
 
         return ModalToggle::make(__('Status Toggle'))
             ->modal('statustoggle-modal')
