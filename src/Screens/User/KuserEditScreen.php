@@ -66,11 +66,13 @@ class KuserEditScreen extends KeditScreen {
 		$this->action = $this->formFunctionality($model);
 		\Debugbar::info($this->action);
 		\Debugbar::info("Kuser editscreen action");
+		\Debugbar::info(config('jetstream'));
 		$this->model = &$model;
 		$this->exists = $this->model->exists;
 		$this->status = $this->model->status;
 
 		$model->load(['roles']);
+
 
 		return [
 			'delete_confirmation_attribute_name' => 'name',

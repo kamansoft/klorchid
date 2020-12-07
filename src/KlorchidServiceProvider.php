@@ -10,9 +10,13 @@ use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
+use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Providers\KlorchidPlatformProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
+use Orchid\Support\Facades\Dashboard as DashboardFacade;
+use Laravel\Jetstream\Features;
+
 
 class KlorchidServiceProvider extends ServiceProvider {
 
@@ -33,7 +37,12 @@ class KlorchidServiceProvider extends ServiceProvider {
 
 	public function boot(Dashboard $dashboard) {
 
-		$this->registerConfig()
+	    if (config('auth.providers.users.model')!==Kuser::class){
+            throw new \Exception('Klorchid package needs the user model auth provider setted as as '.Kuser::class.' type, instead '. config('auth.providers.users.model').' found');
+        }
+
+	    Dashboard::useModel(\Orchid\Platform\Models\User::class, Kamansotf\Klorchid\Models\Kuser::class);
+		$this ->registerConfig()
 			->registerTranslations()
 			->registerCommands()
 			->registerMigrations()
@@ -70,6 +79,8 @@ class KlorchidServiceProvider extends ServiceProvider {
 		if ($this->app->runningInConsole()) {
 			$this->commands($this->commands);
 		}
+
+
 		return $this;
 	}
 
@@ -81,8 +92,8 @@ class KlorchidServiceProvider extends ServiceProvider {
 			$this->publishes([
 				//__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
 				__DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
-				__DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php'),
-			], 'kmigrations');
+				__DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php'),
+			], 'klorchid-migrations');
 
 			/*if (!class_exists('Kuser')) {
 				                $this->publishes([
@@ -101,7 +112,7 @@ class KlorchidServiceProvider extends ServiceProvider {
 		//a$this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php','platform');
 		$this->publishes([
 			__DIR__ . '/../routes/platform.php' => base_path('routes/platform.php'),
-		], 'klorchid-routes');
+		], 'klorchid-platform-routes');
 		$this->loadRoutesFrom(__DIR__ . '/../routes/klorchid.php', 'klorchid');
 		return $this;
 
@@ -116,6 +127,7 @@ class KlorchidServiceProvider extends ServiceProvider {
 		$this->publishes([
 			__DIR__ . '/../config/klorchid_config.php' => config_path('klorchid.php'),
 		], 'klorchid-config');
+
 
 		return $this;
 	}
@@ -189,11 +201,15 @@ class KlorchidServiceProvider extends ServiceProvider {
 		return $this;
 	}
 
+
 	public function register() {
 
-		$this->mergeConfigFrom(
+		/*$this->mergeConfigFrom(
 			__DIR__ . '/../config/klorchid_config.php', 'klorchid'
-		);
+		);*/
+
+
+		//$this->mergeConfigFrom(__DIR__ . '/../config/klorchid_jetstream_config.php', 'jetstream');
 	}
 
 	/**

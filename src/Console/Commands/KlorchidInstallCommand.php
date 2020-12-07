@@ -11,7 +11,7 @@ use Orchid\Platform\Dashboard;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
 use Illuminate\Support\Facades\DB;
 
-class KlorchidInstallCommand extends Command
+class   KlorchidInstallCommand extends Command
 {
 
 
@@ -40,15 +40,18 @@ class KlorchidInstallCommand extends Command
     {
         $this->info('Installation started. Please wait...');
         //$this->info('Version: '.Dashboard::VERSION);
-
+        if (config('auth.providers.users.model')!==Kuser::class){
+            throw new \Exception('Klorchid package needs the user model auth provider setted as as '.Kuser::class.' type, instead '. config('auth.providers.users.model').' found');
+        }
 
         $this
             ->executeCommand('vendor:publish', [
                 '--provider' => KlorchidServiceProvider::class,
                 '--force' => true,
                 '--tag'      => [
-                    'kmigrations',
-                    'kroutes',
+                    'klorchid-migrations',
+                    'klorchid-platform-routes',
+                    'klorchid-config',
                     'views'
                 ],
 

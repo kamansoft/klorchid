@@ -56,8 +56,8 @@ class DummyClass extends KeditScreen
      */
     public function query(DummyModelClassName $model): array
     {
-        $this->action = $this->formFunctionality($model);
         $this->model = &$model;
+        $this->action = $this->formFunctionality($this->model);
         //$this->exists = $this->model->exists;
         //$this->status = $this->model->status;
 
@@ -65,8 +65,8 @@ class DummyClass extends KeditScreen
         return [
             'delete_confirmation_attribute_name' => 'element.id',
             'form_action' => $this->action,
-            'element' => $model,
-            'permission' => $model->getStatusPermission(),
+            'element' => $this->model,
+            'permission' => $this->model->getStatusPermission(),
         ];
     }
 

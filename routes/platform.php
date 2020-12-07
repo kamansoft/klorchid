@@ -39,7 +39,15 @@ Route::screen('/main', PlatformScreen::class)
     ->name('platform.main');
 
 // Platform > Profile
-Route::screen('profile', UserProfileScreen::class)
+Route::screen('oldprofile', UserProfileScreen::class)
+    ->name('platform.oldprofile')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Profile'), route('platform.profile'));
+    });
+
+Route::screen('profile', \Kamansoft\Klorchid\Screens\User\KuserProfileEditScreen::class)
     ->name('platform.profile')
     ->breadcrumbs(function (Trail $trail) {
         return $trail
