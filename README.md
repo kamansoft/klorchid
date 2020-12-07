@@ -7,3 +7,4 @@
     php artisan klorchid:install
     
     
+composer require doctrine/dbal

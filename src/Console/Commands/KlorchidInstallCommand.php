@@ -6,7 +6,7 @@ namespace Kamansoft\Klorchid\Console\Commands;
 
 use Illuminate\Console\Command;
 use Orchid\Platform\Dashboard;
-
+use Kamansoft\Klorchid\Models\Kuser;
 //use Orchid\Platform\Events\InstallEvent;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
 use Illuminate\Support\Facades\DB;
