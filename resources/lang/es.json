@@ -1,5 +1,10 @@
 {
+
+  "Forgot your password?" : "¿Olvido su Contraseña?",
+  "Remember me": "Recordar",
   "Continue": "Continuar",
+  "Whoops! Something went wrong." : "Oh no!, Algo ha salido mal",
+  "These credentials do not match our records.": "Credenciales no validas",
 
 
   "Are you absolutely sure ?": "¿Esta Usted Seguro?",
