@@ -19,7 +19,7 @@ trait ScreensDeleteTrait {
 			DeleteConfirmationFormLayout::class,
 		]);
 
-		$modal->title(__('Are you sure to Delete ?'))
+		$modal->title(__('Are you absolutely sure ?'))
 			->applyButton(__('Delete'))
 			->closeButton(__('Cancel'));
 		$this->delete_modal = $modal;
