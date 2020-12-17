@@ -134,6 +134,7 @@ class KuserEditScreen extends KeditScreen {
 				$validation['element']['password'] = Hash::make($validation['element']['password']);
                 $model->fill($validation['element']);
                 \Debugbar::info($validation['element']);
+
                 \Debugbar::info('validation elemnts');
 
 
