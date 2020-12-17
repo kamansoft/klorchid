@@ -153,7 +153,12 @@ class KlorchidServiceProvider extends ServiceProvider {
 	 */
 	public function registerTranslations(): self{
 
-		$this->loadJsonTranslationsFrom(__DIR__ . '/../resources/lang/');
+		//$this->loadJsonTranslationsFrom(__DIR__ . '/../resources/lang/');
+
+		$klorchid_lang_path= __DIR__ . '/../resources/lang';
+		$this->publishes(
+			[$klorchid_lang_path=>resource_path('lang')]
+		,'klorchid-lang');
 
 		return $this;
 	}

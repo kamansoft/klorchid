@@ -12,10 +12,12 @@ use Kamansoft\Klorchid\Layouts\User\KuserRoleLayout;
 use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Screens\KeditScreen;
 use Orchid\Access\UserSwitch;
+use Orchid\Platform\Models\Role;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 
 class KuserEditScreen extends KeditScreen {
 
@@ -73,7 +75,6 @@ class KuserEditScreen extends KeditScreen {
 
 		$model->load(['roles']);
 
-
 		return [
 			'delete_confirmation_attribute_name' => 'name',
 			'form_action' => $this->action,
@@ -125,15 +126,30 @@ class KuserEditScreen extends KeditScreen {
 
 		$validation = [];
 		try {
+            DB::beginTransaction();
 			if ($action == 'create') {
 				$this->hasPermOrRedirect($this->permissions_group . 'create');
 				$validation = $this->validateOnCreate($model, $request);
 				\Debugbar::info($validation);
 				$validation['element']['password'] = Hash::make($validation['element']['password']);
+                $model->fill($validation['element']);
+                \Debugbar::info($validation['element']);
+                \Debugbar::info('validation elemnts');
+
+
+
+
+
+
+
+                \DebugBar::info($request->input('element.roles'));
+			    \Debugbar::info('element roles');
+
 			} elseif ($action == 'edit') {
 				$this->hasPermOrRedirect($this->permissions_group . 'edit');
 				$validation = $this->validateOnEdit($model, $request);
 				unset($validation['element']['password']);
+			    $model->fill($validation['element'])->replaceRoles($request->input('element.roles'));
 
 			} else {
 				Alert::error(__("You have not :object :permission permission", [
@@ -143,23 +159,29 @@ class KuserEditScreen extends KeditScreen {
 				return back();
 			}
 
-			$permissions = collect($request->get('permissions'))
-				->map(function ($value, $key) {
-					return [base64_decode($key) => $value];
-				})
-				->collapse()
-				->toArray();
-			$model->fill($validation['element'])->replaceRoles($request->input('element.roles'));
+
 
 			\Debugbar::info($this->permissions_group . '.permissions.edit');
 			if ($this->hasPermission($this->permissions_group . '.permissions.edit')) {
+				$permissions = collect($request->get('permissions'))
+					->map(function ($value, $key) {
+						return [base64_decode($key) => $value];
+					})
+					->collapse()
+					->toArray();
 				\Debugbar::info('user has permission to edid permissions');
 				\Debugbar::info($permissions);
 				$model->fill(['permissions' => $permissions]);
 
 			};
 			\DebugBar::info($model);
+			\DebugBar::info('model');
 			$model->save();
+			if ($action==="create"){
+			    $model->roles()->attach($request->input('element.roles'));    
+            }
+
+			DB::commit();
 			Alert::success(__("Success on :action :object ", [
 				"object" => __($this->name),
 				"action" => __($action),
@@ -172,6 +194,7 @@ class KuserEditScreen extends KeditScreen {
 			Log::error('cant save: ' . $this->name);
 			Log::error($e->getMessage() . '');
 		}
+
 		return back();
 	}
 

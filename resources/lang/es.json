@@ -5,8 +5,15 @@
   "Continue": "Continuar",
   "Whoops! Something went wrong." : "Oh no!, Algo ha salido mal",
   "These credentials do not match our records.": "Credenciales no validas",
+  "Status Toggle":"Alternar Estado",
 
 
-  "Are you absolutely sure ?": "¿Esta Usted Seguro?",
-  "The data sent might not be able to be edited, or the next action could not be reverted ": "La data enviada podria no estar disponible para ser editada, o la accion a continuacion pordria ser irreversible"
+  "Are you absolutely sure ?": "¿Esta Usted Completamente Seguro?",
+  "Are you sure?": "¿Esta Usted Seguro?",
+  "The data sent might not be able to be edited, or the next action could not be reverted ": "La data enviada podria no estar disponible para ser editada, o la accion a continuacion pordria ser irreversible",
+  "Password Confirmation": "Confirmación de Contraseña",
+  "Confirmation Text" : "Texto de Confirmacion",
+  "Just type:":"Escriba:",
+  "Please type :value as confirmation for deleting":"Por favor introduzca :value como confirmación para la eliminacion"
+
 }

@@ -52,7 +52,8 @@ class   KlorchidInstallCommand extends Command
                     'klorchid-migrations',
                     'klorchid-platform-routes',
                     'klorchid-config',
-                    'views'
+                    'views',
+                    'klorchid-lang'
                 ],
 
             ])
