@@ -9,6 +9,7 @@ use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
+use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Providers\KlorchidPlatformProvider;
@@ -16,6 +17,8 @@ use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Support\Facades\Dashboard as DashboardFacade;
 use Laravel\Jetstream\Features;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 
 class KlorchidServiceProvider extends ServiceProvider {
@@ -37,6 +40,8 @@ class KlorchidServiceProvider extends ServiceProvider {
 
 	public function boot(Dashboard $dashboard) {
 
+	    \Debugbar::info('Stating KlorchidService Provider boot Method');
+
 	    if (config('auth.providers.users.model')!==Kuser::class){
             throw new \Exception('Klorchid package needs the user model auth provider setted as as '.Kuser::class.' type, instead '. config('auth.providers.users.model').' found');
         }
@@ -46,10 +51,22 @@ class KlorchidServiceProvider extends ServiceProvider {
 			->registerTranslations()
 			->registerCommands()
 			->registerMigrations()
-			->registerGlobalMidleware()
+			//->registerMiddlewaresAlias()
+
+            //->registerGlobalMidleware()
+            //->reisterMidlewareGroups()
 			->registerRoutes()
 			->registerProviders()
 			->registerViews();
+
+
+
+		if (file_exists(base_path('routes/platform.php'))) {
+            Route::domain((string) config('platform.domain'))
+                ->prefix(Dashboard::prefix('/'))
+                ->middleware(array_merge(config('platform.middleware.private'),['kusertrue']))
+                ->group(base_path('routes/platform.php'));
+        }
 
 		$dashboard->registerPermissions(
 			ItemPermission::group('Systems Users')
@@ -72,6 +89,9 @@ class KlorchidServiceProvider extends ServiceProvider {
 				->addPermission('platform.systems.roles.invalidat', 'Invalidate')
 				->addPermission('platform.systems.roles.statuschange', 'Status Change')
 		);
+
+		\Debugbar::info('/End KlorchidService Provider boot Method');
+
 
 	}
 
@@ -223,12 +243,38 @@ class KlorchidServiceProvider extends ServiceProvider {
 	 * @return $this
 	 */
 	public function registerGlobalMidleware() {
-		$kernel = $this->app->make(Kernel::class);
+
+	    $kernel = $this->app->make(Kernel::class);
 		$kernel->appendMiddlewareToGroup('web', KlorchidLocalization::class);
 		$groups = $kernel->getMiddlewareGroups()['web'];
 
 		return $this;
 	}
+
+    /**
+     * Register all middleware alias to route
+     * @return $this
+     */
+	public function registerMiddlewaresAlias(){
+	    $router =$this->app->make(Router::class);
+		$router->aliasMiddleware('klocalization',KlorchidLocalization::class);
+		$router->aliasMiddleware('kusertrue',KlorchidKuserEnabled::class);
+        return $this;
+
+    }
+
+    public function reisterMidlewareGroups(){
+
+	    Route::middlewareGroup('klorchid', [
+	        KlorchidLocalization::class,
+            KlorchidKuserEnabled::class
+
+        ]);
+	    \Debugbar::info('klorchid Middleware gorup registered');
+	    return $this;
+    }
+
+
 
 	/**
 	 * Get the services provided by the provider.
