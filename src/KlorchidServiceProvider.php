@@ -51,22 +51,17 @@ class KlorchidServiceProvider extends ServiceProvider {
 			->registerTranslations()
 			->registerCommands()
 			->registerMigrations()
-			//->registerMiddlewaresAlias()
+			->registerMiddlewaresAlias()
 
-            //->registerGlobalMidleware()
-            //->reisterMidlewareGroups()
+            ->registerGlobalMidleware()
+            ->reisterMidlewareGroups()
 			->registerRoutes()
 			->registerProviders()
 			->registerViews();
 
 
 
-		if (file_exists(base_path('routes/platform.php'))) {
-            Route::domain((string) config('platform.domain'))
-                ->prefix(Dashboard::prefix('/'))
-                ->middleware(array_merge(config('platform.middleware.private'),['kusertrue']))
-                ->group(base_path('routes/platform.php'));
-        }
+
 
 		$dashboard->registerPermissions(
 			ItemPermission::group('Systems Users')
