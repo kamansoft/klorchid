@@ -1,5 +1,8 @@
 {
 
+  "Old password":"Antigua Contraseña",
+  "New password": "Nueva Contraseña",
+  "Confirm new password": "Confirme Nueva Contraseña",
   "Forgot your password?" : "¿Olvido su Contraseña?",
   "Remember me": "Recordar",
   "Continue": "Continuar",

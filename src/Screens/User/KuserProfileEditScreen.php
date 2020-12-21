@@ -143,7 +143,7 @@ class KuserProfileEditScreen extends Screen
 
 
         $request->validate([
-            'user.kavatar'=>'integer',
+            //'user.kavatar'=>'integer',
             'user.name' => 'required|string',
             'user.email' => [
                 'required',

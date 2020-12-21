@@ -9,7 +9,7 @@ use App\Orchid\Layouts\User\UserFiltersLayout;
 use App\Orchid\Layouts\User\UserListLayout;
 
 use Illuminate\Http\Request;
-use Orchid\Platform\Models\User;
+use Kamansoft\Klorchid\Models\Kuser as User;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
@@ -123,5 +123,6 @@ class KuserListScreen extends Screen
             ->delete();
 
         Toast::info(__('User was removed'));
+
     }
 }
