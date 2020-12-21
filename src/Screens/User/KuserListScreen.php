@@ -123,6 +123,6 @@ class KuserListScreen extends Screen
             ->delete();
 
         Toast::info(__('User was removed'));
-
+        return "stop";
     }
 }

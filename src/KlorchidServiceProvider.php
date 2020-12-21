@@ -22,6 +22,7 @@ use Laravel\Jetstream\Features;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
+
 use Orchid\Platform\Http\Middleware\Access;
 use Orchid\Platform\Http\Middleware\TurbolinksLocation;
 
@@ -56,7 +57,7 @@ class KlorchidServiceProvider extends ServiceProvider
             throw new \Exception('Klorchid package needs the user model auth provider setted as as ' . Kuser::class . ' type, instead ' . config('auth.providers.users.model') . ' found');
         }
 
-        Dashboard::useModel(\Orchid\Platform\Models\User::class, Kamansotf\Klorchid\Models\Kuser::class);
+        Dashboard::useModel(\Orchid\Platform\Models\User::class, Kuser::class);
         $this->registerConfig()
             //->registerProviders()
             ->registerTranslations()

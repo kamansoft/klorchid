@@ -39,7 +39,7 @@ trait KamanModelsTrait
         static::creating(function ($model) {
 
             $model->blameOnCreate();
-
+            //die('creating model ' .$model->table());
 
         });
 
