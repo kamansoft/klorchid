@@ -30,5 +30,8 @@
           "Kamansoft\\Klorchid\\": "src"
         }
       },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5@dev"
+    }
 }
