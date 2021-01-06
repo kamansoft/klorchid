@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class {{ class }} extends migration
+class CreateKlorchidcrudtestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class {{ class }} extends migration
      */
     public function up()
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('klorchidcrudtest', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->text('description')->nullable();
 
-            //add your fields here
-
-            //common fields to be used on klorchid based apps
             $table->boolean('status')->default(1);
             $table->text('cur_status_reason')->nullable();
             $table->foreignId('updated_by')->constrained('users');
@@ -26,7 +25,6 @@ class {{ class }} extends migration
             $table->boolean('status')->default(1);
             $table->text('cur_status_reason')->nullable();
             $table->timestamps();
-            // \common fields to be used on klorchid based apps
 
         });
     }
@@ -38,6 +36,6 @@ class {{ class }} extends migration
      */
     public function down()
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('klorchidcrudtest');
     }
 }

@@ -3,12 +3,16 @@
 namespace Kamansoft\Klorchid;
 
 use Illuminate\Contracts\Http\Kernel;
+
 use Illuminate\Support\ServiceProvider;
 use Kamansoft\Klorchid\Console\Commands\BackupAction;
 use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
+use Kamansoft\Klorchid\Console\Commands\KmigrationCommand;
+use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
+use Illuminate\Database\Migrations\MigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 use Kamansoft\Klorchid\Models\Kuser;
@@ -43,7 +47,7 @@ class KlorchidServiceProvider extends ServiceProvider
         SystemUserAddCommand::class,
         BackupAction::class,
         KeditScreenCommand::class,
-        //KmigrationCommand::class,
+        KmigrationCommand::class,
         KmodelCommand::class,
         KlorchidInstallCommand::class,
     ];
@@ -53,9 +57,6 @@ class KlorchidServiceProvider extends ServiceProvider
 
         \Debugbar::info('Stating KlorchidService Provider boot Method');
 
-        if (config('auth.providers.users.model') !== Kuser::class) {
-            throw new \Exception('Klorchid package needs the user model auth provider setted as as ' . Kuser::class . ' type, instead ' . config('auth.providers.users.model') . ' found');
-        }
 
         Dashboard::useModel(\Orchid\Platform\Models\User::class, Kuser::class);
         $this->registerConfig()
@@ -294,9 +295,31 @@ class KlorchidServiceProvider extends ServiceProvider
         return [
             FoundationServiceProvider::class,
             RouteServiceProvider::class,
+
         ];
     }
 
+
+    public function registerKmigrationCreator()
+    {
+
+        $this->app->singleton(KmigrationCreator::class, function ($app) {
+
+            return new KmigrationCreator($app['files'], __DIR__ . '../resources/stubs');
+        });
+        return $this;
+    }
+
+    public function registerKmigrationCommandSingleton()
+    {
+        $this->app->singleton(KmigrationCommand::class, function ($app) {
+            $creator = $app[KmigrationCreator::class];
+            $composer = $app['composer'];
+
+            return new KmigrationCommand($creator, $composer);
+        });
+        return $this;
+    }
 
     public function register()
     {
@@ -311,6 +334,8 @@ class KlorchidServiceProvider extends ServiceProvider
         $this
             ->registerMiddlewaresAlias()
             ->reisterMidlewareGroups()
+            ->registerKmigrationCreator()
+            ->registerKmigrationCommandSingleton()
             ->registerProviders()
             ->registerCommands();
 

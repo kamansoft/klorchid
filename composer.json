@@ -29,9 +29,7 @@
         "psr-4": {
           "Kamansoft\\Klorchid\\": "src"
         }
-      },
-    "minimum-stability": "dev",
-    "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5@dev"
-    }
+      }
+
+
 }

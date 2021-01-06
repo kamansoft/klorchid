@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Kamansoft\Klorchid\Models\Kuser;
 
 
 class KlorchidKuserEnabled
@@ -19,9 +20,12 @@ class KlorchidKuserEnabled
 	 * @return mixed
 	 */
 	public function handle(Request $request, Closure $next) {
+		if (config('auth.providers.users.model') !== Kuser::class) {
+            throw new \Exception('Klorchid package needs the user model auth provider setted as as ' . Kuser::class . ' type, instead ' . config('auth.providers.users.model') . ' found');
+        }
 	    \Debugbar::info('KlorchidKuserEnabled Middleware hanlded method was called');
         if (Auth::user()->status == true){
-            \Debugbar::info('klorchidKuserEabled Middleware Muser is enabled');
+            \Debugbar::info('klorchidKuserEabled Middleware Kuser is enabled');
            return  $next($request);
         }else{
            return abort(403);

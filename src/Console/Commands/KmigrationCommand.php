@@ -3,22 +3,24 @@
 namespace Kamansoft\Klorchid\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Database\Migrations\MigrationCreator;
+use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
 use Illuminate\Support\Composer;
-class KmigrationCommand extends MigrateMakeCommand
+class KmigrationCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'klorchid:migration {name : The name of the migration}
+    protected $signature = 'make:kmigration {name : The name of the migration}
         {--create= : The table to be created}
+        {--klorchidupdate= : The non empty already existent table to add klorchid fields
         {--table= : The table to migrate}
         {--path= : The location where the migration file should be created}
         {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
@@ -29,16 +31,122 @@ class KmigrationCommand extends MigrateMakeCommand
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create a new klorchid compatible migration file';
 
-    public function __construct(MigrationCreator $migrationCreator, Composer $composer)
+    /**
+     * The migration creator instance.
+     *
+     * @var \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator
+     */
+    protected $creator;
+
+    /**
+     * The Composer instance.
+     *
+     * @var \Illuminate\Support\Composer
+     */
+    protected $composer;
+
+    /**
+     * Create a new migration install command instance.
+     *
+     * @param  \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator  $creator
+     * @param  \Illuminate\Support\Composer  $composer
+     * @return void
+     */
+    public function __construct(KmigrationCreator $creator, Composer $composer)
     {
-        parent::__construct(
-            new MigrationCreator(
-                $migrationCreator->getFilesystem(),
-                __DIR__ . '/../../resources/stubs'), $composer);
+        parent::__construct();
+
+        $this->creator = $creator;
+        $this->composer = $composer;
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // It's possible for the developer to specify the tables to modify in this
+        // schema operation. The developer may also specify if this table needs
+        // to be freshly created so we can create the appropriate migrations.
+        $name = Str::snake(trim($this->input->getArgument('name')));
+
+        $table = $this->input->getOption('table');
 
 
+
+        $klorchid_update_table_name =  $this->input->getOption('klorchidupdate') ?: false;
+
+        $create = $this->input->getOption('create') ?: false;
+
+        // If no table was given as an option but a create option is given then we
+        // will use the "create" option as the table name. This allows the devs
+        // to pass a table name into this option as a short-cut for creating.
+        if (! $table && is_string($create)) {
+            $table = $create;
+
+            $create = true;
+        }elseif (is_string($klorchid_update_table_name)){
+            $table  = $klorchid_update_table_name;
+            $klorchid_update = true;
+        }else{
+            $klorchid_update = false;
+        }
+
+        // Next, we will attempt to guess the table name if this the migration has
+        // "create" in the name. This will allow us to provide a convenient way
+        // of creating migrations that create new tables for the application.
+        if (! $table) {
+            [$table, $create] = TableGuesser::guess($name);
+        }
+
+        // Now we are ready to write the migration out to disk. Once we've written
+        // the migration out, we will dump-autoload for the entire framework to
+        // make sure that the migrations are registered by the class loaders.
+        $this->writeMigration($name, $table, $create,$klorchid_update);
+
+        $this->composer->dumpAutoloads();
+    }
+
+    /**
+     * Write the migration file to disk.
+     *
+     * @param  string  $name
+     * @param  string  $table
+     * @param  bool  $create
+     * @param  bool $klorchid_update true if the aim is to make a existent table comaptible with klorchid
+     * @return string
+     */
+    protected function writeMigration($name, $table, $create,$klorchid_update)
+    {
+        $file = $this->creator->create(
+            $name, $this->getMigrationPath(), $table, $create,$klorchid_update
+        );
+
+        if (! $this->option('fullpath')) {
+            $file = pathinfo($file, PATHINFO_FILENAME);
+        }
+
+        $this->line("<info>Created Klorchid migration:</info> {$file}");
+    }
+
+    /**
+     * Get migration path (either specified by '--path' option or default location).
+     *
+     * @return string
+     */
+    protected function getMigrationPath()
+    {
+        if (! is_null($targetPath = $this->input->getOption('path'))) {
+            return ! $this->usingRealPath()
+                            ? $this->laravel->basePath().'/'.$targetPath
+                            : $targetPath;
+        }
+
+        return parent::getMigrationPath();
     }
 
 
