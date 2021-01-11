@@ -14,7 +14,7 @@ class {{ class }} extends Migration
     public function up()
     {
         Schema::table('{{ table }}', function (Blueprint $table) {
-            //
+            $table->timestamps();
         });
 
 
@@ -30,7 +30,10 @@ class {{ class }} extends Migration
     public function down()
     {
         Schema::table('{{ table }}', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'created_at',
+                'updated_at'
+            ]);
         });
     }
 }

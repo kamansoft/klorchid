@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Kpagos\Models;
+namespace {{ namespace }};
 
 
 use Kamansoft\Klorchid\Models\KamanModelsDeleteTrait;
@@ -17,15 +17,15 @@ class DummyClass extends Model implements KamanModelsInterface
 {
     use AsSource;
     use Filterable;
-    //use KamanModelsTrait;
-    //use KamanModelsStatusTrait;
-    //use KamanModelsDeleteTrait;
+    use KamanModelsTrait;
+    use KamanModelsStatusTrait;
+    use KamanModelsDeleteTrait;
     /*
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'currencies';
+    protected $table = '{{ table }}';
     //protected $primaryKey ='id';
 
 
@@ -68,6 +68,17 @@ class DummyClass extends Model implements KamanModelsInterface
     public function getEditValidationRules(Request $request): array
     {
         return [
+
+        ];
+    }
+
+
+    static public function statusStringValues():array
+    {
+        //this is odd and ugly but the best i can
+        return [
+            0 => __('Inactive'),
+            1 => __('Active')
 
         ];
     }

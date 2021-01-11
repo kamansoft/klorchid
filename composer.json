@@ -22,7 +22,10 @@
         "laravel": {
             "providers": [
                 "Kamansoft\\Klorchid\\KlorchidServiceProvider"
-            ]
+            ],
+            "aliases":{
+                "KlorchidPrueba":"\\Kamansoft\\Klorchid\\Facades\\KlorchidPruebaFacade"
+            }
         }
     },
     "autoload": {

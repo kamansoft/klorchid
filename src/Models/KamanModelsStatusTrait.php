@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 trait KamanModelsStatusTrait
 {
-    static public function statusStringValues()
+    static public function statusStringValues():array
     {
         //this is odd and ugly but the best i can
         return [
@@ -21,26 +21,24 @@ trait KamanModelsStatusTrait
     }
 
 
-    public function getStringStatusAttribute()
+    public function getStringStatusAttribute():string
     {
         return $this::statusToString($this->status > 0);
     }
 
-    public static function getTableName()
+    public static function getTableName():string
     {
-        return (new self())->getTable();
+        return self::getTable();
     }
 
 
-    static public function statusToString(bool $status)
+    static public function statusToString(bool $status):string
     {
         $values = self::statusStringValues();
-        \Debugbar::info('statusToString');
-        \Debugbar::info($values);
         return $values[$status];
     }
 
-    static public function stringToStatus(string $status)
+    static public function stringToStatus(string $status):string
     {
         \Debugbar::info('stringToStatus');
         $values = self::statusStringValues();
@@ -75,7 +73,7 @@ trait KamanModelsStatusTrait
 
 
 
-    public function statusSet(bool $status, string $reason)
+    public function statusSet(bool $status, string $reason):self
     {
 
         $this->status = $status;
@@ -84,13 +82,13 @@ trait KamanModelsStatusTrait
         return $this;
     }
 
-    public function statusToggle(string $reason)
+    public function statusToggle(string $reason):self
     {
         return $this->statusSet(!$this->status, $reason);
 
     }
 
-    public function invalidate()
+    public function invalidate():self
     {
         $this->status = false;
         $this->save();

@@ -5,12 +5,14 @@ namespace Kamansoft\Klorchid\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
+use Illuminate\Database\Console\Migrations\TableGuesser;
 use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
 use Illuminate\Support\Composer;
+
 class KmigrationCommand extends BaseCommand
 {
     /**
@@ -19,9 +21,11 @@ class KmigrationCommand extends BaseCommand
      * @var string
      */
     protected $signature = 'make:kmigration {name : The name of the migration}
-        {--create= : The table to be created}
-        {--klorchidupdate= : The non empty already existent table to add klorchid fields
         {--table= : The table to migrate}
+        {--create= : The table to be created}
+        {--adapt= : The non empty already existent table to add klorchid  fields}
+        {--timestamps-add= : The table to add laravel timestamps}
+        
         {--path= : The location where the migration file should be created}
         {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
         {--fullpath : Output the full path of the migration}';
@@ -50,8 +54,8 @@ class KmigrationCommand extends BaseCommand
     /**
      * Create a new migration install command instance.
      *
-     * @param  \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator  $creator
-     * @param  \Illuminate\Support\Composer  $composer
+     * @param \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator $creator
+     * @param \Illuminate\Support\Composer $composer
      * @return void
      */
     public function __construct(KmigrationCreator $creator, Composer $composer)
@@ -61,6 +65,8 @@ class KmigrationCommand extends BaseCommand
         $this->creator = $creator;
         $this->composer = $composer;
     }
+
+
 
     /**
      * Execute the console command.
@@ -76,37 +82,53 @@ class KmigrationCommand extends BaseCommand
 
         $table = $this->input->getOption('table');
 
+        $action = "update";
 
-
-        $klorchid_update_table_name =  $this->input->getOption('klorchidupdate') ?: false;
 
         $create = $this->input->getOption('create') ?: false;
+
+        $klorchid_adapt = $this->input->getOption('adapt') ?: false;
+
+        $add_timestamps = $this->input->getOption('timestamps-add') ?: false;
+
+
+        $this->line("<info>The options: create, adapt, and timestamps-add, are mutually exclusive.</info>");
+
 
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-        if (! $table && is_string($create)) {
+        if (!$table && is_string($create)) {
             $table = $create;
-
-            $create = true;
-        }elseif (is_string($klorchid_update_table_name)){
-            $table  = $klorchid_update_table_name;
-            $klorchid_update = true;
-        }else{
-            $klorchid_update = false;
+            $action = 'create';
+        } elseif (!$table && is_string($klorchid_adapt)) {
+            $table = $klorchid_adapt;
+            $action = "adapt";
+        } elseif (!$table && is_string($add_timestamps)) {
+            $table = $add_timestamps;
+            $action = "timestamps-add";
         }
+
 
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-        if (! $table) {
+        if (!$table) {
             [$table, $create] = TableGuesser::guess($name);
+            if ($create) {
+                $action = "create";
+            } else {
+                $action = "update";
+            }
+
         }
+
+        $this->line("<info>A {$action} migration file for {$table} table is goin to be created.</info>");
 
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-        $this->writeMigration($name, $table, $create,$klorchid_update);
+        $this->writeMigration($name, $table, $action);
 
         $this->composer->dumpAutoloads();
     }
@@ -114,19 +136,20 @@ class KmigrationCommand extends BaseCommand
     /**
      * Write the migration file to disk.
      *
-     * @param  string  $name
-     * @param  string  $table
-     * @param  bool  $create
-     * @param  bool $klorchid_update true if the aim is to make a existent table comaptible with klorchid
+     * @param string $name
+     * @param string $table
+     * @param bool $create
+     * @param bool $klorchid_update true if the aim is to make a existent table comaptible with klorchid
      * @return string
      */
-    protected function writeMigration($name, $table, $create,$klorchid_update)
+    protected function writeMigration($name, $table, $action)
     {
+
         $file = $this->creator->create(
-            $name, $this->getMigrationPath(), $table, $create,$klorchid_update
+            $name, $this->getMigrationPath(), $table, $action
         );
 
-        if (! $this->option('fullpath')) {
+        if (!$this->option('fullpath')) {
             $file = pathinfo($file, PATHINFO_FILENAME);
         }
 
@@ -140,19 +163,14 @@ class KmigrationCommand extends BaseCommand
      */
     protected function getMigrationPath()
     {
-        if (! is_null($targetPath = $this->input->getOption('path'))) {
-            return ! $this->usingRealPath()
-                            ? $this->laravel->basePath().'/'.$targetPath
-                            : $targetPath;
+        if (!is_null($targetPath = $this->input->getOption('path'))) {
+            return !$this->usingRealPath()
+                ? $this->laravel->basePath() . '/' . $targetPath
+                : $targetPath;
         }
 
         return parent::getMigrationPath();
     }
-
-
-
-
-
 
 
 }

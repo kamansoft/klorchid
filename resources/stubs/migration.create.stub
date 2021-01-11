@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class {{ class }} extends migration
+class {{ class }} extends Migration
 {
     /**
      * Run the migrations.
@@ -19,13 +19,12 @@ class {{ class }} extends migration
             //add your fields here
 
             //common fields to be used on klorchid based apps
+            $table->timestamps();
             $table->boolean('status')->default(1);
             $table->text('cur_status_reason')->nullable();
             $table->foreignId('updated_by')->constrained('users');
             $table->foreignId('created_by')->constrained('users');
-            $table->boolean('status')->default(1);
-            $table->text('cur_status_reason')->nullable();
-            $table->timestamps();
+
             // \common fields to be used on klorchid based apps
 
         });

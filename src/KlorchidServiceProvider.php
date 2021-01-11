@@ -304,8 +304,7 @@ class KlorchidServiceProvider extends ServiceProvider
     {
 
         $this->app->singleton(KmigrationCreator::class, function ($app) {
-
-            return new KmigrationCreator($app['files'], __DIR__ . '../resources/stubs');
+            return new KmigrationCreator($app['files'], __DIR__ . '/../resources/stubs');
         });
         return $this;
     }
@@ -338,6 +337,11 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerKmigrationCommandSingleton()
             ->registerProviders()
             ->registerCommands();
+
+
+        $this->app->singleton('klorchid-prueba', function () {
+            return new KlorchidPrueba();
+        }); 
 
 
     }

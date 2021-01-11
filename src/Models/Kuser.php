@@ -17,9 +17,11 @@ use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
 
-class Kuser extends User
+class Kuser extends User implements KamanModelsInterface
 {
-    use KamanModelsTrait, KamanModelsDeleteTrait, KamanModelsStatusTrait;
+    use KamanModelsTrait;
+    use KamanModelsDeleteTrait;
+    use KamanModelsStatusTrait;
     use HasApiTokens;
     use HasFactory;
 
@@ -108,8 +110,9 @@ class Kuser extends User
     ];*/
 
 
-    public function getEditValidationRules(Request $request)
+    public function getEditValidationRules(Request $request):array
     {
+
         return [
             'element.name' => 'required',
             'element.email' => [
@@ -120,7 +123,7 @@ class Kuser extends User
         ];
     }
 
-    public function getCreateValidationRules(Request $request)
+    public function getCreateValidationRules(Request $request):array
     {
         return [
             'element.name' => 'required',
