@@ -3,7 +3,7 @@
 
 A group of classes to ease the back-office development with [laravel/Orchid](https://orchid.software/).
 
-This package is meant to boost your RAPID web development with orchid mainly by providing extra laravel model traits, and extending Orchid's Screens classes  
+this package is made with the intention to help in your RAPID web development with orchid mainly by providing extra laravel model traits, and extending Orchid's Screens classes  
 
 ## Installing Dependencies
 
