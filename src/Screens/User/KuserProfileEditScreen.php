@@ -52,8 +52,8 @@ class KuserProfileEditScreen extends Screen
     public function query(Request $request): array
     {
         $user  = $request->user();
-        \Debugbar::info(get_class($user));
-        \Debugbar::info('type ');
+        //\Debugbar::info(get_class($user));
+        //\Debugbar::info('type ');
 
         if (get_class($user)!==Kuser::class){
             throw new \Exception('Klorchid pakcage needs the user model to be setted widely on your laravel, ');
@@ -153,8 +153,8 @@ class KuserProfileEditScreen extends Screen
 
 
 
-        \Debugbar::info($request->user());
-        \Debugbar::info('user on request');
+        //\Debugbar::info($request->user());
+        //\Debugbar::info('user on request');
 
 
         $request->user()

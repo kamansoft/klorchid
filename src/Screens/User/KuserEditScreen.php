@@ -68,9 +68,9 @@ class KuserEditScreen extends KeditScreen
     public function query(Kuser $model): array
     {
         $this->action = $this->formFunctionality($model);
-        \Debugbar::info($this->action);
-        \Debugbar::info("Kuser editscreen action");
-        \Debugbar::info(config('jetstream'));
+        //\Debugbar::info($this->action);
+        //\Debugbar::info("Kuser editscreen action");
+        //\Debugbar::info(config('jetstream'));
         $this->model = &$model;
         $this->exists = $this->model->exists;
         $this->status = $this->model->status;
@@ -136,16 +136,16 @@ class KuserEditScreen extends KeditScreen
             if ($action == 'create') {
                 $this->hasPermOrRedirect($this->permissions_group . 'create');
                 $validation = $this->validateOnCreate($model, $request);
-                \Debugbar::info($validation);
+                //\Debugbar::info($validation);
                 $validation['element']['password'] = Hash::make($validation['element']['password']);
                 $model->fill($validation['element']);
-                \Debugbar::info($validation['element']);
+                //\Debugbar::info($validation['element']);
 
-                \Debugbar::info('validation elemnts');
+                //\Debugbar::info('validation elemnts');
 
 
                 \DebugBar::info($request->input('element.roles'));
-                \Debugbar::info('element roles');
+                //\Debugbar::info('element roles');
 
             } elseif ($action == 'edit') {
                 $this->hasPermOrRedirect($this->permissions_group . 'edit');
@@ -162,7 +162,7 @@ class KuserEditScreen extends KeditScreen
             }
 
 
-            \Debugbar::info($this->permissions_group . '.permissions.edit');
+            //\Debugbar::info($this->permissions_group . '.permissions.edit');
             if ($this->hasPermission($this->permissions_group . '.permissions.edit')) {
                 $permissions = collect($request->get('permissions'))
                     ->map(function ($value, $key) {
@@ -170,8 +170,8 @@ class KuserEditScreen extends KeditScreen
                     })
                     ->collapse()
                     ->toArray();
-                \Debugbar::info('user has permission to edid permissions');
-                \Debugbar::info($permissions);
+                //\Debugbar::info('user has permission to edid permissions');
+                //\Debugbar::info($permissions);
                 $model->fill(['permissions' => $permissions]);
 
             };

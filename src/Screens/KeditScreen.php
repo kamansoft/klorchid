@@ -49,8 +49,8 @@ abstract class KeditScreen extends Screen {
 
 		$to_return = [];
 
-		\Debugbar::info($this->routes_group . '.list');
-		\Debugbar::info(Route::has($this->routes_group . '.list'));
+		//\Debugbar::info($this->routes_group . '.list');
+		//\Debugbar::info(Route::has($this->routes_group . '.list'));
 
 		if (Route::has($this->routes_group . '.list')) {
 			array_push($to_return, $this->getListActionBtn());

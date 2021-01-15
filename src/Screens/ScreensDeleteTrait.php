@@ -38,12 +38,12 @@ trait ScreensDeleteTrait {
 	public function getDeleteActionBtn() {
 		$can_see = (Auth::user()->hasAccess($this->permissions_group . '.delete') and $this->action !== 'create');
 
-		\Debugbar::info($this->action !='create');
-		\Debugbar::info("action is diferent from create");
-		\Debugbar::info(Auth::user()->hasAccess($this->permissions_group . '.delete'));
-		\Debugbar::info("Has acces to delete");
-		\Debugbar::info($can_see);
-		\Debugbar::info("can see delete button");
+		//\Debugbar::info($this->action !='create');
+		//\Debugbar::info("action is diferent from create");
+		//\Debugbar::info(Auth::user()->hasAccess($this->permissions_group . '.delete'));
+		//\Debugbar::info("Has acces to delete");
+		//\Debugbar::info($can_see);
+		//\Debugbar::info("can see delete button");
 		return ModalToggle::make(__('Delete'))
 			->modal('delete-modal')
 			->method('delete')

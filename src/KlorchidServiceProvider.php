@@ -17,10 +17,10 @@ use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Providers\KlorchidPlatformProvider;
-use Kamansoft\Klorchid\Providers\RouteServiceProvider;
+use Kamansoft\Klorchid\Providers\RouteServiceProvider as KlorchidRouteServiceProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
-use Orchid\Platform\Providers\FoundationServiceProvider;
+use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
 use Orchid\Support\Facades\Dashboard as DashboardFacade;
 use Laravel\Jetstream\Features;
 use Illuminate\Routing\Router;
@@ -29,9 +29,6 @@ use Illuminate\Support\Facades\Route;
 
 use Orchid\Platform\Http\Middleware\Access;
 use Orchid\Platform\Http\Middleware\TurbolinksLocation;
-
-
-use Kamansoft\Klorchid\Providers\RouteServiceProvider as KlorchidRouteServiceProvider;
 
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -55,11 +52,12 @@ class KlorchidServiceProvider extends ServiceProvider
     public function boot(Dashboard $dashboard)
     {
 
-        \Debugbar::info('Stating KlorchidService Provider boot Method');
+        //\Debugbar::info('Stating KlorchidService Provider boot Method');
 
 
-        Dashboard::useModel(\Orchid\Platform\Models\User::class, Kuser::class);
-        $this->registerConfig()
+        $this
+            ->registerKuserModelAsPLatformUserModel()
+            ->registerConfig()
             //->registerProviders()
             ->registerTranslations()
             ->registerMigrations()
@@ -92,20 +90,11 @@ class KlorchidServiceProvider extends ServiceProvider
                 ->addPermission('platform.systems.roles.statuschange', 'Status Change')
         );
 
-        \Debugbar::info('/End KlorchidService Provider boot Method');
+        //\Debugbar::info('/End KlorchidService Provider boot Method');
 
 
     }
 
-    protected function registerCommands(): self
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands($this->commands);
-        }
-
-
-        return $this;
-    }
 
     protected function registerMigrations(): self
     {
@@ -243,71 +232,7 @@ class KlorchidServiceProvider extends ServiceProvider
         return $this;
     }
 
-    /**
-     * Register all middleware alias to route
-     * @return $this
-     */
-    public function registerMiddlewaresAlias()
-    {
-        $router = $this->app->make(Router::class);
-        $router->aliasMiddleware('klorchidlocalization', KlorchidLocalization::class);
-        $router->aliasMiddleware('kusertrue', KlorchidKuserEnabled::class);
-        return $this;
 
-    }
-
-    public function reisterMidlewareGroups()
-    {
-
-        Route::middlewareGroup('klorchid', [
-            KlorchidKuserEnabled::class,
-
-        ]);
-        \Debugbar::info('klorchid Middleware gorup registered');
-        return $this;
-    }
-
-
-    /**
-     * Register provider.
-     *
-     * @return $this
-     */
-    public function registerProviders(): self
-    {
-
-        foreach ($this->provides() as $provide) {
-
-            $this->app->register($provide);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides(): array
-    {
-
-        return [
-            FoundationServiceProvider::class,
-            RouteServiceProvider::class,
-
-        ];
-    }
-
-
-    public function registerKmigrationCreator()
-    {
-
-        $this->app->singleton(KmigrationCreator::class, function ($app) {
-            return new KmigrationCreator($app['files'], __DIR__ . '/../resources/stubs');
-        });
-        return $this;
-    }
 
     public function registerKmigrationCommandSingleton()
     {
@@ -317,6 +242,12 @@ class KlorchidServiceProvider extends ServiceProvider
 
             return new KmigrationCommand($creator, $composer);
         });
+        return $this;
+    }
+
+    public function registerKuserModelAsPLatformUserModel()
+    {
+        Dashboard::useModel(\Orchid\Platform\Models\User::class, Kuser::class);
         return $this;
     }
 
@@ -339,11 +270,104 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerCommands();
 
 
-        $this->app->singleton('klorchid-prueba', function () {
+        /*$this->app->singleton('klorchid-prueba', function () {
             return new KlorchidPrueba();
-        }); 
+        });*/
 
 
+    }
+
+    /**
+     * returns the middleware to be registered with its aliases
+     * @return array|string[]
+     */
+    public function getAliasedMidlewares(): array
+    {
+        return [
+            'klorchidlocalization' => KlorchidLocalization::class,
+            'kusertrue' => KlorchidKuserEnabled::class
+        ];
+    }
+
+    /**
+     * Register all middleware alias to routes
+     * @return $this
+     */
+    public function registerMiddlewaresAlias()
+    {
+        $router = $this->app->make(Router::class);
+        //$router->aliasMiddleware('klorchidlocalization', KlorchidLocalization::class);
+        //$router->aliasMiddleware('kusertrue', KlorchidKuserEnabled::class);
+
+        foreach ($this->getAliasedMidlewares() as $alias => $middleware) {
+            $router->aliasMiddleware($alias, $middleware);
+        }
+
+        return $this;
+
+    }
+
+    public function reisterMidlewareGroups()
+    {
+
+        Route::middlewareGroup('klorchid', [
+            KlorchidKuserEnabled::class,
+
+        ]);
+        //\Debugbar::info('klorchid Middleware gorup registered');
+        return $this;
+    }
+
+
+    public function registerKmigrationCreator()
+    {
+
+        $this->app->singleton(KmigrationCreator::class, function ($app) {
+            return new KmigrationCreator($app['files'], __DIR__ . '/../resources/stubs');
+        });
+        return $this;
+    }
+
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides(): array
+    {
+
+        return [
+            OrchidFoundationServiceProvider::class,
+            KlorchidRouteServiceProvider::class,
+
+        ];
+    }
+
+    /**
+     * Register provider.
+     *
+     * @return $this
+     */
+    public function registerProviders(): self
+    {
+
+        foreach ($this->provides() as $provide) {
+
+            $this->app->register($provide);
+        }
+
+        return $this;
+    }
+
+    protected function registerCommands(): self
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
+
+
+        return $this;
     }
 
 

@@ -63,8 +63,8 @@ class Kuser extends User implements KamanModelsInterface
      * @var array
      */
     protected $appends = [
-        'profile_photo_url',
-        'kavatar'
+        //'profile_photo_url',
+        //'kavatar'
     ];
 
     /**
@@ -149,7 +149,7 @@ class Kuser extends User implements KamanModelsInterface
 
         $to_return= false;
         $isSoftDeleted = array_key_exists(SoftDeletes::class, class_uses($this));
-        \Debugbar::info('system user id '.config('klorchid.system_user_id'));
+        //\Debugbar::info('system user id '.config('klorchid.system_user_id'));
         try {
 
 

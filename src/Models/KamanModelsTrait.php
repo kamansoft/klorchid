@@ -68,7 +68,7 @@ trait KamanModelsTrait
 
     public function getCreatorNameAttribute()
     {
-        \Debugbar::info('creator name called');
+        //\Debugbar::info('creator name called');
         return $this->creator->name;
     }
 
@@ -78,6 +78,10 @@ trait KamanModelsTrait
     }
 
 
+    public function refreshFromDb(){
+        $element = self::findOrFail($this->getKey());
+        $this->fill($element->toArray());
+    }
 
 
 

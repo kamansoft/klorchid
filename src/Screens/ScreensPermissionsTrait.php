@@ -53,8 +53,8 @@ trait ScreensPermissionsTrait {
 			            } else {
 			                $permissions_list = $this->getDasboardPermissions();
 			            }
-			            \Debugbar::info($permissions_list);
-			            \Debugbar::info('permission list');
+			            //\Debugbar::info($permissions_list);
+			            //\Debugbar::info('permission list');
 		*/
 		$key_exists = $this->_dashboard_permissions_list->contains($perm);
 		if ($key_exists) {
@@ -75,7 +75,7 @@ trait ScreensPermissionsTrait {
 	 * @throws \Exception
 	 */
 	private function guesPermKey($tail) {
-		\Debugbar::info();
+		//\Debugbar::info();
 		$to_return = '';
 
 		try {
@@ -172,20 +172,20 @@ trait ScreensPermissionsTrait {
 
 		$action = 'simple';
 
-		\Debugbar::info($model);
-		\Debugbar::info($edit_perm . ' ' . $view_perm);
+		//\Debugbar::info($model);
+		//\Debugbar::info($edit_perm . ' ' . $view_perm);
 		if ($model->exists) {
 			if ($this->hasPermission($edit_perm)) {
 				$action = "edit";
-				\Debugbar::info('Has Edit Perm');
+				//\Debugbar::info('Has Edit Perm');
 			} elseif ($this->hasPermission($view_perm)) {
 				$action = "view";
-				\Debugbar::info('Has View Perm');
+				//\Debugbar::info('Has View Perm');
 			}
 		} else {
 			if ($this->hasPermission($create_perm)) {
 				$action = "create";
-				\Debugbar::info('Has Create  Perm');
+				//\Debugbar::info('Has Create  Perm');
 			}
 		}
 

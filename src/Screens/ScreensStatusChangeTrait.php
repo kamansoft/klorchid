@@ -175,7 +175,7 @@ trait ScreensStatusChangeTrait
     protected function _statusToggle(Model $model, Request $request)
     {
         $validation = $this->statusToggleValidate($model, $request);
-        \Debugbar::info($validation);
+        //\Debugbar::info($validation);
         $action = 'Status Toggle';
         try {
 
