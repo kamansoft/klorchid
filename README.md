@@ -1,11 +1,11 @@
 
-#Klorchid
+# Klorchid
 
 A group of classes to ease the back-office development with [laravel/Orchid](https://orchid.software/).
 
 This package is meant to boost your RAPID web development with orchid mainly by providing extra laravel model traits, and extending Orchid's Screens classes  
 
-##Installing Dependencies
+## Installing Dependencies
 
 
 The next list of commands must be executed in strictly in the order they are mentioned as packages needed by klorchid:
@@ -38,7 +38,7 @@ We need to change the "true" value by "false" at the auth entry on the config/pl
     //config/platform.php
     auth = false; 
 
-##Install
+## Install
 
 Just add kamansoft/klorchid as normal composer package
     
