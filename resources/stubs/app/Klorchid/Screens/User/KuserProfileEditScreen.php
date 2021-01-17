@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kamansoft\Klorchid\Screens\User;
+namespace App\Klorchid\Screens\User;
 
 use App\Orchid\Layouts\User\UserEditLayout;
 use Kamansoft\Klorchid\Layouts\User\KuserEditLayout;
@@ -52,8 +52,8 @@ class KuserProfileEditScreen extends Screen
     public function query(Request $request): array
     {
         $user  = $request->user();
-        //\Debugbar::info(get_class($user));
-        //\Debugbar::info('type ');
+        //\DeBugbaR::info(get_class($user));
+        //\DeBugbaR::info('type ');
 
         if (get_class($user)!==Kuser::class){
             throw new \Exception('Klorchid pakcage needs the user model to be setted widely on your laravel, ');
@@ -153,8 +153,8 @@ class KuserProfileEditScreen extends Screen
 
 
 
-        //\Debugbar::info($request->user());
-        //\Debugbar::info('user on request');
+        //\DeBugbaR::info($request->user());
+        //\DeBugbaR::info('user on request');
 
 
         $request->user()

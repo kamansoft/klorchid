@@ -15,20 +15,20 @@ use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
+
 use Kamansoft\Klorchid\Models\Kuser;
-use Kamansoft\Klorchid\Providers\KlorchidPlatformProvider;
-use Kamansoft\Klorchid\Providers\RouteServiceProvider as KlorchidRouteServiceProvider;
+
+use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
-use Orchid\Support\Facades\Dashboard as DashboardFacade;
-use Laravel\Jetstream\Features;
+
+
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 
-use Orchid\Platform\Http\Middleware\Access;
-use Orchid\Platform\Http\Middleware\TurbolinksLocation;
 
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -52,12 +52,13 @@ class KlorchidServiceProvider extends ServiceProvider
     public function boot(Dashboard $dashboard)
     {
 
-        //\Debugbar::info('Stating KlorchidService Provider boot Method');
+        //\DeBugbaR::info('Stating KlorchidService Provider boot Method');
 
 
         $this
             ->registerKuserModelAsPLatformUserModel()
             ->registerConfig()
+            ->registerKlorchid()
             //->registerProviders()
             ->registerTranslations()
             ->registerMigrations()
@@ -90,11 +91,15 @@ class KlorchidServiceProvider extends ServiceProvider
                 ->addPermission('platform.systems.roles.statuschange', 'Status Change')
         );
 
-        //\Debugbar::info('/End KlorchidService Provider boot Method');
+
 
 
     }
 
+
+    protected function registerPermissions():self{
+
+    }
 
     protected function registerMigrations(): self
     {
@@ -132,7 +137,15 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/klorchid.php', 'klorchid');
         return $this;
+    }
 
+    protected function registerKlorchid(){
+
+        $this->publishes([
+            __DIR__.'/../resources/stubs/app/Klorchid' => app_path('Klorchid')
+        ], 'klorchid-commons');
+
+        return $this;
     }
 
     /**
@@ -176,8 +189,9 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $klorchid_lang_path = __DIR__ . '/../resources/lang';
         $this->publishes(
-            [$klorchid_lang_path => resource_path('lang')]
-            , 'klorchid-lang');
+            [$klorchid_lang_path => resource_path('lang')],
+            'klorchid-lang'
+        );
 
         return $this;
     }
@@ -273,9 +287,8 @@ class KlorchidServiceProvider extends ServiceProvider
         /*$this->app->singleton('klorchid-prueba', function () {
             return new KlorchidPrueba();
         });*/
-
-
     }
+
 
     /**
      * returns the middleware to be registered with its aliases
@@ -304,7 +317,6 @@ class KlorchidServiceProvider extends ServiceProvider
         }
 
         return $this;
-
     }
 
     public function reisterMidlewareGroups()
@@ -314,10 +326,9 @@ class KlorchidServiceProvider extends ServiceProvider
             KlorchidKuserEnabled::class,
 
         ]);
-        //\Debugbar::info('klorchid Middleware gorup registered');
+        //\DeBugbaR::info('klorchid Middleware gorup registered');
         return $this;
     }
-
 
     public function registerKmigrationCreator()
     {
@@ -369,6 +380,4 @@ class KlorchidServiceProvider extends ServiceProvider
 
         return $this;
     }
-
-
 }

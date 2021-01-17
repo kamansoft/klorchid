@@ -40,9 +40,9 @@ trait KamanModelsStatusTrait
 
     static public function stringToStatus(string $status):string
     {
-        //\Debugbar::info('stringToStatus');
+        //\DeBugbaR::info('stringToStatus');
         $values = self::statusStringValues();
-        //\Debugbar::info($values);
+        //\DeBugbaR::info($values);
 
         return array_search($status, $values);
 

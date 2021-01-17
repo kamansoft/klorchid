@@ -16,15 +16,15 @@ class KlorchidLocalization {
 	 * @return mixed
 	 */
 	public function handle(Request $request, Closure $next) {
-		//\Debugbar::info(session()->get('locale'));
-		//\Debugbar::info('session from KlorchidLocalization middleware');
+		//\DeBugbaR::info(session()->get('locale'));
+		//\DeBugbaR::info('session from KlorchidLocalization middleware');
 		if (session()->has('locale')) {
-			//\Debugbar::info('existe locale en session');
+			//\DeBugbaR::info('existe locale en session');
 
 			app()->setlocale(session()->get('locale'));
 		}
-		//\Debugbar::info(app()->getLocale());
-		//\Debugbar::info('status of locale on KlorchidLocalization middleware end');
+		//\DeBugbaR::info(app()->getLocale());
+		//\DeBugbaR::info('status of locale on KlorchidLocalization middleware end');
 
 		return $next($request);
 	}

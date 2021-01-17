@@ -15,14 +15,16 @@ use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
-use Kamansoft\Klorchid\Screens\User\KuserEditScreen;
-use Kamansoft\Klorchid\Screens\User\KuserListScreen;
+use App\Klorchid\Screens\User\KuserProfileEditScreen;
+use App\Klorchid\Screens\User\KuserEditScreen;
+use App\Klorchid\Screens\User\KuserListScreen;
+
 use Tabuna\Breadcrumbs\Trail;
 
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
-|--------------------------------------------------------------------------
+|----------------------------------------0----------------------------------
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
@@ -32,6 +34,9 @@ use Tabuna\Breadcrumbs\Trail;
  */
 
 
+// Main
+Route::screen('/main', App\Klorchid\Screens\KlorchidMainScreen::class)
+    ->name('platform.main');
 
 // Platform > Profile
     Route::screen('oldprofile', UserProfileScreen::class)
@@ -39,10 +44,10 @@ use Tabuna\Breadcrumbs\Trail;
         ->breadcrumbs(function (Trail $trail) {
             return $trail
                 ->parent('platform.index')
-                ->push(__('Profile'), route('platform.profile'));
+                ->push(__('Profile'), route('platform.oldprofile'));
         });
 
-    Route::screen('profile', \Kamansoft\Klorchid\Screens\User\KuserProfileEditScreen::class)
+    Route::screen('profile', KuserProfileEditScreen::class)
         ->name('platform.profile')
         ->breadcrumbs(function (Trail $trail) {
             return $trail

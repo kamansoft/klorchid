@@ -50,8 +50,9 @@ class   KlorchidInstallCommand extends Command
                 '--force' => true,
                 '--tag'      => [
                     'klorchid-migrations',
-                    'klorchid-platform-routes',
+                    'klorchid-commons',
                     'klorchid-config',
+                    'klorchid-platform-routes',
                     'views',
                     'klorchid-lang'
                 ],

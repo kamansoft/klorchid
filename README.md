@@ -24,7 +24,7 @@ Add Laravel's Jetstream dependency (soon to be replaced)
     $ php artisan jetstream:install livewire
     $ npm install && npm run dev
     
-As this package is currently on development you need `Debugbar` of barryvdh   perhaps there are some missing `\Debugbar::info()` over there
+As this package is currently on development you need `Debugbar` of barryvdh   perhaps there are some missing `\DebugBar::info()` over there
 
     $ composer require barryvdh/laravel-debugbar --dev
     

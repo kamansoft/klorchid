@@ -49,8 +49,8 @@ abstract class KeditScreen extends Screen {
 
 		$to_return = [];
 
-		//\Debugbar::info($this->routes_group . '.list');
-		//\Debugbar::info(Route::has($this->routes_group . '.list'));
+		//\DeBugbaR::info($this->routes_group . '.list');
+		//\DeBugbaR::info(Route::has($this->routes_group . '.list'));
 
 		if (Route::has($this->routes_group . '.list')) {
 			array_push($to_return, $this->getListActionBtn());
@@ -58,13 +58,13 @@ abstract class KeditScreen extends Screen {
 
 		if ($this->action !== 'create') {
 			if (method_exists($this, 'statusSet')) {
-				\DebugBar::info('has statusSet method');
+				//\DebugBar::info('has statusSet method');
 				array_push($to_return, $this->getStatusSetActionBtn());
 			} elseif (method_exists($this, 'statusToggle')) {
-				\DebugBar::info('has statusToggle method');
+				//\DebugBar::info('has statusToggle method');
 				array_push($to_return, $this->getStatusToggleActionBtn());
 			} elseif (method_exists($this, 'invalidate')) {
-				\DebugBar::info('has invalidate method');
+				//\DebugBar::info('has invalidate method');
 				array_push($to_return, $this->getInvalidateActionBtn());
 			}
 		}
@@ -72,11 +72,11 @@ abstract class KeditScreen extends Screen {
 		array_push($to_return, ...$this->keditCommandBar());
 
 		if (method_exists($this, 'delete')) {
-			\DebugBar::info('has delete method');
+			//\DebugBar::info('has delete method');
 			array_push($to_return, $this->getDeleteActionBtn());
 		}
 		if (method_exists($this, 'save')) {
-			\DebugBar::info('has save method');
+			//\DebugBar::info('has save method');
 			$save_btn = ConfirmationButon::make(__('Save'))
 				->icon('icon-check')
 				->method('save')
@@ -100,13 +100,13 @@ abstract class KeditScreen extends Screen {
 
 		if ($this->action !== 'create') {
 			if (method_exists($this, 'statusSet')) {
-				\DebugBar::info('has statusSet method');
+				//\DebugBar::info('has statusSet method');
 				array_push($layouts, $this->getStatusSetModal());
 			} elseif (method_exists($this, 'statusToggle')) {
-				\DebugBar::info('has statusToggle method');
+				//\DebugBar::info('has statusToggle method');
 				array_push($layouts, $this->getStatusToggleModal());
 			} elseif (method_exists($this, 'invalidate')) {
-				\DebugBar::info('has invalidate method');
+				//\DebugBar::info('has invalidate method');
 				array_push($layouts, $this->getInvalidateModal());
 			}
 		}

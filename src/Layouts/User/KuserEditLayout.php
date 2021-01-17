@@ -23,8 +23,8 @@ class KuserEditLayout extends Rows
 
 
         $is_disabled = !$this->isEditable($user);
-        //\Debugbar::info($is_disabled);
-        //\Debugbar::info('KuserEditLayout fields is_disable');
+        //\DeBugbaR::info($is_disabled);
+        //\DeBugbaR::info('KuserEditLayout fields is_disable');
         $field_class  = 'form-control '.$this->getFieldCssClass($user);
         return [
             Input::make('element.id')

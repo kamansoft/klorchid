@@ -6,6 +6,3 @@ use Kamansoft\Klorchid\Http\Controllers\KlorchidLocalizationController;
 
 
 Route::get('set/locale/{lang}', [KlorchidLocalizationController::class, 'index']);
-
-
-

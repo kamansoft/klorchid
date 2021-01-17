@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kamansoft\klorchid\Screens\User;
+namespace App\Klorchid\Screens\User;
 
 use App\Orchid\Layouts\User\UserEditLayout;
 use App\Orchid\Layouts\User\UserFiltersLayout;
