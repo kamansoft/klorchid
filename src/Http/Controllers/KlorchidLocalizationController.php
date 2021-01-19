@@ -12,7 +12,8 @@ class KlorchidLocalizationController extends Controller {
 			App::abort(404);
 		}
 		app()->setlocale($locale);
-		session()->put('locale', $locale);
+        session(['locale'=> $locale]);
+
 
 		return redirect()->back();
 	}

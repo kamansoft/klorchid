@@ -67,6 +67,10 @@ class   KlorchidInstallCommand extends Command
 
 
         $this->info('Completed!');
+        $this->info('---------------');
+        $this->info('IMPORTANT !');
+        $this->info('---------------');
+        $this->info('This package adds a new router file (korchid.php), it has some screen routes that override some of the orchid\'s platform.php route file. ');
 
         $this->line("To start the embedded server, run 'artisan serve'");
 

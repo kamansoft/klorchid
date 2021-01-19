@@ -23,7 +23,7 @@ class KlorchidKuserEnabled
 		if (config('auth.providers.users.model') !== Kuser::class) {
             throw new \Exception('Klorchid package needs the user model auth provider setted as as ' . Kuser::class . ' type, instead ' . config('auth.providers.users.model') . ' found');
         }
-	    //\DeBugbaR::info('KlorchidKuserEnabled Middleware hanlded method was called');
+	    \DeBugbar::info('KlorchidKuserEnabled Middleware hanlded method was called');
         if (Auth::user()->status == true){
             //\DeBugbaR::info('klorchidKuserEabled Middleware Kuser is enabled');
            return  $next($request);
