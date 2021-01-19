@@ -56,7 +56,7 @@ Route::screen('users/add', KuserEditScreen::class)
 			->parent('platform.systems.users')
 			->push(__('Add'), route('platform.systems.users.add'));
 	});
-//Route::screen('users/{users}/edit', UserEditScreen::class)
+
 Route::screen('users/{users}/edit', KuserEditScreen::class)
 	->name('platform.systems.users.edit')
 	->breadcrumbs(function (Trail $trail, $user) {
@@ -66,7 +66,6 @@ Route::screen('users/{users}/edit', KuserEditScreen::class)
 	});
 
 // Platform > System > Users > User
-//Route::screen('users', UserListScreen::class)
 Route::screen('users', KuserListScreen::class)
 	->name('platform.systems.users')
 	->breadcrumbs(function (Trail $trail) {

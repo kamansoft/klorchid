@@ -52,9 +52,19 @@ class   KlorchidInstallCommand extends Command
                     'klorchid-migrations',
                     'klorchid-commons',
                     'klorchid-config',
-                    'klorchid-platform-routes',
+                    //'klorchid-platform-routes',
                     'views',
                     'klorchid-lang'
+                ],
+
+            ])
+            ->executeCommand('vendor:publish', [
+                '--provider' => KlorchidServiceProvider::class,
+                '--force' => false,
+                '--tag'      => [
+
+                'klorchid-platform-routes',
+
                 ],
 
             ])

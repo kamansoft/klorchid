@@ -19,11 +19,11 @@ class KlorchidLocalization {
 		//\DeBugbar::info(session()->get('locale'));
 		//\DeBugbar::info('session from KlorchidLocalization middleware');
 		if (session()->has('locale')) {
-			\DeBugbar::info('existe locale en session');
+			//\DeBugbar::info('existe locale en session');
 
 			app()->setlocale(session()->get('locale'));
 		}
-		\DeBugbar::info(app()->getLocale());
+		//\DeBugbar::info(app()->getLocale());
 		//\DeBugbar::info('status of locale on KlorchidLocalization middleware end');
 
 		return $next($request);
