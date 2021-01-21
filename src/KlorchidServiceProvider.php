@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid;
 
 use Illuminate\Contracts\Http\Kernel;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Kamansoft\Klorchid\Console\Commands\BackupAction;
 use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
@@ -27,6 +28,10 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\File;
+
+
+use Kamansoft\Klorchid\Repository\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repository\KlorchidBaseRepository; 
 
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -128,6 +133,7 @@ class KlorchidServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
                 __DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php'),
                 __DIR__ . '/../database/migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php' => database_path('migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php'),
+                __DIR__.'/../database/migrations/2020_09_02_120819_create_app_settings_table.php'=>database_path('migrations/2020_09_02_120819_create_app_settings_table.php')
             ], 'klorchid-migrations');
 
             /*if (!class_exists('Kuser')) {
@@ -160,7 +166,9 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../resources/stubs/app/Klorchid' => app_path('Klorchid'),
-            __DIR__ . '/../resources/stubs/app/Permissions' => app_path('Permissions')
+            __DIR__ . '/../resources/stubs/app/Permissions' => app_path('Permissions'),
+            __DIR__ . '/../resources/stubs/app/Providers' => app_path('Providers'),
+            __DIR__ . '/../resources/stubs/app/Repository' => app_path('Repository')
         ], 'klorchid-commons');
 
         return $this;
@@ -277,6 +285,7 @@ class KlorchidServiceProvider extends ServiceProvider
         //$this->mergeConfigFrom(__DIR__ . '/../config/klorchid_jetstream_config.php', 'jetstream');
         //$this->addMiddlewaresToGroups();
         $this
+            ->registerRepository()
             ->registerMiddlewaresAlias()
             ->reisterMiddlewareGroups()
             ->registerKmigrationCreator()
@@ -290,6 +299,12 @@ class KlorchidServiceProvider extends ServiceProvider
         });*/
     }
 
+
+    protected function registerRepository():self{
+        $this->app->bind(KlorchidRepositoryInterface::class, KlorchidBaseRepository::class);
+
+        return $this;
+    }
 
     /**
      * returns the middleware to be registered with its aliases

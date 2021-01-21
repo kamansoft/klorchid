@@ -47,19 +47,18 @@ class KlorchidRouteServiceProvider extends RouteServiceProvider
             ->as('platform.')
             ->middleware(config('platform.middleware.public'))
             ->group(Dashboard::path('routes/public.php'));
-
         */
 
         /*
          * Application
          */
-        
+
         if (file_exists(base_path('routes/klorchid.php'))) {
             Route::domain((string)config('platform.domain'))
                 ->prefix(Dashboard::prefix('/'))
                 ->middleware(config('platform.middleware.private'))
                 ->group(base_path('routes/klorchid.php'));
         }
-        
+
     }
 }
