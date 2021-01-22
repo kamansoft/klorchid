@@ -282,6 +282,7 @@ class KlorchidServiceProvider extends ServiceProvider
         );*/
 
 
+
         //$this->mergeConfigFrom(__DIR__ . '/../config/klorchid_jetstream_config.php', 'jetstream');
         //$this->addMiddlewaresToGroups();
         $this

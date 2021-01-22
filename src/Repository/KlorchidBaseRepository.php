@@ -15,7 +15,7 @@ class KlorchidBaseRepository implements KlorchidRepositoryInterface {
 
 	protected $filterSelection;
 
-	public function __construct(Model $model) {
+	public function __construct($model) {
 		$this->model = $model;
 	}
 

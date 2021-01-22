@@ -12,6 +12,7 @@ interface KlorchidRepositoryInterface
 
 
 
+	//public function getConfirmationAttribute():string;
     public function getModel():Model;
     public function setModel(Model $model):self;
 

@@ -9,7 +9,7 @@
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
-        "orchid/platform": "^9.7"
+        "orchid/platform": "dev-lemys_dev"
     },
     "license": "MIT",
     "authors": [
@@ -29,7 +29,14 @@
         "psr-4": {
           "Kamansoft\\Klorchid\\": "src"
         }
-      }
+      },
+         "repositories": [
+        {
+            "type": "path",
+            "url": "../../../platform",
+            "symlink": true
+        }
+    ] 
 
 
 }
