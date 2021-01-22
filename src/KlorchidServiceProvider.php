@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\File;
 
 
 use Kamansoft\Klorchid\Repository\KlorchidRepositoryInterface;
-use Kamansoft\Klorchid\Repository\KlorchidBaseRepository; 
+use Kamansoft\Klorchid\Repository\KlorchidEloquentBasedRepository;
 
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -302,7 +302,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
 
     protected function registerRepository():self{
-        $this->app->bind(KlorchidRepositoryInterface::class, KlorchidBaseRepository::class);
+        $this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentBasedRepository::class);
 
         return $this;
     }
