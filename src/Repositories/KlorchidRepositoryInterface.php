@@ -1,6 +1,6 @@
 <?php
 
-namespace Kamansoft\Klorchid\Repository;
+namespace Kamansoft\Klorchid\Repositories;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -9,17 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 interface KlorchidRepositoryInterface
 {
-
-
-
 	//public function getConfirmationAttribute():string;
     public function getModel():Model;
-    public function setModel(Model $model):self;
-
-
-
-
-    
-
+    public function setModel(?Model $model = null):self;
 
 }

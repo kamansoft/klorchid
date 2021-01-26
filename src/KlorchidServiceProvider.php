@@ -20,6 +20,9 @@ use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 
 use Kamansoft\Klorchid\Models\Kuser;
 
+
+use Kamansoft\Klorchid\Notificator\NotificaterInterface;
+use Kamansoft\Klorchid\Notificator\Notificator;
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
@@ -30,8 +33,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 
 
-use Kamansoft\Klorchid\Repository\KlorchidRepositoryInterface;
-use Kamansoft\Klorchid\Repository\KlorchidEloquentBasedRepository;
+use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repositories\KlorchidEloquentBasedRepository;
 
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -168,7 +171,7 @@ class KlorchidServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/stubs/app/Klorchid' => app_path('Klorchid'),
             __DIR__ . '/../resources/stubs/app/Permissions' => app_path('Permissions'),
             __DIR__ . '/../resources/stubs/app/Providers' => app_path('Providers'),
-            __DIR__ . '/../resources/stubs/app/Repository' => app_path('Repository')
+            __DIR__ . '/../resources/stubs/app/Repository' => app_path('Repositories')
         ], 'klorchid-commons');
 
         return $this;
@@ -277,31 +280,27 @@ class KlorchidServiceProvider extends ServiceProvider
     public function register()
     {
 
-        /*$this->mergeConfigFrom(
-            __DIR__ . '/../config/klorchid_config.php', 'klorchid'
-        );*/
-
-
-
-        //$this->mergeConfigFrom(__DIR__ . '/../config/klorchid_jetstream_config.php', 'jetstream');
-        //$this->addMiddlewaresToGroups();
         $this
+            ->registerProviders()
             ->registerRepository()
             ->registerMiddlewaresAlias()
             ->reisterMiddlewareGroups()
             ->registerKmigrationCreator()
             ->registerKmigrationCommandSingleton()
-            ->registerProviders()
+            ->registerNotificater()
+
             ->registerCommands();
 
 
-        /*$this->app->singleton('klorchid-prueba', function () {
-            return new KlorchidPrueba();
-        });*/
     }
 
 
+    protected function registerNotificater():self{
+        $this->app->bind(NotificaterInterface::class, Notificator::class);
+        return $this;
+    }
     protected function registerRepository():self{
+
         $this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentBasedRepository::class);
 
         return $this;

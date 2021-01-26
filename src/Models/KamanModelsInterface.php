@@ -14,6 +14,8 @@ interface KamanModelsInterface
     public static function getTableName():string;
     static public function statusToString(bool $status):string;
     static public function stringToStatus(string $status):string;
+
+
     public function getStatusSetValidationRules(Request $request): array;
     public function getStatusToggleValidationRules(Request $request): array;
     public function statusSet(bool $status, string $reason):self;

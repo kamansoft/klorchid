@@ -49,7 +49,7 @@ class SystemUserAddCommand extends Command
 
         //check if exist SYSTEM_USER_ID constant in env file
         if ($this->envConstantExists(self::$system_user_id_const_name)) {
-            $this->info(self::$system_user_id_const_name . ' already seted with value: '.config('klorchid.system_user_id'));
+            $this->info(self::$system_user_id_const_name . ' already seted with value: ' . config('klorchid.system_user_id'));
             $setted_sys_user_id = config('klorchid.system_user_id');
             $user = $this->handleUser($setted_sys_user_id);
 
@@ -87,20 +87,20 @@ class SystemUserAddCommand extends Command
     }
 
 
-    protected function handleUser($id=null): User
+    protected function handleUser($id = null): User
     {
 
 
         if (!empty($id)) {
             try {
                 $user = User::findOrfail($id);
-            }catch (Exception $e){
+            } catch (Exception $e) {
 
-                throw new Exception('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. '.$e->getMessage());
+                throw new Exception('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
 
 
             }
-            } else {
+        } else {
             $user = new User();
             $user->name = 'system';
             $user->email = 'system@' . config('app.name');
@@ -110,7 +110,7 @@ class SystemUserAddCommand extends Command
 
         $user->password = '';
         if ($this->checkMigration(KlorchidServiceProvider::$blaming_fields_migration_filename)) {
-            DB::transaction(function ()  use ($user) {
+            DB::transaction(function () use ($user) {
                 $user->updated_by = $user->created_by = $this->getMysqlAutoIncrement();
                 $user->save();
             });

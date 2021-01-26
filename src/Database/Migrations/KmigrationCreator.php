@@ -56,7 +56,15 @@ class KmigrationCreator
      *
      * @throws \Exception
      */
-    public function create($name, $path, $table = null, $action)
+
+    /**
+     * @param $name
+     * @param $path
+     * @param $action
+     * @param null $table
+     * @return string
+     */
+    public function create($name, $path,  $action,$table = null)
     {
         $this->ensureMigrationDoesntAlreadyExist($name, $path);
 

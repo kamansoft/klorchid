@@ -128,25 +128,23 @@ class KmigrationCommand extends BaseCommand
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-        $this->writeMigration($name, $table, $action);
+        $this->writeMigration($name,  $action,$table);
 
         $this->composer->dumpAutoloads();
     }
 
+
     /**
      * Write the migration file to disk.
-     *
-     * @param string $name
-     * @param string $table
-     * @param bool $create
-     * @param bool $klorchid_update true if the aim is to make a existent table comaptible with klorchid
-     * @return string
+     * @param $name
+     * @param $action
+     * @param $table
      */
-    protected function writeMigration($name, $table, $action)
+    protected function writeMigration($name,  $action,$table)
     {
 
         $file = $this->creator->create(
-            $name, $this->getMigrationPath(), $table, $action
+            $name, $this->getMigrationPath(), $action,$table
         );
 
         if (!$this->option('fullpath')) {

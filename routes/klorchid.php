@@ -49,7 +49,7 @@ Route::screen('profile', KuserProfileEditScreen::class)
 	});
 
 // Platform > System > Users
-Route::screen('users/add', KuserEditScreen::class)
+Route::screen('users/create', KuserEditScreen::class)
 	->name('platform.systems.users.add')
 	->breadcrumbs(function (Trail $trail) {
 		return $trail

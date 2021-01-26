@@ -14,8 +14,8 @@ class AddKmodelFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('status')->default(1);
-            $table->text('cur_status_reason')->nullable();
+            $table->boolean(config('klorchid_config.models_common_field_names.status'))->default(1);
+            $table->text(config('klorchid_config.models_common_field_names.reason'))->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddKmodelFieldsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->dropColumn('cur_status_reason');
+            $table->dropColumn(config('klorchid_config.models_common_field_names.status'));
+            $table->dropColumn(config('klorchid_config.models_common_field_names.reason'));
         });
     }
 }
