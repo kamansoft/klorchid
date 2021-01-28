@@ -58,6 +58,10 @@ class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, Ur
 
     }
 
+    public function getFirstRequestRouteParam(){
+        return reset(request()->route()->parameters);
+    }
+
     public function getModel(): Model
     {
         return $this->model;
@@ -104,7 +108,7 @@ class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, Ur
     public function resolveRouteBinding($value, $field = null)
     {
 
-        if (! $this->resolveRouteBindingKernel($value, $field)) {
+        if (!$this->resolveRouteBindingKernel($value, $field)) {
 
             $this->notificator->setMode('alert')->error(__('Record Not Found'));
             back();
