@@ -18,13 +18,11 @@ class CreateKlorchidcrudtestTable extends Migration
             $table->string('name')->unique();
             $table->text('description')->nullable();
 
-            $table->boolean('status')->default(1);
-            $table->text('cur_status_reason')->nullable();
-            $table->foreignId('updated_by')->constrained('users');
-            $table->foreignId('created_by')->constrained('users');
-            $table->boolean('status')->default(1);
-            $table->text('cur_status_reason')->nullable();
-            $table->timestamps();
+            $table->boolean(config('klorchid.models_common_field_names.status'))->default(1);
+            $table->text(config('klorchid.models_common_field_names.reason'))->nullable();
+            $table->foreignId(config('klorchid.models_common_field_names.last_updater'))->constrained('users');
+            $table->foreignId(config('klorchid.models_common_field_names.creator'))->constrained('users');
+            $table->timestamps();qs
 
         });
     }

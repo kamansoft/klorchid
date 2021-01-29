@@ -17,20 +17,16 @@ class AddKlorchidBlamingFieldsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             $system_user_id = config('klorchid.system_user_id');
-            $table->unsignedBigInteger('updated_by')->default($system_user_id);
-            $table->unsignedBigInteger('created_by')->default($system_user_id);
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.last_updater'))->default($system_user_id);
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default($system_user_id);
 
         });
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('updated_by')->default(null)->change();
-            $table->unsignedBigInteger('created_by')->default(null)->change();
-            //$table->foreignId('created_by')->constrained();
-            //$table->foreign('updated_by')->references('id')->on('users');
-            //$table->foreign('created_by')->references('id')->on('users');
-
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.last_updater'))->default(null)->change();
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default(null)->change();
         });
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign(config('klorchid.models_common_field_names.last_updater'))->references('id')->on('users');
             $table->foreign('created_by')->references('id')->on('users');
         });
     }
@@ -44,9 +40,9 @@ class AddKlorchidBlamingFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->dropForeign('users_updated_by_foreign');
-            $table->dropForeign('users_created_by_foreign');
-            $table->dropColumn('updated_by');
+            $table->dropForeign('users_'.config('klorchid.models_common_field_names.last_updater').'_foreign');
+            $table->dropForeign('users_'.config('klorchid.models_common_field_names.creator').'_foreign');
+            $table->dropColumn(config('klorchid.models_common_field_names.last_updater'));
             $table->dropColumn('created_by');
 
         });

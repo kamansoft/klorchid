@@ -19,8 +19,8 @@ class CreateAppSettingsTable extends Migration
             $table->string('key',100)->unique();
             $table->string('value',255)->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('updated_by')->constrained('users');
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId(config('klorchid.models_common_field_names.last_updater'))->constrained('users');
+            $table->foreignId(config('klorchid.models_common_field_names.creator'))->constrained('users');
         });
     }
 
