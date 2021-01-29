@@ -151,7 +151,7 @@ class KlorchidServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/stubs/app/Klorchid' => app_path('Klorchid'),
             __DIR__ . '/../resources/stubs/app/Permissions' => app_path('Permissions'),
             __DIR__ . '/../resources/stubs/app/Providers' => app_path('Providers'),
-            __DIR__ . '/../resources/stubs/app/Repository' => app_path('Repositories')
+            __DIR__ . '/../resources/stubs/app/Repositories' => app_path('Repositories')
         ], 'klorchid-commons');
 
         return $this;
