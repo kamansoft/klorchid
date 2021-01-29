@@ -34,12 +34,7 @@ abstract class KlorchidCrudScreen extends \Orchid\Screen\Screen
         'limited_view'
     ];
 
-    public function pushScreenMode(string  $mode){
-        if (!empty($mode) && ! in_array($mode)){
-            array_push($mode,$this->klorchid_screen_modes);
-        }
-        return $this;
-    }
+
 
 
     private $klorchid_screen_modes_perms = [
@@ -60,7 +55,11 @@ abstract class KlorchidCrudScreen extends \Orchid\Screen\Screen
         return  Dashboard::getAllowAllPermission()->get($perm) ? true : false;
     }
 
-    public function getModePerm(string $mode): string
+
+
+
+
+    public function getScreenModePerm(string $mode): string
     {
         return $this->klorchid_screen_modes_perms[$mode];
     }
@@ -88,21 +87,27 @@ abstract class KlorchidCrudScreen extends \Orchid\Screen\Screen
                 $this->setScreenModePerm($mode, $perm);
             }
 
-            if (  ! in_array($perm)  ){
+            /*
+            if (  ! in_array($perm,[])  ){
                 array_push($perm,$this->permission);
-            }
+            }*/
 
         }
         return $this;
     }
 
-    abstract public function screenModePerms(): array;
+
+
+
+
+
 
 
     public function __construct()
     {
 
         $this->setScreenModePerms($this->screenModePerms());
+
 
     }
 

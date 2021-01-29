@@ -9,7 +9,8 @@
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
-        "orchid/platform": "dev-lemys_dev"
+        "orchid/platform": "dev-lemys_dev",
+        "myclabs/deep-copy": "^1.10"
     },
     "license": "MIT",
     "authors": [
