@@ -253,7 +253,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
     public function registerKuserModelAsPLatformUserModel()
     {
-        Dashboard::useModel(\Orchid\Platform\Models\User::class, Kuser::class);
+        Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\Kuser::class);
         return $this;
     }
 
