@@ -9,14 +9,12 @@ use Orchid\Screen\Screen;
 
 abstract class KlorchidMultiModeScreen extends Screen {
 
-	private array $available_screen_modes = [
-
-	];
+	private Collection $available_screen_modes ;
 
 	private string $current_screen_mode;
 
-	public function getModes() {
-		return array_keys($this->available_screen_modes);
+	public function getModes():array {
+		return $this->available_screen_modes->keys();
 
 	}
 	private function getModesByLayoutMethods(): Collection{
@@ -31,7 +29,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}
 
 	private function setModes(): self{
-		dd($this->getModesByLayoutMethods()->toArray());
+		//dd($this->getModesByLayoutMethods()->toArray());
 		$this->available_screen_modes = $this->getModesByLayoutMethods();
 		return $this;
 	}
@@ -93,7 +91,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	public function layout(): array
 	{
 		$curent_mode = $this->getMode();
-		dd($this->getModes());
+		//dd($this->getModes()[$this->getMode()]);
 		$mode_layout_array = call_user_func_array($this->getModes()[$this->$curent_mode()], []);
 
 		return array_merge($this->multiModeLayout(), $mode_layout_array);

@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
 use Illuminate\Support\Composer;
+use Illuminate\Support\Facades\Schema;
 
 class KmigrationCommand extends BaseCommand
 {
@@ -121,6 +122,12 @@ class KmigrationCommand extends BaseCommand
                 $action = "update";
             }
 
+        }
+
+        if ($action!=='create'){
+            if (! Schema::hasTable($table)){
+                throw new \Exception(' Unable to find "'.$table.'" table for "'.$action.'" action  in your database');
+            }
         }
 
         $this->line("<info>A {$action} migration file for {$table} table is goin to be created.</info>");

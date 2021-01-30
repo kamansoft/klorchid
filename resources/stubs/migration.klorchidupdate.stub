@@ -16,25 +16,25 @@ class {{ class }} extends Migration
 
 
         Schema::table('{{ table }}', function (Blueprint $table) {
-            $table->boolean('status')->default(1);
-            $table->text('cur_status_reason')->nullable();
+            $table->boolean(config('klorchid.models_common_field_names.status'))->default(1);
+            $table->text(config('klorchid.models_common_field_names.reason'))->nullable();
         });
 
         Schema::table('{{ table }}', function (Blueprint $table) {
             $system_user_id = config('klorchid.system_user_id');
-            $table->unsignedBigInteger('created_by')->default($system_user_id);
-            $table->unsignedBigInteger('updated_by')->default($system_user_id);
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default($system_user_id);
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.last_updater'))->default($system_user_id);
 
 
         });
         Schema::table('{{ table }}', function (Blueprint $table) {
-            $table->unsignedBigInteger('updated_by')->default(null)->change();
-            $table->unsignedBigInteger('created_by')->default(null)->change();
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.last_updater'))->default(null)->change();
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default(null)->change();
 
         });
         Schema::table('{{ table }}', function (Blueprint $table) {
-            $table->foreign('updated_by')->references('id')->on('users');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign(config('klorchid.models_common_field_names.last_updater'))->references('id')->on('users');
+            $table->foreign(config('klorchid.models_common_field_names.creator'))->references('id')->on('users');
         });
 
 
@@ -50,12 +50,12 @@ class {{ class }} extends Migration
         Schema::table('{{ table }}', function (Blueprint $table) {
 
 
-            $table->dropColumn('status');
-            $table->dropColumn('cur_status_reason');
-            $table->dropForeign('{{ table }}_updated_by_foreign');
-            $table->dropForeign('{{ table }}_created_by_foreign');
-            $table->dropColumn('updated_by');
-            $table->dropColumn('created_by');
+            $table->dropColumn(config('klorchid.models_common_field_names.status'));
+            $table->dropColumn(config('klorchid.models_common_field_names.reason'));
+            $table->dropForeign('{{ table }}_'.config('klorchid.models_common_field_names.last_updater').'_foreign');
+            $table->dropForeign('{{ table }}_'.config('klorchid.models_common_field_names.creator').'_foreign');
+            $table->dropColumn(config('klorchid.models_common_field_names.last_updater'));
+            $table->dropColumn(config('klorchid.models_common_field_names.creator'));
         });
     }
 }
