@@ -13,8 +13,8 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	private string $current_screen_mode;
 
-	public function getModes():array {
-		return $this->available_screen_modes->keys();
+	public function getModes():Collection {
+		return $this->available_screen_modes;
 
 	}
 	private function getModesByLayoutMethods(): Collection{
@@ -50,7 +50,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	*/
 
 	public function setMode(array $mode) {
-		if (!in_array($mode, $this->getModes())) {
+		if ($this->getModes()->get($mode)) {
 			$this->current_screen_mode = $mode;
 		} else {
 			throw new \Exception(self::class . ' Can\'t set "' . $mode . '" as current screen mode, due to "' . $mode . '" is not an available screen mode. ');
@@ -84,16 +84,18 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		// TODO: Implement commandBar() method.
 	}
 
-	abstract function multiModeLayout(): array;
+	//abstract function multiModeLayout(): array;
 	/**
 	 * @inheritDoc
 	 */
 	public function layout(): array
 	{
-		$curent_mode = $this->getMode();
-		//dd($this->getModes()[$this->getMode()]);
-		$mode_layout_array = call_user_func_array($this->getModes()[$this->$curent_mode()], []);
+		$current_mode = $this->getMode();
+		$method = $this->getModes()->get($current_mode);
 
-		return array_merge($this->multiModeLayout(), $mode_layout_array);
+		//dd($this->getModes()[$this->getMode()]);
+		$mode_layout_array = $this->$method();
+        \debugbar::info(self::class.'->layout() method, current mode: <'.$current_mode );
+		return $mode_layout_array;//array_merge($this->multiModeLayout(), $mode_layout_array);
 	}
 }
