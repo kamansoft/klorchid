@@ -55,6 +55,10 @@ Lets set klorchid Kuser model as default model used by auth, so you must change 
        .
        .
        .
+
+
+ Then you must set-up/create your[ laravel .env file with all your configs](https://laravel.com/docs/8.x/configuration#environment-configuration), and  with your [database conection paramas](https://laravel.com/docs/8.x/database) .
+
  Finally we run the klorchid install command 
  
     $ php artisan klorchid:install
