@@ -1,0 +1,19 @@
+<?php
+
+
+namespace App\Repositories;
+
+
+use Kamansoft\Klorchid\Notificator\Notificator;
+use Kamansoft\Klorchid\Repositories\KlorchidEloquentBasedRepository;
+use DummyModelFullClassName;
+use Illuminate\Http\Request;
+//use Orchid\Platform\Dashboard;
+
+class DummyClass extends KlorchidEloquentBasedRepository
+{
+   public function __construct(DummyModelClassName $model,Request $request,Notificator $notificator)//,Dashboard $graphicUserInterface )
+    {
+        parent::__construct($model,$request, $notificator);//,$graphicUserInterface);
+    }
+}

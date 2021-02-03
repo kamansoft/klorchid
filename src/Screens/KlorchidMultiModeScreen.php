@@ -95,7 +95,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 		//dd($this->getModes()[$this->getMode()]);
 		$mode_layout_array = $this->$method();
-        \debugbar::info(self::class.'->layout() method, current mode: <'.$current_mode );
+        \debugbar::info(self::class.'->layout() method, current mode: *'.$current_mode );
 		return $mode_layout_array;//array_merge($this->multiModeLayout(), $mode_layout_array);
 	}
 }

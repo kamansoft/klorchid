@@ -21,8 +21,8 @@ interface KamanModelsInterface
     public function statusSet(bool $status, string $reason):self;
     public function statusToggle(string $reason):self;
     public function invalidate():self;
-    public function getCreateValidationRules(Request $request):array ;
-    public function getEditValidationRules(Request $request):array ;
+    //public function getCreateValidationRules(Request $request):array ;
+    //public function getEditValidationRules(Request $request):array ;
 
 
 

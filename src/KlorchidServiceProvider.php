@@ -13,6 +13,8 @@ use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Console\Commands\KmigrationCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
+
 use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
@@ -54,6 +56,7 @@ class KlorchidServiceProvider extends ServiceProvider
         KmigrationCommand::class,
         KmodelCommand::class,
         KlorchidInstallCommand::class,
+        KlorchidEloquentRepositoryCommand::class
     ];
 
     public function boot(Dashboard $dashboard)

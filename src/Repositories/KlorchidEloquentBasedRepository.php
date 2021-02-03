@@ -3,11 +3,13 @@
 namespace Kamansoft\Klorchid\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use Orchid\Platform\Dashboard;
+//use Orchid\Platform\Dashboard;
 use Orchid\Screen\Layouts\Selection;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Http\Request;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
+use Kamansoft\Klorchid\Repositories\KlorchiPermissedActionRepositoryInterface;
+
 
 use Kamansoft\Klorchid\GraphicUserInterfaceInterface;
 
@@ -48,12 +50,12 @@ class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, Ur
 
     protected $filterSelection;
 
-    public function __construct(Model $model, Request $request, NotificaterInterface $notificator, Dashboard $gui)
+    public function __construct(Model $model, Request $request, NotificaterInterface $notificator)//, Dashboard $gui)
     {
         $this->model = $model;
         $this->request = $request;
         $this->notificator = $notificator;
-        $this->GUI = $gui;
+        //$this->GUI = $gui;
 
 
     }

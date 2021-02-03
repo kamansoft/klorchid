@@ -14,26 +14,6 @@ use Orchid\Support\Facades\Dashboard;
 abstract class KlorchidCrudScreen extends \Orchid\Screen\Screen
 {
 
-    public KlorchidRepositoryInterface $repository;
-
-
-    private string $screen_mode;
-
-    /**
-     *
-     * All of the valid klorchid screen modes,
-     * array order matters in therms of hierarchy, the higher the
-     * mode index is in the array, the lower the order it has
-     *
-     * @var string[]
-     */
-    private $klorchid_screen_modes = [
-        'edit',
-        'create',
-        'view',
-        'limited_view'
-    ];
-
 
 
 
