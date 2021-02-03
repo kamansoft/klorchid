@@ -28,6 +28,9 @@ As this package is currently on development you need `Debugbar` of barryvdh   pe
 
     $ composer require barryvdh/laravel-debugbar --dev
     
+
+ Then you must set-up/create your[ laravel .env file with all your configs](https://laravel.com/docs/8.x/configuration#environment-configuration), and  with your [database conection paramas](https://laravel.com/docs/8.x/database) .
+
 Lets add Orchid:
 
     $ composer require orchid/platform
@@ -55,6 +58,9 @@ Lets set klorchid Kuser model as default model used by auth, so you must change 
        .
        .
        .
+
+
+
  Finally we run the klorchid install command 
  
     $ php artisan klorchid:install
