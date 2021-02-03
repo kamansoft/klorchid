@@ -19,7 +19,6 @@ interface KlorchidRepositoryInterface
     public function getFirstRequestRouteParam();
     
 
-    public function actionDispatch();
 
 
 

@@ -2,6 +2,7 @@
 
 return [
 	'system_user_id' => env('SYSTEM_USER_ID'),
+	'repository_pk_name' => 'id',
 	'aviable_locales' => ['es', 'en'],
     'models_common_field_names'=>[
         'status'=>'status',

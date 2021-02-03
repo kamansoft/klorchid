@@ -55,6 +55,14 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
         $this->model = $model;
         $this->request = $request;
         $this->notificator = $notificator;
+        //config('klorchid.repository_pk_name');
+        
+        $model_pk_value = $this->getFirstRequestRouteParam();
+        if ($model_pk_value){
+            $this->resolveRouteBinding($model_pk_value);    
+        }
+         
+        //dd($this->getFirstRequestRouteParam());
         //$this->GUI = $gui;
 
 

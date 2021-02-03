@@ -6,17 +6,35 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Dashboard;
+use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+
 
 abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
+	private $repository;
 
 	private Collection $available_screen_modes ;
 
 	private Collection $available_repository_actions;
 
+
+
 	private string $current_screen_mode;
+
+	
+	public function getRepository(){
+		return $this->repository;
+	}
+
+	public function setRepository($repository){
+		$this->repository=$repository;
+		$this->setActions();
+		return $this;
+	}
+
 
 	public function getModes():Collection {
 		return $this->available_screen_modes;
@@ -26,6 +44,8 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	public function getRepositoryActions():Collection{
 		 return $this->available_repository_actions;
 	}
+
+
 
 
 	private function getModesByLayoutMethods(): Collection{
@@ -65,6 +85,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
+	//related to the current mode
 	public function setMode(array $mode) {
 		if ($this->getModes()->get($mode)) {
 			$this->current_screen_mode = $mode;
@@ -77,16 +98,50 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	public function getMode() {
 		return $this->current_screen_mode;
 	}
+	//\related to the current mode 
+	
+
+	public function isValidMode(string $mode): boolean
+    {
+        return $this->available_screen_modes->get($mode)?true:false;
+    }
+
+    public function isValidPerm(string $perm): boolean
+    {
+        return  Dashboard::getAllowAllPermission()->get($perm) ? true : false;
+    }
+
+    public function isValidAction(string $action):boolean
+    {
+    	return $this->available_repository_actions()->get($action);
+    }
+
+
 
 	
 
-	public function __construct() {
+	public function __construct(?KlorchidRepositoryInterface $repository=null) {
 		$this->current_screen_mode = 'default';
 		$this->setModes();
 
+
+		if  (! is_null($repository)){
+			$this->setRepository($repository);
+		}
+
+
 		//$this->setScreenModePerms($this->screenModePerms());
+		//
+		
+		
+
 
 	}
+
+
+
+
+
 
 	public function hasPermission(string $perm) {
 		return Auth::user()->hasAccess($perm);
@@ -116,7 +171,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}
 
 	private function repositoryActionDispatch(string $action_name ){
-		$this->repository->actionDispatch($action_name);
+		return $this->$action_name;
 	}
 
 
