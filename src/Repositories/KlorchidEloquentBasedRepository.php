@@ -13,7 +13,7 @@ use Kamansoft\Klorchid\Repositories\KlorchiPermissedActionRepositoryInterface;
 
 use Kamansoft\Klorchid\GraphicUserInterfaceInterface;
 
-class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, UrlRoutable
+abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, UrlRoutable
 {
 
     /**
@@ -126,6 +126,10 @@ class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, Ur
         return $this->setModel($this->model->resolveChildRouteBinding($childType, $value, $field));
         //return $this;
     }
+
+
+
+
 
 
 }

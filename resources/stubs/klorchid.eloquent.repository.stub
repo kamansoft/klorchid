@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories;
+namespace DummyNamespace;
 
 
 use Kamansoft\Klorchid\Notificator\Notificator;

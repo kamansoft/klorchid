@@ -12,16 +12,10 @@ use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Repositories\KlorchidEloquentBasedRepository;
 use Orchid\Support\Facades\Dashboard;
 
-abstract class EloquentActionPermissedRepository extends KlorchidEloquentBasedRepository {
+trait ActionPermissionRepositoryTrait  {
 
 	private Collection $actionMethods;
 
-	/**
-	 * should returns a key value pair array with the name of the action and the valid permission
-	 * like ["action"=>"platform.valid.permission"]
-	 * @return array action name and permission pair
-	 */
-	abstract public function getActionsPermission(): array;
 
 	private function setActionMethos(): self{
 		$reflection = new \ReflectionClass($this);
@@ -38,19 +32,26 @@ abstract class EloquentActionPermissedRepository extends KlorchidEloquentBasedRe
 		return Dashboard::getAllowAllPermission()->get($perm) ? true : false;
 	}
 
+	public function isValidAction(string $action):bool{
+		return $this->actionMethods->get($action)?true:false;	
+	}
+
 	private function checkActionPermission() {
 		collect($this->getActionsPermission())->map(function ($action, $perm) {
-			dd($action, $perm);
+			echo $action.' '.$perm;
 		});
 		return $this;
 	}
 
-	public function __construct(Model $model, Request $request, Notifica
-	terInterface $notificator) //, Dashboard $gui)
+
+
+	public function __construct(Model $model, Request $request, NotificaterInterface $notificator) //, Dashboard $gui)
 	{
 
 		parent::__construct($model, $request, $notificator);
 		$this->setActionMethos()->checkActionPermission();
 
 	}
+
+
 }

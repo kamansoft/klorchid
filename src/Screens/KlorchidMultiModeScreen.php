@@ -9,7 +9,12 @@ use Orchid\Screen\Screen;
 
 abstract class KlorchidMultiModeScreen extends Screen {
 
+
+
+
 	private Collection $available_screen_modes ;
+
+	private Collection $available_repository_actions;
 
 	private string $current_screen_mode;
 
@@ -17,6 +22,12 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this->available_screen_modes;
 
 	}
+
+	public function getRepositoryActions():Collection{
+		 return $this->available_repository_actions;
+	}
+
+
 	private function getModesByLayoutMethods(): Collection{
 		$reflection = new \ReflectionClass($this);
 
@@ -28,26 +39,31 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
-	private function setModes(): self{
+	private function getActionsFromRepositoryMethods():Collection{
+
+		$reflection = new \ReflectionClass($this->repository);
+		return  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
+			return [strstr($method->name, 'Action', true) => $method->name];
+		})->reject(function ($pair) {
+			return !strstr($pair, 'Action', true);
+		});
+		return $this;
+
+	
+	}
+
+	public  function setModes(): self{
 		//dd($this->getModesByLayoutMethods()->toArray());
 		$this->available_screen_modes = $this->getModesByLayoutMethods();
 		return $this;
 	}
 
-	/*
-		    public function pushModes(string $mode ){
-		        if (! in_array($mode,$this->available_screen_modes)){
-		            array_push($mode,$this->available_screen_modes);
-		        }
-		        return $this;
-		    }
+	public function setActions(): self{
+		$this->available_repository_actions = $this->getActionsFromRepositoryMethods();
+		return $this;
+	}
 
-		    public function setModes(array $modes){
-		        foreach ($modes as $mode){
-		            $this->pushModes($mode);
-		        }
-		        return $this;
-	*/
+
 
 	public function setMode(array $mode) {
 		if ($this->getModes()->get($mode)) {
@@ -62,7 +78,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this->current_screen_mode;
 	}
 
-	abstract public function defaultModeLayout(): array;
+	
 
 	public function __construct() {
 		$this->current_screen_mode = 'default';
@@ -81,7 +97,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	 */
 	public function commandBar(): array
 	{
-		// TODO: Implement commandBar() method.
+
 	}
 
 	//abstract function multiModeLayout(): array;
@@ -98,4 +114,12 @@ abstract class KlorchidMultiModeScreen extends Screen {
         \debugbar::info(self::class.'->layout() method, current mode: *'.$current_mode );
 		return $mode_layout_array;//array_merge($this->multiModeLayout(), $mode_layout_array);
 	}
+
+	private function repositoryActionDispatch(string $action_name ){
+		$this->repository->actionDispatch($action_name);
+	}
+
+
+	abstract public function defaultModeLayout(): array;
+	
 }
