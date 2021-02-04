@@ -1,116 +1,99 @@
 <?php
 
-
 namespace Kamansoft\Klorchid\Screens;
 
-
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
-use Orchid\Screen\Action;
 use Orchid\Screen\Layout;
 use Orchid\Support\Facades\Dashboard;
 
-abstract class KlorchidCrudScreen extends \Orchid\Screen\Screen
-{
+abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
+
+	private Collection $klorchid_screen_modes_perms;
+
+	public function isValidPerm(string $perm): bool {
+		//dd(Dashboard::getAllowAllPermission());
+		return Dashboard::getAllowAllPermission()->get($perm) ? true : false;
+	}
+
+	public function userHasPermission(string $perm) {
+		return Auth::user()->hasAccess($perm);
+	}
+
+	public function getScreenModePerms(): Collection {
+		return $this->klorchid_screen_modes_perms;
+	}
+	public function getScreenModePerm(string $mode) {
+		return $this->klorchid_screen_modes_perms->get($mode);
+	}
+
+	private function setScreenModePerms(): self{
+
+		$mode_perms = collect($this->screenModePerms())->mapWithKeys(function ($perm, $mode) {
+			if (!$this->isValidMode($mode)) {
+				throw new \Exception("instance of class: " . self::class . " has not an asociated method for \"$mode\" mode", 1);
+			}
+			if (!$this->isValidPerm($perm)) {
+				throw new \Exception(self::class . ":  \"$perm\" is not a valid permission key.", 1);
+			}
+			return [$mode => $perm];
+		})->reject(function ($perm, $mode) {
+			return (!$this->isValidPerm($perm) and !$this->isValidMode($mode));
+		});
+
+		$this->klorchid_screen_modes_perms = $mode_perms;
+		return $this;
+	}
+
+	public function detectScreenModeLayout(): string{
+		$mode_to_return = $this->getMode();
+
+		$repository = $this->getRepository();
 
 
+		$url_segments = $repository->getRequest()->segments();
+		$last_segment = array_pop($url_segments);
 
 
-    private $klorchid_screen_modes_perms = [
+		if ($last_segment === 'create') {
+			$mode_to_return = 'create';
+		} else if ($last_segment === 'edit' ) {
+			$edit_mode_permission = $this->getScreenModePerm('edit');
+			$view_mode_permission = $this->getScreenModePerm('view');
 
-        'view' => '',
-        'edit' => '',
-        'create' => ''
-    ];
+			if (!empty($view_mode_permission) and $this->userHasPermission($view_mode_permission)) {
+				$mode_to_return = 'view';
+			}
+			if (!empty($edit_mode_permission) and $this->userHasPermission($edit_mode_permission)) {
+				$mode_to_return = 'edit';
+			}
 
-
-    public function isValidMode(string $mode): bool
-    {
-        return in_array($mode, $this->klorchid_screen_modes);
-    }
-
-    public function isValidPerm(string $perm): bool
-    {
-        return  Dashboard::getAllowAllPermission()->get($perm) ? true : false;
-    }
+		}
 
 
+		return $mode_to_return;
+	}
 
+	public function __construct( ? KlorchidRepositoryInterface $repository = null) {
+		parent::__construct($repository);
 
+		$this->setScreenModePerms();
+		//$this->setScreenModePerms($this->screenModePerms());
 
-    public function getScreenModePerm(string $mode): string
-    {
-        return $this->klorchid_screen_modes_perms[$mode];
-    }
+	}
 
-    public function setScreenModePerm($mode, $perm): self
-    {
+	public function layout() : array{
+        //dd($this->detectScreenModeLayout());
+		$this->setMode($this->detectScreenModeLayout());
+		return parent::layout();
+	}
 
-        if ($mode !== 'limited_view' && $this->isValidMode($mode)) {
-            if ($this->isValidPerm($perm)) {
-                $this->klorchid_screen_modes_perms[$mode] = $perm;
-
-            } else {
-                throw  new \Exception(self::class . ' Can not set: "' . $perm . '" permission to  "' . $mode . '" mode. Due to "' . $perm . '" is not a system wide valid permission, or "' . $perm . '" is not inside the screen permission attribute array.');
-            }
-        } else {
-            throw  new \Exception(self::class . ' Can not set: "' . $perm . '" permission to  "' . $mode . '" mode. Due to "' . $mode . '" is not a valid mode to set with a permission');
-        }
-        return $this;
-    }
-
-    private function setScreenModePerms(): self
-    {
-        foreach ($this->screenModePerms() as $mode => $perm) {
-            if ( ! (empty($mode) && empty($perm) ) ){
-                $this->setScreenModePerm($mode, $perm);
-            }
-
-            /*
-            if (  ! in_array($perm,[])  ){
-                array_push($perm,$this->permission);
-            }*/
-
-        }
-        return $this;
-    }
-
-
-
-
-
-
-
-
-    public function __construct()
-    {
-
-        $this->setScreenModePerms($this->screenModePerms());
-
-
-    }
-
-
-    public function hasPermission(string $perm)
-    {
-        return Auth::user()->hasAccess($perm);
-    }
-
-
-    public function detectScreenMode(): string
-    {
-        $mode_to_return = 'limited_view';
-
-
-        if ($this->repository->getModel()->exists) {
-            //if $this->hasPermission('')
-        } else {
-
-        }
-
-        return "";
-    }
+	abstract public function screenModePerms(): array;
+	abstract public function defaultModeLayout(): array;
+	abstract public function viewModeLayout(): array;
+	abstract public function editModeLayout(): array;
+	abstract public function createModeLayout(): array;
 
 
 }

@@ -3,9 +3,11 @@
 
 return [
     'System Users' => [
-        'plaform.systems.users.list' => 'List',
-        'plaform.systems.users.view' => 'View',
-        'plaform.systems.users.delete' => 'Delete'
+        'platform.systems.users.list' => 'List',
+        'platform.systems.users.view' => 'View',
+        'platform.systems.users.edit' => 'Edit',
+        'platform.systems.users.create' => 'Create',
+        'platform.systems.users.delete' => 'Delete'
     ],
 
 

@@ -2,11 +2,10 @@
 
 namespace DummyNamespace;
 
-use App\Models\KlorchidTest;
-
 
 use Kamansoft\Klorchid\Screens\KlorchidMultiModeScreen;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
 use DummyRepositoryFullClassName;
@@ -15,7 +14,7 @@ use DummyRepositoryFullClassName;
 use Orchid\Support\Facades\Dashboard;
 
 
-class KlorchidTestOrchidEdit extends KlorchidMultiModeScreen//KlorchidCrudScreen
+class DummyClass extends KlorchidMultiModeScreen//KlorchidCrudScreen
 {
 
 

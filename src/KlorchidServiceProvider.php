@@ -80,8 +80,6 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerRoutes()
             ->registerViews();
 
-        \Debugbar::startMeasure('normal_perm_loading', 'time of method loading ');
-
 
         $this->registerPermissions($dashboard);
 

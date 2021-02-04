@@ -8,6 +8,7 @@ use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Dashboard;
 use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+use Orchid\Support\Facades\Alert;
 
 
 abstract class KlorchidMultiModeScreen extends Screen {
@@ -18,7 +19,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	private Collection $available_screen_modes ;
 
-	private Collection $available_repository_actions;
+	//private Collection $available_repository_actions;
 
 
 
@@ -31,7 +32,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	public function setRepository($repository){
 		$this->repository=$repository;
-		$this->setActions();
+		//$this->setActions();
 		return $this;
 	}
 
@@ -41,9 +42,10 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
+	/*
 	public function getRepositoryActions():Collection{
 		 return $this->available_repository_actions;
-	}
+	}*/
 
 
 
@@ -59,6 +61,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
+	/*
 	private function getActionsFromRepositoryMethods():Collection{
 
 		$reflection = new \ReflectionClass($this->repository);
@@ -70,7 +73,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this;
 
 	
-	}
+	}*/
 
 	public  function setModes(): self{
 		//dd($this->getModesByLayoutMethods()->toArray());
@@ -78,15 +81,16 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this;
 	}
 
+	/*
 	public function setActions(): self{
 		$this->available_repository_actions = $this->getActionsFromRepositoryMethods();
 		return $this;
-	}
+	}*/
 
 
 
 	//related to the current mode
-	public function setMode(array $mode) {
+	public function setMode(string $mode) {
 		if ($this->getModes()->get($mode)) {
 			$this->current_screen_mode = $mode;
 		} else {
@@ -101,20 +105,18 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	//\related to the current mode 
 	
 
-	public function isValidMode(string $mode): boolean
+	public function isValidMode(string $mode): bool
     {
         return $this->available_screen_modes->get($mode)?true:false;
     }
 
-    public function isValidPerm(string $perm): boolean
-    {
-        return  Dashboard::getAllowAllPermission()->get($perm) ? true : false;
-    }
 
-    public function isValidAction(string $action):boolean
+
+    /*
+    public function isValidAction(string $action):bool
     {
     	return $this->available_repository_actions()->get($action);
-    }
+    }*/
 
 
 
@@ -129,12 +131,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 			$this->setRepository($repository);
 		}
 
-
 		//$this->setScreenModePerms($this->screenModePerms());
-		//
-		
-		
-
 
 	}
 
@@ -152,7 +149,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	 */
 	public function commandBar(): array
 	{
-
+		return $this->multimodeCommandBar();
 	}
 
 	//abstract function multiModeLayout(): array;
@@ -166,15 +163,13 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 		//dd($this->getModes()[$this->getMode()]);
 		$mode_layout_array = $this->$method();
-        \debugbar::info(self::class.'->layout() method, current mode: *'.$current_mode );
+        \Debugbar::info(self::class.'->layout() method, current mode: *'.$current_mode );
 		return $mode_layout_array;//array_merge($this->multiModeLayout(), $mode_layout_array);
 	}
 
-	private function repositoryActionDispatch(string $action_name ){
-		return $this->$action_name;
-	}
 
 
+	abstract public function multimodeCommandBar(): array;
 	abstract public function defaultModeLayout(): array;
 	
 }
