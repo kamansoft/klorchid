@@ -1,3 +1,4 @@
+[![time tracker](https://wakatime.com/badge/github/kamansoft/klorchid.svg)](https://wakatime.com/badge/github/kamansoft/klorchid)
 
 # Klorchid
 
