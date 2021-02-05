@@ -15,7 +15,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-	private $repository;
+	private $klorchid_repository;
 
 	private Collection $available_screen_modes ;
 
@@ -27,11 +27,11 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	
 	public function getRepository(){
-		return $this->repository;
+		return $this->klorchid_repository;
 	}
 
 	public function setRepository($repository){
-		$this->repository=$repository;
+		$this->klorchid_repository=$repository;
 		//$this->setActions();
 		return $this;
 	}
@@ -64,7 +64,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	/*
 	private function getActionsFromRepositoryMethods():Collection{
 
-		$reflection = new \ReflectionClass($this->repository);
+		$reflection = new \ReflectionClass($this->klorchid_repository);
 		return  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
 			return [strstr($method->name, 'Action', true) => $method->name];
 		})->reject(function ($pair) {
@@ -163,9 +163,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 		//dd($this->getModes()[$this->getMode()]);
 		$mode_layout_array = $this->$method();
-        \Debugbar::info(self::class.'->layout() method, current mode: *'.$current_mode );
+        \Debugbar::info('layout() method, current mode: *'.$current_mode );
 		return $mode_layout_array;//array_merge($this->multiModeLayout(), $mode_layout_array);
-	}
+	}	
 
 
 
