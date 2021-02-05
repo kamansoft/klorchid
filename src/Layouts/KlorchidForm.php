@@ -19,7 +19,7 @@ abstract class KlorchidForm extends Rows {
 	];
 
 	private bool $return_pk_field = false;
-	private bool $return_blamming_fields = false;
+	private bool $return_blaming_fields = false;
 	private bool $return_status_field = false;
 	private bool $return_status_fields = false;
 
@@ -29,7 +29,7 @@ abstract class KlorchidForm extends Rows {
 	}
 
 	public function setBlamingFields(bool $value = true) {
-		$this->return_blamming_fields = $value;
+		$this->return_blaming_fields = $value;
 		return $this;
 	}
 
@@ -92,22 +92,22 @@ abstract class KlorchidForm extends Rows {
         
         $field_class  = '';//$this->getFieldCssClass($model);
         return [
-            Input::make('element.creatorName')
+            Input::make('item.creatorName')
                 ->class('form-control ' . $field_class )
                 ->type('text')
                 ->title(__('Created by') . ':')
                 ->disabled(true),
-            Input::make('element.created_at')
+            Input::make('item.created_at')
                 ->class('form-control ' . $field_class)
                 ->type('text')
                 ->title(__('Creation date') . ':')
                 ->disabled(true),
-            Input::make('element.updaterName')
+            Input::make('item.updaterName')
                 ->class('form-control ' . $field_class)
                 ->type('text')
                 ->title(__('Updated by') . ':')
                 ->disabled(true),
-            Input::make('element.updated_at')
+            Input::make('item.updated_at')
                 ->class('form-control ' . $field_class)
                 ->type('text')
                 ->title(__('Update date') . ':')
@@ -150,15 +150,22 @@ abstract class KlorchidForm extends Rows {
 			array_unshift($fields_to_return,$this->getPkField());
 		}
 
+
+
 		if ($this->return_status_field === true and $this->return_status_fields === false){
 			$fields_to_return[]=$this->getStatusField();
 		}
+
+
 
 		if ($this->return_status_fields === true){
 
 			$fields_to_return=array_merge($fields_to_return,$this->getStatusFields());
 		}
 
+		if ($this->return_blaming_fields===true){
+			$fields_to_return=array_merge($fields_to_return,$this->getBlamingFields());						
+		}
 
 		return $fields_to_return;
 	}
