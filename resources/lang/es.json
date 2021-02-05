@@ -9,6 +9,11 @@
   "Whoops! Something went wrong." : "Oh no!, Algo ha salido mal",
   "These credentials do not match our records.": "Credenciales no validas",
   "Status Toggle":"Alternar Estado",
+  "Current Status": "Estado Actual",
+  "Current Status Reason": "Razón de Estado Actual",
+  "Inactive": "Inactivo",
+  "Active": "Activo",
+
 
 
   "Are you absolutely sure ?": "¿Esta Usted Completamente Seguro?",
