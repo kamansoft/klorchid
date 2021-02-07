@@ -139,11 +139,6 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-
-	public function hasPermission(string $perm) {
-		return Auth::user()->hasAccess($perm);
-	}
-
 	/**
 	 * @inheritDoc
 	 */
