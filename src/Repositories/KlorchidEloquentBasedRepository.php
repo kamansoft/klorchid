@@ -24,6 +24,7 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
     private Request $request;
     private NotificaterInterface $notificator;
 
+
     /**
      * @var Dashboard Current instance of the grafic user insteface object
      */
@@ -134,6 +135,9 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
         return $this->setModel($this->model->resolveChildRouteBinding($childType, $value, $field));
         //return $this;
     }
+
+
+    public function
 
 
 

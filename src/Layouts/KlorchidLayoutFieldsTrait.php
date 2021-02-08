@@ -80,7 +80,6 @@ trait KlorchidLayoutFieldsTrait {
 
 	public function klorchidFieldStatusClass(string $extra = 'form-control ',  ? object $element = null) {
 		$element = $element ?? $this->getModel();
-
 		if ($this->fieldIsDissabled($element)) {
 			$to_return = 'text-danger';
 		}else{
