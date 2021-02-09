@@ -6,6 +6,7 @@ namespace Kamansoft\Klorchid\Models;
 use Illuminate\Database\Eloquent\Model;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidEloquentModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
+use Illuminate\Support\Facades\Auth;
 
 class KlorchidEloquentModel extends Model implements KlorchidModelInterface, KlorchidEloquentModelInterface
 
