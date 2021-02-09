@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidEloquentModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
 use Illuminate\Support\Facades\Auth;
+use Kamansoft\Klorchid\Models\Kuser;
+
 
 class KlorchidEloquentModel extends Model implements KlorchidModelInterface, KlorchidEloquentModelInterface
 
@@ -49,12 +51,12 @@ class KlorchidEloquentModel extends Model implements KlorchidModelInterface, Klo
 
     public function creator()
     {
-        return $this->belongsTo('Kamansoft\Klorchid\Models\Kuser', 'created_by', 'id');
+        return $this->belongsTo(KlorchidUser::class, 'created_by', 'id');
     }
 
     public function updater()
     {
-        return $this->belongsTo('Kamansoft\Klorchid\Models\Kuser', 'updated_by', 'id');
+        return $this->belongsTo(KlorchidUser::class, 'updated_by', 'id');
     }
 
     public function getCreatorNameAttribute()
