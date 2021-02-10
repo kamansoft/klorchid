@@ -3,14 +3,11 @@
     "description": "A orchid/platform package to speed up Kamansoft backofice php applications ",
     "type": "library",
     "require": {
-        "php": "^7.4",
-        "laravel/framework": "^8.12",
-        "laravel/jetstream": "^1.5",
-        "laravel/sanctum": "^2.6",
-        "laravel/tinker": "^2.0",
-        "livewire/livewire": "^2.0",
-        "orchid/platform": "dev-lemys_dev",
-        "myclabs/deep-copy": "^1.10"
+        "php": "^7.4"
+
+    },
+    "require-dev": {
+
     },
     "license": "MIT",
     "authors": [
@@ -34,7 +31,7 @@
          "repositories": [
         {
             "type": "path",
-            "url": "../../../platform",
+            "url": "../../orchidsoftware/platform",
             "symlink": true
         }
     ] 
