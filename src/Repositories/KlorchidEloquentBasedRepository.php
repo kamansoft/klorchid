@@ -137,9 +137,7 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
     }
 
 
-    public function
-
-
+    
 
 
 

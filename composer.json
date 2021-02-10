@@ -10,7 +10,8 @@
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
         "orchid/platform": "dev-lemys_dev",
-        "myclabs/deep-copy": "^1.10"
+        "myclabs/deep-copy": "^1.10",
+        "datakrama/eloquid": "^2.0"
     },
     "license": "MIT",
     "authors": [
@@ -34,7 +35,7 @@
          "repositories": [
         {
             "type": "path",
-            "url": "../../../platform",
+            "url": "../../orchidsoftware/platform",
             "symlink": true
         }
     ] 
