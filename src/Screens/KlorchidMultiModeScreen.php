@@ -140,17 +140,6 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-	public function hasPermission(string $perm) {
-		return Auth::user()->hasAccess($perm);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function commandBar(): array
-	{
-		return $this->multimodeCommandBar();
-	}
 
 	//abstract function multiModeLayout(): array;
 	/**
@@ -158,6 +147,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	 */
 	public function layout(): array
 	{
+
 		$current_mode = $this->getMode();
 		$method = $this->getModes()->get($current_mode);
 
@@ -169,7 +159,6 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-	abstract public function multimodeCommandBar(): array;
 	abstract public function defaultModeLayout(): array;
 	
 }

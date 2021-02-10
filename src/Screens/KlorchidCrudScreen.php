@@ -7,19 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
 use Orchid\Screen\Layout;
 use Orchid\Support\Facades\Dashboard;
+use Kamansoft\Klorchid\KlorchidPermissionTrait;
 
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 
+	use KlorchidPermissionTrait;
+
 	private Collection $klorchid_screen_modes_perms;
-
-	public function isValidPerm(string $perm): bool {
-		//dd(Dashboard::getAllowAllPermission());
-		return Dashboard::getAllowAllPermission()->get($perm) ? true : false;
-	}
-
-	public function userHasPermission(string $perm) {
-		return Auth::user()->hasAccess($perm);
-	}
 
 	public function getScreenModePerms(): Collection {
 		return $this->klorchid_screen_modes_perms;
@@ -45,6 +39,8 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 		$this->klorchid_screen_modes_perms = $mode_perms;
 		return $this;
 	}
+
+
 
 	public function detectScreenModeLayout(): string{
 		$mode_to_return = $this->getMode();
@@ -75,17 +71,22 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 		return $mode_to_return;
 	}
 
+	public function detectSetGetScreenMode(){
+		return $this->setMode($this->detectScreenModeLayout())->getMode();
+	}
+
 	public function __construct( ? KlorchidRepositoryInterface $repository = null) {
 		parent::__construct($repository);
 
 		$this->setScreenModePerms();
+	
 		//$this->setScreenModePerms($this->screenModePerms());
 
 	}
 
 	public function layout() : array{
-        //dd($this->detectScreenModeLayout());
-		$this->setMode($this->detectScreenModeLayout());
+        
+		//$this->setMode($this->detectScreenModeLayout());
 		return parent::layout();
 	}
 

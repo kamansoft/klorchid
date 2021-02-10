@@ -24,4 +24,16 @@ interface KlorchidModelInterface
      */
     public function blameOnUpdate();
 
+
+    /**
+     * used to map the the statues values by a string
+     * @return array the statusvalue => permission value pair array
+     */
+    static public function statusStringValues():array;
+
+
+    static public function userModelClass():string;
+
+
+
 }

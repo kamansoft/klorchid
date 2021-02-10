@@ -1,6 +1,10 @@
 <?php
 return [
-	'system_user_id' => env('SYSTEM_USER_ID'),
-	'aviable_locales' => ['es', 'en'],
-    ''
+
+	'screen_query_required_elements' => [
+		'element_to_display' => 'item',
+		'screen_mode_layout' => 'screen_mode',
+		'screen_mode_perms'=>'mode_perms'
+	],
+
 ];

@@ -15,13 +15,14 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
+use Kamansoft\Klorchid\Models\Contracts\KlorchidEloquentModelInterface;
+use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
+use Kamansoft\Klorchid\Models\Traits\KlorchidModelsTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidStatusTrait;
 
-
-class Kuser extends User implements KamanModelsInterface
+class Kuser extends User implements KlorchidModelInterface, KlorchidEloquentModelInterface
 {
-    use KamanModelsTrait;
-    use KamanModelsDeleteTrait;
-    use KamanModelsStatusTrait;
+
     use HasApiTokens;
     use HasFactory;
 
@@ -29,6 +30,9 @@ class Kuser extends User implements KamanModelsInterface
     use Notifiable;
     use TwoFactorAuthenticatable;
     use Attachable;
+
+    use KlorchidStatusTrait;
+    use KlorchidModelsTrait;
 
     /**
      * The attributes that are mass assignable.
