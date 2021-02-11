@@ -13,28 +13,7 @@ trait KlorchidModelsTrait
 {
 
 
-	protected static function boot() {
-		parent::boot();
-		static::creating(function ($model) {
-			$model->blameOnCreate();
-		});
-		static::updating(function ($model) {
-			$model->blameOnUpdate();
 
-		});
-	}
-
-
-	public function refreshFromDb() {
-		$element = self::findOrFail($this->getKey());
-		$this->fill($element->toArray());
-	}
-
-
-	static public function userModelClass():string
-	{
-		return Kuser::class;
-	}
 
 	public function getUserToBlameId(): string{
 		$to_return = '';

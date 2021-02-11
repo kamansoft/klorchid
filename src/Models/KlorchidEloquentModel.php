@@ -2,6 +2,7 @@
 
 namespace Kamansoft\Klorchid\Models;
 
+use Datakrama\Eloquid\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidEloquentModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
@@ -19,6 +20,7 @@ class KlorchidEloquentModel extends Model implements KlorchidModelInterface
     use KlorchidModelsTrait;
     use KlorchidStatusTrait;
     use KlorchidEloquentModelsTrait;
+    use Uuids;
 
 
 }
