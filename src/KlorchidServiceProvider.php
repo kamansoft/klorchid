@@ -21,8 +21,8 @@ use Kamansoft\Klorchid\Models\Kuser;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Notificator\Notificator;
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
-use Kamansoft\Klorchid\Repositories\KlorchidEloquentBasedRepository;
-use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repositories\KlorchidEloquentRepository;
+use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
@@ -258,7 +258,7 @@ class KlorchidServiceProvider extends ServiceProvider {
 	}
 	protected function registerRepository(): self{
 
-		$this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentBasedRepository::class);
+		$this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentRepository::class);
 
 		return $this;
 	}

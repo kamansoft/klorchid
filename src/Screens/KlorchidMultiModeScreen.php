@@ -2,12 +2,13 @@
 
 namespace Kamansoft\Klorchid\Screens;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Dashboard;
-use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Support\Facades\Alert;
 
 
@@ -15,11 +16,14 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-	private $klorchid_repository;
+	private  $klorchid_repository;
 
 	private Collection $available_screen_modes ;
 
-	//private Collection $available_repository_actions;
+
+	private Collection $available_repository_actions;
+
+	private Collection $aviable_repository_action_validations;
 
 
 
@@ -30,7 +34,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this->klorchid_repository;
 	}
 
-	public function setRepository($repository){
+	public function setRepository($repository):self{
 		$this->klorchid_repository=$repository;
 		//$this->setActions();
 		return $this;
@@ -42,10 +46,10 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
-	/*
+
 	public function getRepositoryActions():Collection{
 		 return $this->available_repository_actions;
-	}*/
+	}
 
 
 
@@ -61,19 +65,33 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
-	/*
-	private function getActionsFromRepositoryMethods():Collection{
+
+	private function setRepositoryActions():self{
 
 		$reflection = new \ReflectionClass($this->klorchid_repository);
-		return  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
+		$this->available_repository_actions=  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
 			return [strstr($method->name, 'Action', true) => $method->name];
 		})->reject(function ($pair) {
 			return !strstr($pair, 'Action', true);
 		});
+
+		return $this;
+	
+	}
+
+	private function setRepositoryActionValidations():self{
+
+		$reflection = new \ReflectionClass($this->klorchid_repository);
+		$repository_validation_rule_methods=  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
+			return [strstr($method->name, 'ValidationRules', true) => $method->name];
+		})->reject(function ($pair) {
+			return !$this->getRepositoryActions()->get(strstr($pair, 'ValidationRules', true));
+		});
+
+		dd($repository_validation_rule_methods);
 		return $this;
 
-	
-	}*/
+	}
 
 	public  function setModes(): self{
 		//dd($this->getModesByLayoutMethods()->toArray());
@@ -81,11 +99,6 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		return $this;
 	}
 
-	/*
-	public function setActions(): self{
-		$this->available_repository_actions = $this->getActionsFromRepositoryMethods();
-		return $this;
-	}*/
 
 
 
@@ -128,7 +141,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 		if  (! is_null($repository)){
-			$this->setRepository($repository);
+			$this->setRepository($repository)->setRepositoryActions();
 		}
 
 		//$this->setScreenModePerms($this->screenModePerms());
@@ -159,6 +172,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-	abstract public function defaultModeLayout(): array;
+
+    abstract public function defaultModeLayout(): array;
+
+
 	
 }

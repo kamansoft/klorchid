@@ -6,14 +6,21 @@ use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
-use Kamansoft\Klorchid\Repositories\KlorchiPermissedActionRepositoryInterface;
+
+use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repositories\Contracts\KlorchidCrudRepositoryInterface;
 use Orchid\Screen\Layouts\Selection;
+use Kamansoft\Klorchid\Repositories\Traits\KlorchidCrudRepositoryTrait;
+
 
 //use Orchid\Platform\Dashboard;
 
 
-abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInterface, UrlRoutable
+abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface,KlorchidCrudRepositoryInterface, UrlRoutable
 {
+
+    use KlorchidCrudRepositoryTrait;
+
 
 
     protected $filterSelection;
@@ -29,7 +36,7 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
      */
     private Dashboard $GUI;
 
-    public function __construct(Model $model, Request $request, NotificaterInterface $notificator)//, Dashboard $gui)
+    public function __construct(Model &$model, Request &$request, NotificaterInterface $notificator)//, Dashboard $gui)
     {
         $this->model = $model;
         $this->request = $request;
@@ -151,6 +158,9 @@ abstract class KlorchidEloquentBasedRepository implements KlorchidRepositoryInte
         return $this->setModel($this->model->resolveChildRouteBinding($childType, $value, $field));
         //return $this;
     }
+    
+    
+
 
 
 }

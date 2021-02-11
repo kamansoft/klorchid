@@ -4,7 +4,7 @@ namespace Kamansoft\Klorchid\Screens;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Kamansoft\Klorchid\Repositories\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Screen\Layout;
 use Orchid\Support\Facades\Dashboard;
 use Kamansoft\Klorchid\KlorchidPermissionTrait;
@@ -95,6 +95,8 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 	abstract public function viewModeLayout(): array;
 	abstract public function editModeLayout(): array;
 	abstract public function createModeLayout(): array;
+
+
 
 
 }

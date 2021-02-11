@@ -1,6 +1,6 @@
 <?php
 
-namespace Kamansoft\Klorchid\Repositories;
+namespace Kamansoft\Klorchid\Repositories\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +19,10 @@ interface KlorchidRepositoryInterface
     public function exists():bool;
 
     public function getFirstRequestRouteParam();
+
+    public function save(?array $data);
+
+
 
 
     
