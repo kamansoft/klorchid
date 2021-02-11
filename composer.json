@@ -12,9 +12,7 @@
         "laravel/jetstream": "^2.1",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.0",
-<<<<<<< HEAD
-        "orchid/platform": "dev-lemys_dev"
+        "livewire/livewire": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -24,11 +22,6 @@
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
-=======
-        "orchid/platform": "dev-lemys_dev",
-        "myclabs/deep-copy": "^1.10",
-        "datakrama/eloquid": "^2.0"
->>>>>>> master
     },
     "license": "MIT",
     "authors": [
