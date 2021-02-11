@@ -11,7 +11,7 @@ interface KlorchidCrudRepositoryInterface
 
     public function createValidationRules(): array;
 
-    public function editValidationRules(): array;
+    public function updateValidationRules(): array;
 
 
     public function createAction(?array $data = null);

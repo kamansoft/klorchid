@@ -10,6 +10,7 @@ use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Dashboard;
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Support\Facades\Alert;
+use Illuminate\Support\Str;
 
 
 abstract class KlorchidMultiModeScreen extends Screen {
@@ -23,7 +24,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	private Collection $available_repository_actions;
 
-	private Collection $aviable_repository_action_validations;
+	private Collection $repository_action_validations;
+
+	private Collection $automatic_repository_action_validations;
 
 
 
@@ -39,6 +42,8 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		//$this->setActions();
 		return $this;
 	}
+
+
 
 
 	public function getModes():Collection {
@@ -58,7 +63,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 		$reflection = new \ReflectionClass($this);
 
 		return collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
-			return [strstr($method->name, 'ModeLayout', true) => $method->name];
+			return [Str::snake(strstr($method->name, 'ModeLayout', true)) => $method->name];
 		})->reject(function ($pair) {
 			return !strstr($pair, 'ModeLayout', true);
 		});
@@ -70,7 +75,7 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 		$reflection = new \ReflectionClass($this->klorchid_repository);
 		$this->available_repository_actions=  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
-			return [strstr($method->name, 'Action', true) => $method->name];
+			return [Str::snake(strstr($method->name, 'Action', true)) => $method->name];
 		})->reject(function ($pair) {
 			return !strstr($pair, 'Action', true);
 		});
@@ -82,13 +87,21 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	private function setRepositoryActionValidations():self{
 
 		$reflection = new \ReflectionClass($this->klorchid_repository);
-		$repository_validation_rule_methods=  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
-			return [strstr($method->name, 'ValidationRules', true) => $method->name];
+		$this->repository_action_validations =  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
+			return [Str::snake(strstr($method->name, 'ValidationRules', true)) => $method->name];
 		})->reject(function ($pair) {
-			return !$this->getRepositoryActions()->get(strstr($pair, 'ValidationRules', true));
+
+		    return !strstr($pair, 'ValidationRules', true);
 		});
 
-		dd($repository_validation_rule_methods);
+		$this->automatic_repository_action_validations = $this->repository_action_validations
+            ->mapWithKeys(function ($method_name,$action_name){
+                return [$action_name=>$method_name];
+            })->reject(function ($method_name,$action_name){
+                return !$this->isValidRepositoryAction($action_name);
+            });
+
+		//dd($this->getRepositoryActions(),$this->repository_action_validations,$this->automatic_repository_action_validations);
 		return $this;
 
 	}
@@ -123,6 +136,11 @@ abstract class KlorchidMultiModeScreen extends Screen {
         return $this->available_screen_modes->get($mode)?true:false;
     }
 
+    public function isValidRepositoryAction(string $action):bool
+    {
+	    return $this->getRepositoryActions()->get($action)?true:false;
+    }
+
 
 
     /*
@@ -136,12 +154,13 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	
 
 	public function __construct(?KlorchidRepositoryInterface $repository=null) {
+
 		$this->current_screen_mode = 'default';
 		$this->setModes();
 
 
 		if  (! is_null($repository)){
-			$this->setRepository($repository)->setRepositoryActions();
+			$this->setRepository($repository)->setRepositoryActions()->setRepositoryActionValidations()->setRepositoryActionValidations();
 		}
 
 		//$this->setScreenModePerms($this->screenModePerms());
@@ -171,6 +190,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}	
 
 
+	public function repositoryActionDispatch(string $action){
+	   return  $this->getRepository()->$action();
+    }
 
 
     abstract public function defaultModeLayout(): array;
