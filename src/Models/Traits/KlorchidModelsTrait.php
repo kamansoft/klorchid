@@ -35,7 +35,8 @@ trait KlorchidModelsTrait
 	{
 		return Kuser::class;
 	}
-		public function getUserToBlameId(): string{
+
+	public function getUserToBlameId(): string{
 		$to_return = '';
 		if (Auth::check()) {
 			$to_return = Auth::user()->id;
@@ -53,21 +54,15 @@ trait KlorchidModelsTrait
 		$this->updated_by = $this->getUserToBlameId();
 	}
 
-		public function creator() {
-		return $this->belongsTo(self::userModelClass(), 'created_by', 'id');
-	}
 
-	public function updater() {
-		return $this->belongsTo(self::userModelClass(), 'updated_by', 'id');
-	}
 
 	public function getCreatorNameAttribute() {
-		//\DeBugbaR::info('creator name called');
-		return $this->creator->name;
+
+		return $this->creator->name ?? '';
 	}
 
 	public function getUpdaterNameAttribute() {
-		return $this->updater->name;
+		return $this->updater->name ?? '';
 	}
 
 

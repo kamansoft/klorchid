@@ -49,7 +49,8 @@ class KlorchidInstallCommand extends Command {
 					'klorchid-commons',
 					'klorchid-config',
 					//'klorchid-platform-routes',
-					'views',
+                    'klorchid-error-views',
+					'klorchid-views',
 					'klorchid-lang',
 				],
 

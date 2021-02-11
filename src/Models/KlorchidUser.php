@@ -16,12 +16,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
+use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
+use  Kamansoft\Klorchid\Models\Traits\KlorchidModelsTrait;
+use  Kamansoft\Klorchid\Models\Traits\KlorchidStatusTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 
-class KlorchidUser extends User implements KamanModelsInterface
+
+
+class KlorchidUser extends User implements KlorchidModelInterface
 {
-    use KamanModelsTrait;
-    use KamanModelsDeleteTrait;
-    use KamanModelsStatusTrait;
+
     use HasApiTokens;
     use HasFactory;
 
@@ -29,6 +33,11 @@ class KlorchidUser extends User implements KamanModelsInterface
     use Notifiable;
     use TwoFactorAuthenticatable;
     use Attachable;
+
+    //klorchid related
+    use KlorchidStatusTrait;
+    use KlorchidModelsTrait;
+    use KlorchidEloquentModelsTrait;
 
     /**
      * The attributes that are mass assignable.

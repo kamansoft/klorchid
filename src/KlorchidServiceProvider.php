@@ -54,7 +54,7 @@ class KlorchidServiceProvider extends ServiceProvider {
 
 		$this->dashboard = $dashboard;
 		$this
-			->registerKuserModelAsPLatformUserModel()
+			->registerKlorchidUserModel()
 			->registerConfig()
 			->registerKlorchid()
 			//->registerProviders()
@@ -210,8 +210,12 @@ class KlorchidServiceProvider extends ServiceProvider {
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'klorchid');
 
 		$this->publishes([
+			__DIR__ . '/../resources/views/errors' => resource_path('views/errors'),
+		], 'klorchid-error-views');
+
+		$this->publishes([
 			__DIR__ . '/../resources/views' => resource_path('views/vendor/klorchid'),
-		], 'views');
+		], 'klorchid-views');
 
 		return $this;
 	}
@@ -226,8 +230,8 @@ class KlorchidServiceProvider extends ServiceProvider {
 		return $this;
 	}
 
-	public function registerKuserModelAsPLatformUserModel() {
-		Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\Kuser::class);
+	public function registerKlorchidUserModel() {
+		Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\KlorchidUser::class);
 		return $this;
 	}
 

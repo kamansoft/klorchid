@@ -24,6 +24,20 @@ interface KlorchidModelInterface
      */
     public function blameOnUpdate();
 
+    /**
+     *
+     * should retrive the
+     *
+     * @return mixed
+     */
+    public function creator();
+
+    public function updater();
+
+    public function getCreatorNameAttribute();
+
+    public function getUpdaterNameAttribute();
+
 
     /**
      * used to map the the statues values by a string

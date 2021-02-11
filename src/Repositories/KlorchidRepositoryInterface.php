@@ -16,7 +16,11 @@ interface KlorchidRepositoryInterface
 
     public function setModel(?Model $model = null): self;
 
+    public function exists():bool;
+
     public function getFirstRequestRouteParam();
+
+
     
 
 

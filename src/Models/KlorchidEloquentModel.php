@@ -7,9 +7,10 @@ use Kamansoft\Klorchid\Models\Contracts\KlorchidEloquentModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
 use  Kamansoft\Klorchid\Models\Traits\KlorchidModelsTrait;
 use  Kamansoft\Klorchid\Models\Traits\KlorchidStatusTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 
 
-class KlorchidEloquentModel extends Model implements KlorchidModelInterface, KlorchidEloquentModelInterface
+class KlorchidEloquentModel extends Model implements KlorchidModelInterface
 
 {
 
@@ -17,6 +18,7 @@ class KlorchidEloquentModel extends Model implements KlorchidModelInterface, Klo
 
     use KlorchidModelsTrait;
     use KlorchidStatusTrait;
+    use KlorchidEloquentModelsTrait;
 
 
 }
