@@ -24,6 +24,8 @@ interface KlorchidRepositoryInterface
 
     public function save(?array $data);
 
+    //public function
+
 
 
 

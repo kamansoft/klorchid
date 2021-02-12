@@ -10,7 +10,7 @@ use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidCrudRepositoryInterface;
 use Orchid\Screen\Layouts\Selection;
-use Kamansoft\Klorchid\Repositories\Traits\KlorchidCrudRepositoryTrait;
+
 
 
 //use Orchid\Platform\Dashboard;
@@ -19,7 +19,7 @@ use Kamansoft\Klorchid\Repositories\Traits\KlorchidCrudRepositoryTrait;
 abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface,KlorchidCrudRepositoryInterface, UrlRoutable
 {
 
-    use KlorchidCrudRepositoryTrait;
+    //use KlorchidCrudRepositoryTrait;
 
 
 
