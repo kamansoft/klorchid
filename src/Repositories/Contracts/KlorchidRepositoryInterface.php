@@ -18,7 +18,9 @@ interface KlorchidRepositoryInterface
 
     public function exists():bool;
 
-    public function getFirstRequestRouteParam();
+    public function isPkInRequest():bool;
+
+    public function getPkValue();
 
     public function save(?array $data);
 

@@ -43,24 +43,37 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
         $this->notificator = $notificator;
         //config('klorchid.repository_pk_name');
 
-        $model_pk_value = $this->getFirstRequestRouteParam();
-        if ($model_pk_value) {
-            $this->resolveRouteBinding($model_pk_value);
+        
+        if ($this->isPkInRequest()) {
+            $this->resolveRouteBinding($this->getPkValue());
+
         }
 
-        //dd($this->getFirstRequestRouteParam());
+        //dd($this->getPkValue());
         //$this->GUI = $gui;
 
 
     }
 
-    public function getFirstRequestRouteParam()
+
+    public function isPkInRequest():bool{
+        return array_key_exists(config('klorchid.repository_pk_name'), request()->route()->parameters);
+    }
+    public function getPkValue()
     {
-        return reset(request()->route()->parameters);
+
+
+
+        return array_key_exists(
+            config('klorchid.repository_pk_name'),
+            request()->route()->parameters)
+        ? request()->route()->parameters[config('klorchid.repository_pk_name')] :
+        null;
     }
 
     public function resolveRouteBinding($value, $field = null)
     {
+
 
         if (!$this->resolveRouteBindingKernel($value, $field)) {
             if ($this->request->wantsJson()) {
@@ -155,8 +168,13 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
 
     public function resolveChildRouteBinding($childType, $value, $field)
     {
-        return $this->setModel($this->model->resolveChildRouteBinding($childType, $value, $field));
+        return $this->setModel($this->getModel()->resolveChildRouteBinding($childType, $value, $field));
         //return $this;
+    }
+
+
+    public function validate(array $rules=[]){
+
     }
     
     

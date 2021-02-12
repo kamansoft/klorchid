@@ -7,10 +7,10 @@ trait KlorchidCrudRepositoryTrait
         public function save(?array $data=null)
         {
             if ($this->exists()) {
-                $this->validateOnUpdate($data);
+                //$this->validate($this->updateValidationRules());
                 return $this->updateAction($data);
             } else {
-                $this->validateOnCreate($data);
+                //$this->validate($this->createValidationRules());
                 return $this->createAction($data);
             }
         }

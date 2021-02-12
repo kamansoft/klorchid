@@ -24,9 +24,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	private Collection $available_repository_actions;
 
-	private Collection $repository_action_validations;
+	private Collection $repository_action_validation_rules_methods;
 
-	private Collection $automatic_repository_action_validations;
+	private Collection $automatic_repository_action_validation_rules_methods;
 
 
 
@@ -54,6 +54,11 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	public function getRepositoryActions():Collection{
 		 return $this->available_repository_actions;
+	}
+
+	public function getRepositoryActionMethod(string $action){
+		return $this->available_repository_actions->get($action);
+
 	}
 
 
@@ -87,23 +92,35 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	private function setRepositoryActionValidations():self{
 
 		$reflection = new \ReflectionClass($this->klorchid_repository);
-		$this->repository_action_validations =  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
+		$this->repository_action_validation_rules_methods =  collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) {
 			return [Str::snake(strstr($method->name, 'ValidationRules', true)) => $method->name];
 		})->reject(function ($pair) {
 
 		    return !strstr($pair, 'ValidationRules', true);
 		});
 
-		$this->automatic_repository_action_validations = $this->repository_action_validations
+		$this->automatic_repository_action_validation_rules_methods = $this->repository_action_validation_rules_methods
             ->mapWithKeys(function ($method_name,$action_name){
                 return [$action_name=>$method_name];
             })->reject(function ($method_name,$action_name){
                 return !$this->isValidRepositoryAction($action_name);
             });
 
-		//dd($this->getRepositoryActions(),$this->repository_action_validations,$this->automatic_repository_action_validations);
+		//dd($this->getRepositoryActions(),$this->repository_action_validation_rules_methods,$this->automatic_repository_action_validation_rules_methods);
 		return $this;
 
+	}
+
+	public function actionHasValidation(string $action):bool{
+		return $this->automatic_repository_action_validation_rules_methods->get($action)?true:false;
+	}
+
+	public function getValidationRuleMethod(string $action){
+		return $this->repository_action_validation_rules_methods->get($action);
+	}
+
+	public function getValidationRules(string $action){
+		return $this->getRepository()->{$this->getValidationRuleMethod($action)}();
 	}
 
 	public  function setModes(): self{
@@ -190,8 +207,11 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}	
 
 
-	public function repositoryActionDispatch(string $action){
-	   return  $this->getRepository()->$action();
+	public function actionDispatch(string $action,Request $request){
+
+		$this->validateWith($this->getValidationRules($action),$request);
+		
+	   return  $this->getRepository()->{$this->getRepositoryActionMethod($action)}();
     }
 
 
