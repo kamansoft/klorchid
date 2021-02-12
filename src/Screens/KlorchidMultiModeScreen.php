@@ -207,12 +207,20 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}	
 
 
-	public function actionDispatch(string $action,Request $request){
+	public function runRepositoryAction(string $action,Request $request){
 
-		$this->validateWith($this->getValidationRules($action),$request);
+		if ($this->isValidRepositoryAction($action)){
+			$this->validateWith($this->getValidationRules($action),$request);
 		
-	   return  $this->getRepository()->{$this->getRepositoryActionMethod($action)}();
+	  		return  $this->getRepository()->{$this->getRepositoryActionMethod($action)}();
+		}else{
+			throw new \Exception(self::class .' "'.$action.'" action name has not a related repository action method',1);
+		};
+		
+
     }
+
+
 
 
     abstract public function defaultModeLayout(): array;

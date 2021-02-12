@@ -8,6 +8,7 @@ use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Screen\Layout;
 use Orchid\Support\Facades\Dashboard;
 use Kamansoft\Klorchid\KlorchidPermissionTrait;
+use Illuminate\Http\Request;
 
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 
@@ -49,8 +50,17 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 
 
 		$url_segments = $repository->getRequest()->segments();
+
+		
 		$last_segment = array_pop($url_segments);
 
+		//if last segment isent create or edit
+		//we check for the segmet before the last one
+		if (!($last_segment==='create' or $last_segment==='edit')and count($url_segments)>1){
+			$last_segment=$url_segments[count($url_segments)-1];
+		}
+
+		//dd($url_segments,$last_segment);
 
 		if ($last_segment === 'create') {
 			$mode_to_return = 'create';
@@ -89,6 +99,17 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 		//$this->setMode($this->detectScreenModeLayout());
 		return parent::layout();
 	}
+
+
+	public function save(Request $request){
+    	$repository = $this->getRepository();
+
+        $mode = $this->detectSetGetScreenMode(true);
+        $item = $repository->getModel();
+        
+        return $this->runRepositoryAction($mode,$request);
+    }
+
 
 	abstract public function screenModePerms(): array;
 	abstract public function defaultModeLayout(): array;
