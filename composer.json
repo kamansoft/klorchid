@@ -1,34 +1,33 @@
 {
-    "name": "kamansoft/klorchid",
-    "description": "A orchid/platform package to speed up Kamansoft backofice php applications ",
-    "type": "library",
-    "require": {
-        "php": "^7.4|^8.0"
-
+  "name": "kamansoft/klorchid",
+  "description": "A orchid/platform package to speed up Kamansoft backofice php applications ",
+  "type": "library",
+  "require": {
+    "php": "^7.4|^8.0"
+  },
+  "require-dev": {
+    "barryvdh/laravel-debugbar": "^3.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "lemys lopez",
+      "email": "lemyskaman@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Kamansoft\\Klorchid\\KlorchidServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Kamansoft\\Klorchid\\": "src"
     },
-    "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5"
-
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "lemys lopez",
-            "email": "lemyskaman@gmail.com"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Kamansoft\\Klorchid\\KlorchidServiceProvider"
-            ]
-        }
-    },
-    "autoload": {
-        "psr-4": {
-          "Kamansoft\\Klorchid\\": "src"
-        }
-      }
-
-
+    "files": [
+      "src/helpers.php"
+    ]
+  }
 }

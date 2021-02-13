@@ -16,7 +16,7 @@ use Orchid\Screen\Layouts\Selection;
 //use Orchid\Platform\Dashboard;
 
 
-abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface,KlorchidCrudRepositoryInterface, UrlRoutable
+abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface, UrlRoutable
 {
 
     //use KlorchidCrudRepositoryTrait;
@@ -149,11 +149,8 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
         return $this->getModel()->exists;
     }
 
-    public function setFilterSelection(Selection $selection): self
-    {
-        $this->filterSelection = $selection;
-        return $this;
-    }
+
+
 
     public function getRouteKey()
     {
@@ -175,6 +172,15 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
 
     public function validate(array $rules=[]){
 
+        return $this->request->validate($rules);
+
+    }
+
+
+    public function save(){
+        //dd("repository save method");
+        //dd($this->request->get('item'));
+        $this->getModel()->fill($this->getRequest()->get(data_keyname_prefix()))->save();
     }
     
     

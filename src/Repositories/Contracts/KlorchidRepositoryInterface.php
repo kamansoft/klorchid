@@ -22,20 +22,6 @@ interface KlorchidRepositoryInterface
 
     public function getPkValue();
 
-    public function save(?array $data);
-
-    //public function
-
-
-
-
-    
-
-
-
-
-
-
-
+    public function save();
 
 }

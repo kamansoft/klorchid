@@ -19,6 +19,17 @@ abstract class KlorchidForm extends Rows {
 	private bool $return_status_field = false;
 	private bool $return_status_fields = false;
 
+    /**
+     * will prepend the klorchid key name of the form elements to the attribute passedd as param, it will return the
+     * 'klorchid.screen_query_required_elements.element_to_display' config enttry if $attribute_name is null
+     *
+     * @param string|null $attribute_name the name of the attribute to preppend the form data keyname
+     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed|string
+     */
+	public function prefixFormDataKeyTo(?string $attribute_name=null){
+        return data_keyname_prefix($attribute_name);
+    }
+	
 	public function setPkField(bool $value = true) {
 		$this->return_pk_field = $value;
 		return $this;
@@ -44,7 +55,7 @@ abstract class KlorchidForm extends Rows {
 		$pk_field_name = $this->getModel()->getKeyName();
         $field_class = $this->klorchidFieldStatusClass();
 
-		return Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.' . $pk_field_name)
+		return Input::make($this->prefixFormDataKeyTo($pk_field_name))
 			->type('text')
 			->max(255)
 			->title(__(ucfirst($pk_field_name)))
@@ -55,7 +66,7 @@ abstract class KlorchidForm extends Rows {
 
 	public function getStatusField(): Field {
         $field_class = $this->klorchidFieldStatusClass();
-		return Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.stringStatus')
+		return Input::make($this->prefixFormDataKeyTo('stringStatus'))
 			->class($field_class) //. $this->getFieldCssClass($model))
 			->type('text')
 			->title(__('Current Status') . ':')
@@ -63,7 +74,7 @@ abstract class KlorchidForm extends Rows {
 	}
 	public function getStatusReasonField(): Field {
         $field_class = $this->klorchidFieldClass();
-		return TextArea::make(config('klorchid.screen_query_required_elements.element_to_display') . '.cur_status_reason')
+		return TextArea::make($this->prefixFormDataKeyTo('cur_status_reason'))
 			->class($field_class)
 			->title(__('Current Status Reason') . ': ')
 			->disabled(true);
@@ -81,12 +92,12 @@ abstract class KlorchidForm extends Rows {
 	{
 		$field_class = $this->klorchidFieldClass();
 		return [
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.creatorName')
+			Input::make($this->prefixFormDataKeyTo('creatorName'))
 				->class($field_class)
 				->type('text')
 				->title(__('Created by') . ':')
 				->disabled(true),
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.created_at')
+			Input::make($this->prefixFormDataKeyTo('created_at'))
 				->class($field_class)
 				->type('text')
 				->title(__('Creation date') . ':')

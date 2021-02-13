@@ -4,13 +4,13 @@ namespace Kamansoft\Klorchid\Repositories\Traits;
 
 trait KlorchidCrudRepositoryTrait
 {
-        public function save(?array $data=null)
+        public function save()
         {
             if ($this->exists()) {
-                //$this->validate($this->updateValidationRules());
+                $this->validate($this->updateValidationRules());
                 return $this->updateAction($data);
             } else {
-                //$this->validate($this->createValidationRules());
+                $this->validate($this->updateValidationRules());
                 return $this->createAction($data);
             }
         }

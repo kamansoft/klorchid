@@ -111,16 +111,28 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 	}
 
-	public function actionHasValidation(string $action):bool{
+	public function actionHasAutoValidation(string $action):bool{
 		return $this->automatic_repository_action_validation_rules_methods->get($action)?true:false;
 	}
+
+
 
 	public function getValidationRuleMethod(string $action){
 		return $this->repository_action_validation_rules_methods->get($action);
 	}
 
-	public function getValidationRules(string $action){
-		return $this->getRepository()->{$this->getValidationRuleMethod($action)}();
+
+
+	public function getValidationRules(string $action):array{
+
+	    $repository_validation_rule_method  =$this->getValidationRuleMethod($action);
+	    if ($repository_validation_rule_method){
+	        return $this->getRepository()->{$this->getValidationRuleMethod($action)}();
+        }else{
+	        return [];
+        }
+
+
 	}
 
 	public  function setModes(): self{
@@ -207,14 +219,15 @@ abstract class KlorchidMultiModeScreen extends Screen {
 	}	
 
 
-	public function runRepositoryAction(string $action,Request $request){
+	public function runRepositoryAction(string $repository_action,Request $request,bool $run_validation = false){
 
-		if ($this->isValidRepositoryAction($action)){
-			$this->validateWith($this->getValidationRules($action),$request);
+		if ( $this->isValidRepositoryAction($repository_action)){
+
+			$validated_data = $run_validation?$this->validateWith($this->getValidationRules($repository_action),$request):$request->get(data_keyname_prefix());
 		
-	  		return  $this->getRepository()->{$this->getRepositoryActionMethod($action)}();
+	  		return  $this->getRepository()->{$this->getRepositoryActionMethod($repository_action)}($validated_data);
 		}else{
-			throw new \Exception(self::class .' "'.$action.'" action name has not a related repository action method',1);
+			throw new \Exception(self::class .' "'.$repository_action.'" action name has not a related repository action method',1);
 		};
 		
 
@@ -222,8 +235,9 @@ abstract class KlorchidMultiModeScreen extends Screen {
 
 
 
-
     abstract public function defaultModeLayout(): array;
+
+
 
 
 	
