@@ -107,7 +107,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
         $mode = $this->detectSetGetScreenMode(true);
         $item = $repository->getModel();
         
-        return $this->runRepositoryAction($mode,$request);
+        return $this->runRepositoryAction($mode,$request,true);
     }
 
 

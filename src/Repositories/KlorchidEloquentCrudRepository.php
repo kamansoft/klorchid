@@ -7,7 +7,7 @@ use Kamansoft\Klorchid\Repositories\Contracts\KlorchidCrudRepositoryInterface;
 
 abstract class KlorchidEloquentCrudRepository extends KlorchidEloquentRepository implements KlorchidCrudRepositoryInterface
 {
-    //use KlorchidCrudRepositoryTrait;
+    use KlorchidCrudRepositoryTrait;
 
 
 

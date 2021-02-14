@@ -5,12 +5,9 @@ namespace Kamansoft\Klorchid\Repositories;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
-
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
-use Kamansoft\Klorchid\Repositories\Contracts\KlorchidCrudRepositoryInterface;
-use Orchid\Screen\Layouts\Selection;
-
 
 
 //use Orchid\Platform\Dashboard;
@@ -20,7 +17,6 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
 {
 
     //use KlorchidCrudRepositoryTrait;
-
 
 
     protected $filterSelection;
@@ -43,7 +39,7 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
         $this->notificator = $notificator;
         //config('klorchid.repository_pk_name');
 
-        
+
         if ($this->isPkInRequest()) {
             $this->resolveRouteBinding($this->getPkValue());
 
@@ -56,19 +52,20 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
     }
 
 
-    public function isPkInRequest():bool{
+    public function isPkInRequest(): bool
+    {
         return array_key_exists(config('klorchid.repository_pk_name'), request()->route()->parameters);
     }
+
     public function getPkValue()
     {
-
 
 
         return array_key_exists(
             config('klorchid.repository_pk_name'),
             request()->route()->parameters)
-        ? request()->route()->parameters[config('klorchid.repository_pk_name')] :
-        null;
+            ? request()->route()->parameters[config('klorchid.repository_pk_name')] :
+            null;
     }
 
     public function resolveRouteBinding($value, $field = null)
@@ -150,8 +147,6 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
     }
 
 
-
-
     public function getRouteKey()
     {
         return $this->model->getRouteKey();
@@ -170,21 +165,31 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
     }
 
 
-    public function validate(array $rules=[]){
+    public function validate(array $data_to_validate, array $rules = [])
+    {
 
         return $this->request->validate($rules);
 
     }
 
 
-    public function save(){
-        //dd("repository save method");
-        //dd($this->request->get('item'));
-        $this->getModel()->fill($this->getRequest()->get(data_keyname_prefix()))->save();
-    }
-    
-    
+    public function save(array $data):bool
+    {
+        try {
+            $save_executed = $this->getModel()->fill($this->getRequest()->get(data_keyname_prefix()))->save();
+            //$save_executed = false;
+            if ($save_executed) {
+                Log::alert(self::class . " repository model filled " . $this->getModel()->getTable() . ' table with no validation, on executing repository save method');
+            }
+            return $save_executed;
+        }catch (\Illuminate\Database\QueryException $queryException){
+            Log::error("Save repository SQL query error on model save".' '.$queryException->getMessage());
+            //throw new \Exception("Save repository querry error on model save".' '.$queryException->getMessage());
+            return false;
+        }
 
+
+    }
 
 
 }

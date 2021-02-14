@@ -5,20 +5,16 @@ namespace Kamansoft\Klorchid\Repositories\Contracts;
 interface KlorchidCrudRepositoryInterface
 {
 
-    public function statusChangeValidationRules(): array;
-
-    public function deleteValidationRules(): array;
-
-    public function createValidationRules(): array;
-
-    public function updateValidationRules(): array;
 
 
-    public function createAction(?array $data = null);
 
-    public function updateAction(?array $data = null);
+    public function createAction(?array $data = null):bool;
 
-    public function deleteAction(?array $data = null);
+    public function updateAction(?array $data = null):bool;
 
-    public function statusChangeAction(?array $data = null);
+    public function deleteAction(?array $data = null):bool;
+
+    public function statusChangeAction(?array $data = null):bool;
+
+    public function satusChangeValidationRules():array;
 }
