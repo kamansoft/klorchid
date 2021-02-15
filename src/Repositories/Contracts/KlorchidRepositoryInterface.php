@@ -20,7 +20,7 @@ interface KlorchidRepositoryInterface
 
     public function isPkInRequest():bool;
 
-    public function getPkValue();
+    public function getRequestPkValue();
 
     public function save(array $data):bool  ;
 

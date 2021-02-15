@@ -54,17 +54,17 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
 
     public function isPkInRequest(): bool
     {
-        return array_key_exists(config('klorchid.repository_pk_name'), request()->route()->parameters);
+        return array_key_exists(config('klorchid.repository_pk_name'), $this->getRequest()->route()->parameters);
     }
 
-    public function getPkValue()
+    public function getRequestPkValue()
     {
 
 
         return array_key_exists(
             config('klorchid.repository_pk_name'),
-            request()->route()->parameters)
-            ? request()->route()->parameters[config('klorchid.repository_pk_name')] :
+            $this->getRequest()->route()->parameters)
+            ? $this->getRequest()->route()->parameters[config('klorchid.repository_pk_name')] :
             null;
     }
 
@@ -77,18 +77,7 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
                 //abort(404);
             } else {
                 abort(404);
-                /*abort(
-                    response(
-                        __(
-                            'The element with :pk: :pkvalue was not found on ":table" table',
-                            [
-                                'pk' => $this->getModel()->getKeyName(),
-                                'pkvalue' => $value,
-                                'table' => $this->getModel()->getTable()
-                            ]
-                        ), 404
-                    )
-                );*/
+
             }
         }
 
@@ -176,10 +165,11 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
     public function save(array $data):bool
     {
         try {
-            $save_executed = $this->getModel()->fill($this->getRequest()->get(data_keyname_prefix()))->save();
+            $save_executed = $this->getModel()->fill($data)->save();
             //$save_executed = false;
             if ($save_executed) {
-                Log::alert(self::class . " repository model filled " . $this->getModel()->getTable() . ' table with no validation, on executing repository save method');
+                $pk_name = $this->getModel()->getKeyName();
+                Log::alert(self::class . " repository model filled " . $this->getModel()->getTable() . ' table with '.$pk_name.'='.$this->getModel()->$pk_name);
             }
             return $save_executed;
         }catch (\Illuminate\Database\QueryException $queryException){

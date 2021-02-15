@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Kamansoft\Klorchid\Screens;
 
@@ -16,6 +17,7 @@ abstract class KlorchidMultiModeScreen extends Screen
 
 
     private $klorchid_repository;
+
 
     private Collection $available_screen_modes;
 
@@ -117,9 +119,15 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $this;
     }
 
-    public function actionHasAutoValidation(string $action): bool
+    public function setAutomaticValidation(bool $value = true)
     {
-        return $this->automatic_repository_action_validation_rules_methods->get($action) ? true : false;
+        $this->run_atutomatic_validation = $value;
+        return $this;
+    }
+
+    public function repositoryHasActionValidation(string $action): bool
+    {
+        return $this->repository_action_validation_rules_methods->get($action) ? true : false;
     }
 
     public function setMode(string $mode)
@@ -237,23 +245,37 @@ abstract class KlorchidMultiModeScreen extends Screen
 
     }
 
+    // TODO: notify on orchid github issues that if you set the first param as Request type object the, then a null is passesd to the rest of the params
     /**
-     * Will run the repository save method passing the post request data to the repository save method
-     * This method will try to perform a validation only if it can find a validationRules method on the repository
-     * that match with the running screen mode
+     * Will run the repository save method passing the  data  from htto post to the repository save method
      * @param Request $request
      */
-    public function save(Request $request, bool $run_validation = true)
+    public function save($screen_mode, Request $request)//,?string $screen_mode)
     {
 
-        $repository_action = $this->getMode();
-        if ($run_validation and $this->getValidationRuleMethod($repository_action)) {
+
+        $repository_action = $screen_mode ?? $this->getMode();
+
+        $validation_rules_method = $this->getValidationRuleMethod($repository_action) ?? false;
+
+        if ($validation_rules_method) {
             $validated_data = $this->validateWith($this->getValidationRules($repository_action));
-            Log::info(self::class . ' '.$this->getValidationRuleMethod($repository_action).' '.Validation executed for method");
+            Log::info(
+                self::class
+                . ' validation performed from repository rules using  "'
+                . $this->getValidationRuleMethod($repository_action)
+                . '" save method executed with screen validation '
+            );
+
         } else {
             $validated_data = $request->get(data_keyname_prefix());
-            Log::warning(self::class . "No validation was executed for " . $this->getRepositoryActionMethod($repository_action) . ' method');
+            Log::warning(
+                self::class
+                . "Validation rule for $repository_action not found. save method executed without screen validation "
+            );
         }
+
+        dd($screen_mode, $repository_action, $validation_rules_method, $validated_data,$request);
 
 
         $execution_status = $this->getRepository()->save($request->get(data_keyname_prefix()));
