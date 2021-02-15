@@ -198,8 +198,11 @@ abstract class KlorchidMultiModeScreen extends Screen
                 Alert::error(__("Not executed action: :action", ["action" => __($repository_action)]));
                 Log::warning(self::class . ' repository "' . $this->getRepositoryActionMethod($repository_action) . '"  method was not successfully executed');
             }
+
+
+
         } else {
-            throw new \Exception(self::class . ' "' . $repository_action . '" action name has not a related repository action method', 1);
+            throw new \Exception(self::class . ' "' . $repository_action . '" action name has not a related repository method', 1);
         };
 
 
@@ -247,10 +250,13 @@ abstract class KlorchidMultiModeScreen extends Screen
 
     // TODO: notify on orchid github issues that if you set the first param as Request type object the, then a null is passesd to the rest of the params
     /**
-     * Will run the repository save method passing the  data  from htto post to the repository save method
+     * Will run the repository save method passing the  data  from http post, it will try to run a validation if
+     * a validation if the name the current screen mode match the validation rule method name
+     *
+     * @param string|null $screen_mode
      * @param Request $request
      */
-    public function save($screen_mode, Request $request)//,?string $screen_mode)
+    public function save(?string $screen_mode, Request $request)//,?string $screen_mode)
     {
 
 
@@ -275,7 +281,7 @@ abstract class KlorchidMultiModeScreen extends Screen
             );
         }
 
-        dd($screen_mode, $repository_action, $validation_rules_method, $validated_data,$request);
+        //dd($screen_mode, $repository_action, $validation_rules_method, $validated_data,$request);
 
 
         $execution_status = $this->getRepository()->save($request->get(data_keyname_prefix()));

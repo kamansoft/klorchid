@@ -41,11 +41,11 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
 
 
         if ($this->isPkInRequest()) {
-            $this->resolveRouteBinding($this->getPkValue());
+            $this->resolveRouteBinding($this->getRequestPkValue());
 
         }
 
-        //dd($this->getPkValue());
+        //dd($this->getRequestPkValue());
         //$this->GUI = $gui;
 
 
