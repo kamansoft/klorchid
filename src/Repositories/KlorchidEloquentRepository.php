@@ -169,7 +169,7 @@ abstract class KlorchidEloquentRepository implements KlorchidRepositoryInterface
             //$save_executed = false;
             if ($save_executed) {
                 $pk_name = $this->getModel()->getKeyName();
-                Log::alert(self::class . " repository model filled " . $this->getModel()->getTable() . ' table with '.$pk_name.'='.$this->getModel()->$pk_name);
+                Log::alert(self::class . " repository model added a row at " . $this->getModel()->getTable() . ' table with '.$pk_name.'='.$this->getModel()->$pk_name);
             }
             return $save_executed;
         }catch (\Illuminate\Database\QueryException $queryException){
