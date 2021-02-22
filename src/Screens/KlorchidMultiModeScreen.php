@@ -190,15 +190,22 @@ abstract class KlorchidMultiModeScreen extends Screen
     }
 
     /**
-     * Set the value of curent_screen_mode attribute with the string value passed on $mode attribute,
-     * But this method checks if that $mode is a valid one and will throw an exeption if it is not
+     * Set the value of curent_screen_mode attribute with the string value passed on $mode attribute.
+     * If $mode is null the this do nothing, otherwise this method checks if that $mode is a valid 
+     * one and will throw an exeption if it is not
      *
      * @param string $mode
      * @return $this
      * @throws \Exception
      */
-    public function setMode(string $mode): self
+    public function setMode(?string $mode): self
     {
+        if (is_null($mode)){
+            Log::warning(self::class . ' aoiding the attempt to set null as screen mode ');
+            return $this;
+            
+        }
+        
         if ($this->modeExists($mode)) {
             $this->current_screen_mode = $mode;
         } else {
@@ -302,8 +309,9 @@ abstract class KlorchidMultiModeScreen extends Screen
         ;
     }
 
-    public function getActionValidationRulesMethod(string $action): string
+    public function getActionValidationRulesMethod(string $action)
     {
+        
         return $this->getActionValidationRulesMethods()->get($action);
     }
 
@@ -314,6 +322,7 @@ abstract class KlorchidMultiModeScreen extends Screen
 
     public function getActionValidationRules(string $action): array
     {
+        $repository_validation_rule_method = $this->getActionValidationRulesMethod($action);
         return $this->getRepository()->{$repository_validation_rule_method}();
     }
 
