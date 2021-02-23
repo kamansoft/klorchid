@@ -1,122 +1,91 @@
 <?php
 namespace Kamansoft\Klorchid\Screens;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
 use Orchid\Screen\Layout;
-use Orchid\Support\Facades\Dashboard;
-use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Button;
 
-abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
-{
+abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen {
 
-    public function detectScreenModeLayout(): string
-    {
-        $mode_to_return = $this->getMode();
+	private bool $save_commandbar_btn = true;
+	//private bool $
 
-        $repository = $this->getRepository();
+	public function addSaveButton() {
+		$this->save_commandbar_btn = true;
+	}
+	public function removeSaveButton() {
+		$this->save_commandbar_btn = false;
+	}
 
-        $url_segments = $repository->getRequest()->segments();
+	public function getSaveButtonForCrud() {
+		return Button::make(__('Save'))
+			->icon('check')
+			->parameters([
+				'repository_action' => $this->getMode(),
+				'run_validation' => true,
+			])
+			->canSee($this->userHasScreenModePermission($this->getMode()))
+			->method('runRepositoryAction');
+	}
 
-        $last_segment = array_pop($url_segments);
+	public function detectScreenModeLayout(): string{
+		$mode_to_return = $this->getMode();
 
-        // if last segment isent create or edit
-        // we check for the segmet before the last one
-        if (! ($last_segment === 'create' or $last_segment === 'edit') and count($url_segments) > 1) {
-            $last_segment = $url_segments[count($url_segments) - 1];
-        }
+		$repository = $this->getRepository();
 
-        // dd($url_segments,$last_segment);
+		$url_segments = $repository->getRequest()->segments();
 
-        if ($last_segment === 'create') {
-            $mode_to_return = 'create';
-        } else if ($last_segment === 'edit') {
-            $edit_mode_permission = $this->getScreenModePerm('edit');
-            $view_mode_permission = $this->getScreenModePerm('view');
+		$last_segment = array_pop($url_segments);
 
-            if (! empty($view_mode_permission) and $this->userHasPermission($view_mode_permission)) {
-                $mode_to_return = 'view';
-            }
-            if (! empty($edit_mode_permission) and $this->userHasPermission($edit_mode_permission)) {
-                $mode_to_return = 'edit';
-            }
-        }
+		// if last segment isent create or edit
+		// we check for the segmet before the last one
+		if (!($last_segment === 'create' or $last_segment === 'edit') and count($url_segments) > 1) {
+			$last_segment = $url_segments[count($url_segments) - 1];
+		}
 
-        return $mode_to_return;
-    }
+		// dd($url_segments,$last_segment);
 
-    public function detectSetGetScreenMode(): self
-    {
-        return $this->setMode($this->detectScreenModeLayout())
-            ->getMode();
-    }
+		if ($last_segment === 'create') {
+			$mode_to_return = 'create';
+		} else if ($last_segment === 'edit') {
+			$edit_mode_permission = $this->getScreenModePerm('edit');
+			$view_mode_permission = $this->getScreenModePerm('view');
 
-    /**
-     * if $mode is null will try to guess the mode, then set it
-     *
-     * {@inheritdoc}
-     * @see \Kamansoft\Klorchid\Screens\KlorchidMultiModeScreen::setMode()
-     */
-    public function setMode(?string $mode): self
-    {
-        if (is_null($mode)) {
-            $mode = $this->detectScreenModeLayout();
-        }
-        return parent::setMode($mode);
-        F
-    }
+			if (!empty($view_mode_permission) and $this->userHasPermission($view_mode_permission)) {
+				$mode_to_return = 'view';
+			}
+			if (!empty($edit_mode_permission) and $this->userHasPermission($edit_mode_permission)) {
+				$mode_to_return = 'edit';
+			}
+		}
 
-    /*
-     * public function __construct( ? KlorchidRepositoryInterface $repository = null) {
-     * parent::__construct($repository);
-     *
-     * $this->setScreenModePerms();
-     *
-     * //$this->setScreenModePerms($this->screenModePerms());
-     *
-     * }
-     */
-    public function layout(): array
-    {
+		return $mode_to_return;
+	}
 
-        // $this->setMode($this->detectScreenModeLayout());
-        return parent::layout();
-    }
+	/**
+	 * if $mode is null will try to guess the mode, then set it
+	 *
+	 * {@inheritdoc}
+	 * @see \Kamansoft\Klorchid\Screens\KlorchidMultiModeScreen::setMode()
+	 */
+	public function setMode( ? string $mode = null) : self {
+		if (is_null($mode)) {
+			$mode = $this->detectScreenModeLayout();
+		}
+		return parent::setMode($mode);
+	}
 
-    public function save(?string $screen_mode, Request $request)
-    {
-        // $repository = $this->getRepository();
-        if ($screen_mode) {
-            $this->setMode($screen_mode);
-        } else {
-            $screen_mode = $this->detectSetGetScreenMode(true);
-        }
+	public function layout(): array
+	{
 
-        // $item = $repository->getModel();
-        if ($this->userHasPermissionOrFail($screen_mode)) {
-            return $this->runRepositoryAction($screen_mode, $request, true);
-        } else {
-            return false;
-        }
-    }
+		// $this->setMode($this->detectScreenModeLayout());
+		return parent::layout();
+	}
 
-    public function runRepositoryAction(string $repository_action, Request $request, bool $run_validation = false)
-    {
-        if ($screen_mode) {
-            $this->setMode($screen_mode);
-        } else {
-            $screen_mode = $this->detectSetGetScreenMode(true);
-        }
-        $this->userHasPermissionOrFail();
-        parent::runRepositoryAction($repository_action, $request, $run_validation); // TODO: Change the autogenerated stub
-    }
+	abstract public function defaultModeLayout(): array;
 
-    abstract public function defaultModeLayout(): array;
+	abstract public function viewModeLayout(): array;
 
-    abstract public function viewModeLayout(): array;
+	abstract public function editModeLayout(): array;
 
-    abstract public function editModeLayout(): array;
-
-    abstract public function createModeLayout(): array;
+	abstract public function createModeLayout(): array;
 }

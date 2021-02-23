@@ -10,7 +10,7 @@ interface KlorchidCrudRepositoryInterface
 
     public function createAction(?array $data = null):bool;
 
-    public function updateAction(?array $data = null):bool;
+    public function editAction(?array $data = null):bool;
 
     public function deleteAction(?array $data = null):bool;
 

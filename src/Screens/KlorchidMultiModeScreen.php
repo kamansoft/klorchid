@@ -198,7 +198,7 @@ abstract class KlorchidMultiModeScreen extends Screen
      * @return $this
      * @throws \Exception
      */
-    public function setMode(?string $mode): self
+    public function setMode(?string $mode =null): self
     {
         if (is_null($mode)){
             Log::warning(self::class . ' aoiding the attempt to set null as screen mode ');
@@ -261,15 +261,18 @@ abstract class KlorchidMultiModeScreen extends Screen
     }
 
     // \related to the current mode
-    public function runRepositoryAction(string $repository_action, Request $request, bool $run_validation = false): void
+    public function runRepositoryAction(string $repository_action, ?bool $run_validation , Request $request): void
     {
 
-        // check if the action match the mode and if it does check for permission
+
+        // check if the action match some screen mode and if it does check for its permission
         $mode_perm = $this->getScreenModePerm($repository_action);
-        if ($mode_perm) {
-            Log::warning(self::class . ' user: ' . Auth::user()->id . ' tryed to run screen runRepositoryAction method with  "' . $repository_action . '" repository action , without "' . $mode_perm . '" permission');
-            $this->userHasPermissionOrFail($mode_perm);
+        
+        if ($mode_perm  and $this->userHasPermissionOrFail($mode_perm) ) {
+            Log::warning(self::class . ' user: ' . Auth::user()->id . ' executed runRepositoryAction method with  "' . $repository_action . '" repository action with "' . $mode_perm . '" permission');
         }
+
+        //dd($repository_action,$mode_perm,$this->userHasPermissionOrFail($mode_perm));
 
         // check for a valid repository action
         if ($this->repositoryActionExists($repository_action)) {
@@ -289,9 +292,8 @@ abstract class KlorchidMultiModeScreen extends Screen
                 Log::warning(self::class . "No validation was executed for " . $this->getRepositoryActionMethod($repository_action) . ' method');
             }
 
-            // if ($this->userHasPermission())
 
-            $executions_status = $this->getRepository()->{$this->getRepositoryActionMethod($repository_action)}($validated_data);
+            $executions_status = $this->getRepository()->{$this->getRepositoryActionMethod($repository_action)}($request->get(data_keyname_prefix()));
             if ($executions_status) {
                 Alert::success(__("Successfully executed action: :action", [
                     "action" => __($repository_action)
