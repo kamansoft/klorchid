@@ -14,7 +14,9 @@ interface KlorchidCrudRepositoryInterface
 
     public function deleteAction(?array $data = null):bool;
 
-    public function statusChangeAction(?array $data = null):bool;
+    public function disableAction(?array $data=null):bool;
 
-    public function satusChangeValidationRules():array;
+    public function statusSetAction(?array $data = null):bool;
+
+
 }

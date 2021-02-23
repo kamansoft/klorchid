@@ -24,41 +24,39 @@ class StatusSetFormLayout extends Rows
     use LayoutTrait;
 
     /**
-     * Views.
-     *
      * @return array
-     * @throws \Throwable|\Orchid\Screen\Exceptions\TypeException
-     *
      */
     public function fields(): array
     {
 
+        $model = $this->query->get(data_keyname_prefix());
+        $show_cur = (!is_null($model->cur_status_reason)and !empty($model->cur_status_reason) );
 
-        $show_cur = !is_null($this->query->get('element')->cur_status_reason);
-        $model = $this->query->get('element');
+        /*
         $new_status_string = $model->statusToString(!$model->status);
-        $new_status_text_class = !$model->status ? 'text-success' : 'text-danger';
+        $new_status_text_class = !$model->status ? 'text-success' : 'text-danger';*/
+
         $current_status_text_class = $model->status ? 'text-success' : 'text-danger';
         return [
 
-            Input::make('element.string_status')
+            Input::make(data_keyname_prefix('string_status'))
                 ->class('form-control ' . $current_status_text_class)
                 ->type('text')
                 ->title(__('Current Status') . ':')
                 ->disabled(true),
-            Input::make('element.cur_status_reason')
+            Input::make(data_keyname_prefix('cur_status_reason'))
                 ->type('text')
                 ->canSee($show_cur)
                 ->class('form-control text-dark')
                 ->title(__('Current status Reason') . ':'),
                 //->disabled(true),
 
-            Select::make('element.new_status')
+            Select::make(data_keyname_prefix('new_status'))
                 ->options($model::statusStringValues())
 
                 ->title(__('New Status') . ':'),
 
-            Input::make('element.new_status_reason')
+            Input::make(data_keyname_prefix('new_status_reason'))
                 ->type('text')
                 ->max(255)
                 ->min(20)

@@ -19,16 +19,7 @@ abstract class KlorchidForm extends Rows {
 	private bool $return_status_field = false;
 	private bool $return_status_fields = false;
 
-    /**
-     * will prepend the klorchid key name of the form elements to the attribute passedd as param, it will return the
-     * 'klorchid.screen_query_required_elements.element_to_display' config enttry if $attribute_name is null
-     *
-     * @param string|null $attribute_name the name of the attribute to preppend the form data keyname
-     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed|string
-     */
-	public function prefixFormDataKeyTo(?string $attribute_name=null){
-        return data_keyname_prefix($attribute_name);
-    }
+
 	
 	public function setPkField(bool $value = true) {
 		$this->return_pk_field = $value;
@@ -51,70 +42,6 @@ abstract class KlorchidForm extends Rows {
 
 
 
-	public function getPkField(): Field{
-		$pk_field_name = $this->getModel()->getKeyName();
-        $field_class = $this->klorchidFieldStatusClass();
-
-		return Input::make($this->prefixFormDataKeyTo($pk_field_name))
-			->type('text')
-			->max(255)
-			->title(__(ucfirst($pk_field_name)))
-			->class($field_class) //. $this->getFieldCssClass($model))
-			->disabled(true)
-			->canSee($this->getScreenMode() !== 'create');
-	}
-
-	public function getStatusField(): Field {
-        $field_class = $this->klorchidFieldStatusClass();
-		return Input::make($this->prefixFormDataKeyTo('stringStatus'))
-			->class($field_class) //. $this->getFieldCssClass($model))
-			->type('text')
-			->title(__('Current Status') . ':')
-			->disabled(true);
-	}
-	public function getStatusReasonField(): Field {
-        $field_class = $this->klorchidFieldClass();
-		return TextArea::make($this->prefixFormDataKeyTo('cur_status_reason'))
-			->class($field_class)
-			->title(__('Current Status Reason') . ': ')
-			->disabled(true);
-	}
-
-	public function getStatusFields(): array
-	{
-		return [
-			$this->getStatusField(),
-			$this->getStatusReasonField(),
-		];
-	}
-
-	public function getBlamingFields(): array
-	{
-		$field_class = $this->klorchidFieldClass();
-		return [
-			Input::make($this->prefixFormDataKeyTo('creatorName'))
-				->class($field_class)
-				->type('text')
-				->title(__('Created by') . ':')
-				->disabled(true),
-			Input::make($this->prefixFormDataKeyTo('created_at'))
-				->class($field_class)
-				->type('text')
-				->title(__('Creation date') . ':')
-				->disabled(true),
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.updaterName')
-				->class($field_class)
-				->type('text')
-				->title(__('Updated by') . ':')
-				->disabled(true),
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.updated_at')
-				->class($field_class)
-				->type('text')
-				->title(__('Update date') . ':')
-				->disabled(true),
-
-		];
-	}
 
     private function checkScreenQueryAttributes() {
     
