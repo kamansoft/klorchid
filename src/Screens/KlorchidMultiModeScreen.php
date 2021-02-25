@@ -46,7 +46,7 @@ abstract class KlorchidMultiModeScreen extends Screen
             ->method('runRepositoryAction');
     }
 
-    public function __construct(?KlorchidRepositoryInterface $repository = null)
+    public function __construct(?KlorchidRepositoryInterface $repository )
     {
         $this->current_screen_mode = 'default';
         $this->setModes()->setActionPerms();

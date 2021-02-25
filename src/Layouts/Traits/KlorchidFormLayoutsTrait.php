@@ -1,5 +1,7 @@
 <?php
 
+namespace Kamansoft\Klorchid\Layouts\Traits;
+
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\TextArea;
@@ -10,11 +12,11 @@ trait KlorchidFormLayoutsTrait
 
     public function getPkField(): Field
     {
-        $model = $this->getModel();
+        $model = $this->query->get(data_keyname_prefix()) ;
         $pk_field_name = $model->getKeyName();
         $field_class = $this->klorchidFieldStatusClass();
 
-        return Input::make($this->prefixFormDataKeyTo($pk_field_name))
+        return Input::make(data_keyname_prefix($pk_field_name))
             ->type('text')
             ->max(255)
             ->title(__(ucfirst($pk_field_name)))
@@ -23,9 +25,11 @@ trait KlorchidFormLayoutsTrait
             ->canSee($model->exists());
     }
 
+
+
     public function klorchidFieldStatusClass(string $extra = 'form-control ', ?object $element = null)
     {
-        $element = $element ?? $this->getModel();
+        $element = $element ?? $this->query->get(data_keyname_prefix()) ;
         if ($this->fieldIsDisabled($element)) {
             $to_return = 'text-danger';
         } else {
@@ -38,7 +42,7 @@ trait KlorchidFormLayoutsTrait
 
     public function fieldIsDisabled(?object $element = null): bool
     {
-        $element = $element ?? $this->getModel();
+        $element = $element ?? $this->query->get(data_keyname_prefix()) ;
         $to_return = false;
         if (property_exists($element, 'status')) {
             $to_return = !boolval($element->status);
@@ -57,7 +61,7 @@ trait KlorchidFormLayoutsTrait
     public function getStatusField(): Field
     {
         $field_class = $this->klorchidFieldStatusClass();
-        return Input::make($this->prefixFormDataKeyTo('stringStatus'))
+        return Input::make(data_keyname_prefix('stringStatus'))
             ->class($field_class) //. $this->getFieldCssClass($model))
             ->type('text')
             ->title(__('Current Status') . ':')
@@ -67,7 +71,7 @@ trait KlorchidFormLayoutsTrait
     public function getStatusReasonField(): Field
     {
         $field_class = $this->klorchidFieldClass();
-        return TextArea::make($this->prefixFormDataKeyTo('cur_status_reason'))
+        return TextArea::make(data_keyname_prefix('cur_status_reason'))
             ->class($field_class)
             ->title(__('Current Status Reason') . ': ')
             ->disabled(true);
@@ -77,12 +81,12 @@ trait KlorchidFormLayoutsTrait
     {
         $field_class = $this->klorchidFieldClass();
         return [
-            Input::make($this->prefixFormDataKeyTo('creatorName'))
+            Input::make(data_keyname_prefix('creatorName'))
                 ->class($field_class)
                 ->type('text')
                 ->title(__('Created by') . ':')
                 ->disabled(true),
-            Input::make($this->prefixFormDataKeyTo('created_at'))
+            Input::make(data_keyname_prefix('created_at'))
                 ->class($field_class)
                 ->type('text')
                 ->title(__('Creation date') . ':')

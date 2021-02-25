@@ -3,16 +3,22 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 use Kamansoft\Klorchid\KlorchidPermissionTrait;
-use Orchid\Screen\Field;
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
-use Kamansoft\Klorchid\Layouts\KlorchidLayoutFieldsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidFormLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenFormLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenLayoutsTrait;
 
-abstract class KlorchidForm extends Rows {
+
+
+abstract class KlorchidMultiModeForm extends Rows {
 
 	use KlorchidPermissionTrait;
-    use KlorchidLayoutFieldsTrait;
+	use KlorchidLayoutsTrait,
+        KlorchidMultimodeScreenLayoutsTrait,
+        KlorchidFormLayoutsTrait,
+        KlorchidMultimodeScreenFormLayoutsTrait;
+
 
 	private bool $return_pk_field = false;
 	private bool $return_blaming_fields = false;
