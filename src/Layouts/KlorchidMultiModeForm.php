@@ -14,10 +14,7 @@ use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenLayoutsTrait;
 abstract class KlorchidMultiModeForm extends Rows {
 
 	use KlorchidPermissionTrait;
-	use KlorchidLayoutsTrait,
-        KlorchidMultimodeScreenLayoutsTrait,
-        KlorchidFormLayoutsTrait,
-        KlorchidMultimodeScreenFormLayoutsTrait;
+	use KlorchidMultimodeScreenFormLayoutsTrait;
 
 
 	private bool $return_pk_field = false;
