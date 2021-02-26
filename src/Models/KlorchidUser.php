@@ -16,14 +16,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
-use Kamansoft\Klorchid\Models\Contracts\KlorchidModelInterface;
-use  Kamansoft\Klorchid\Models\Traits\KlorchidModelsTrait;
-use  Kamansoft\Klorchid\Models\Traits\KlorchidStatusTrait;
+use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
+use  Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
+use  Kamansoft\Klorchid\Models\Traits\KlorchidModelsStatusTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 
 
 
-class KlorchidUser extends User implements KlorchidModelInterface
+class KlorchidUser extends User implements KlorchidModelsInterface
 {
 
     use HasApiTokens;
@@ -35,8 +35,8 @@ class KlorchidUser extends User implements KlorchidModelInterface
     use Attachable;
 
     //klorchid related
-    use KlorchidStatusTrait;
-    use KlorchidModelsTrait;
+    use KlorchidModelsStatusTrait;
+    use KlorchidUserBlamingModelsTrait;
     use KlorchidEloquentModelsTrait;
 
     /**

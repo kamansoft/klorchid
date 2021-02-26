@@ -8,14 +8,14 @@ use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
-trait KlorchidStatusTrait
+trait KlorchidModelsStatusTrait
 {
     static public function statusStringValues():array
     {
         //this is odd and ugly but the best i can
         return [
-             __('Inactive')=>'0',
-             __('Active') => '1'
+             __('Disable')=>'0',
+             __('Enabled') => '1'
 
         ];
     }

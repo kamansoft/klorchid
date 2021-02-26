@@ -18,15 +18,19 @@ use Orchid\Screen\Fields\Select;
  *
  * @package App\Orchid\Layouts
  */
-class StatusSetFormLayout extends Rows
+class StatusSetFormLayout extends KlorchidFormLayout
 {
 
-    use LayoutTrait;
+
+    public function getStatusOptions(){
+        return $this->query->get(data_keyname_prefix())::statusStringValues();
+    }
+
 
     /**
      * @return array
      */
-    public function fields(): array
+    public function formFields(): array
     {
 
         $model = $this->query->get(data_keyname_prefix());

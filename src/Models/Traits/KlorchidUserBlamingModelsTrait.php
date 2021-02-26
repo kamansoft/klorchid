@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Kamansoft\Klorchid\Models\Kuser;
 
 
-trait KlorchidModelsTrait
+trait KlorchidUserBlamingModelsTrait
 {
 
 

@@ -7,14 +7,16 @@ use Orchid\Screen\Layouts\Rows;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidLayoutsTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidFormLayoutsTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenFormLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Contracts\KlorchidLayoutsInterface;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenLayoutsTrait;
 
 
 
-abstract class KlorchidMultiModeForm extends Rows {
+abstract class KlorchidMultiModeScreenFormsLayout extends KlorchidFormLayout  {
 
 	use KlorchidPermissionTrait;
 	use KlorchidMultimodeScreenFormLayoutsTrait;
+
 
 
 	private bool $return_pk_field = false;
@@ -45,24 +47,11 @@ abstract class KlorchidMultiModeForm extends Rows {
 
 
 
-
-    private function checkScreenQueryAttributes() {
-    
-        collect(config('klorchid.screen_query_required_elements'))->map(function ($element_key) {
-            if (is_null($this->query->get($element_key))) {
-                throw new \Exception("\"$element_key\" key was not found. '" . self::class . "' instances needs the \"$element_key\" key at the screen query returned array", 1);
-            }
-        });
-        return $this;
-    }
-
 	public function fields(): array
 	{
-		$this->checkScreenQueryAttributes();
 
-		$fields_to_return = [];
 
-		$fields_to_return = $this->formFields();
+		$fields_to_return = parent::fields();
 
 		//add id field
 		if ($this->return_pk_field) {
@@ -86,5 +75,5 @@ abstract class KlorchidMultiModeForm extends Rows {
 
 
 
-	abstract public function formFields() : array;
+
 }

@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Models\Contracts;
 
 
-interface KlorchidModelInterface
+interface KlorchidModelsInterface
 {
     /**
      * Retrives the user to user for create or blame

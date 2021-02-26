@@ -4,7 +4,10 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-class KlorchidLayout
+
+
+abstract class KlorchidLayout
+
 {
 
 }

@@ -11,13 +11,11 @@ trait KlorchidEloquentModelsTrait
 {
 
     protected static function bootKlorchidEloquentModelsTrait() {
-		//<parent::boot();
 		static::creating(function ($model) {
 			$model->blameOnCreate();
 		});
 		static::updating(function ($model) {
 			$model->blameOnUpdate();
-
 		});
 	}
 

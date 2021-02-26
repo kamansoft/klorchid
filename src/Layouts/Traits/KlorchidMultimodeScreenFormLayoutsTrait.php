@@ -1,6 +1,7 @@
 <?php
 
 namespace Kamansoft\Klorchid\Layouts\Traits;
+
 trait KlorchidMultimodeScreenFormLayoutsTrait
 {
     use KlorchidMultimodeScreenLayoutsTrait, KlorchidFormLayoutsTrait;
