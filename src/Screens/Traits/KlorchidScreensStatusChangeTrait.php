@@ -1,20 +1,23 @@
 <?php
 
+namespace Kamansoft\Klorchid\Screens\Traits;
+
 use Kamansoft\Klorchid\Layouts\StatusSetFormLayout;
+use Orchid\Screen\Layouts\Modal;
+use Orchid\Screen\Actions\ModalToggle;
 
-class KlorchidScreensStatusChangeTrait
+trait KlorchidScreensStatusChangeTrait
 {
-    private bool $set_status_set_button = true;
+    private bool $display_status_set_button = true;
 
-    public function setStatusSetButton()
+    public function getDisplayStatusSetButton()
     {
-        $this->set_status_set_button = true;
-        return $this;
+        return $this->display_status_set_button;
     }
 
-    public function unsetStatusSetButton()
+    public function setDisplayStatusSetButton(bool $status)
     {
-        $this->set_status_set_button = false;
+        $this->display_status_set_button = $status;
         return $this;
     }
 
@@ -26,13 +29,20 @@ class KlorchidScreensStatusChangeTrait
         $modal->title(__('Are you sure to set a new Status ?'))
             ->applyButton(__('Change'))
             ->closeButton(__('Cancel'));
-        $this->status_change_modal = $modal;
-        return $this;
+
+        return $modal;
     }
 
+    public function statusSetButton()
+    {
 
-
-
+        return ModalToggle::make(__('Status Set'))
+            ->modal('status-set-modal')
+            ->method('statusSetAction')
+            //->canSee($can_see)
+            //->class($this->status ? 'btn btn-success' : 'btn btn-danger')
+            ->icon('check');
+    }
 
 
 }
