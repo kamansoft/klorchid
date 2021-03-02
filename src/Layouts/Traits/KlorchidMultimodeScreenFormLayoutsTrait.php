@@ -16,14 +16,14 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
             $to_return = true;
             if (
                 $this->getScreenMode() === 'create' and
-                !is_null($this->getScreenActionPerm('create')) and
-                $this->userHasPermission($this->getScreenActionPerm('create')) === false
+                !is_null($this->getScreenModePerm('create')) and
+                $this->userHasPermission($this->getScreenModePerm('create')) === false
             ) {
                 $to_return = false;
             } elseif (
                 $this->getScreenMode() === 'edit' and
-                !is_null($this->getScreenActionPerm('edit')) and
-                $this->userHasPermission($this->getScreenActionPerm('edit')) === false
+                !is_null($this->getScreenModePerm('edit')) and
+                $this->userHasPermission($this->getScreenModePerm('edit')) === false
             ) {
                 $to_return = false;
             }

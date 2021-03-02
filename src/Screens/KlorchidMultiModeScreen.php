@@ -31,67 +31,20 @@ abstract class KlorchidMultiModeScreen extends Screen
 
     private string $current_screen_mode;
 
-    private Collection $klorchid_screen_action_perms;
+    private Collection $screen_action_perms;
+
+    private Collection $screen_mode_perms;
 
     public function __construct(?KlorchidRepositoryInterface $repository)
     {
         $this->current_screen_mode = 'default';
-        $this->setModes();
+        $this->setModes()->setModePerms();
         if (!is_null($repository)) {
             $this->setRepository($repository)
                 ->setRepositoryActions()->setActionPerms()
                 ->setRepositoryActionValidations()
                 ->setRepositoryActionValidations();
         }
-    }
-
-    /**
-     * Get the array from $this->actionPermissions and store it in the klorchid_screen_action_perms collection
-     *
-     * @return $this
-     */
-    private function setActionPerms(): self
-    {
-        $mode_perms = collect($this->actionPermissions())->mapWithKeys(function ($perm, $action) {
-
-            /*
-            if (! $this->modeExists($action)) {
-                throw new \Exception(self::class . " instance has not an asociated method for \"$action\" mode", 1);
-            }*/
-            if (!$this->repositoryActionExists($action)) {
-                throw new \Exception("Instance of " . self::class . " has not an asociated action method for \"$action\" mode", 1);
-            }
-            if (!$this->permissionExists($perm)) {
-                throw new \Exception(self::class . ":  \"$perm\" is not a valid permission key.", 1);
-            }
-            return [
-                $action => $perm
-            ];
-        })
-            ->reject(function ($perm, $action) {
-                return (!$this->permissionExists($perm) and !$this->repositoryActionExists($action));
-            });
-
-        $this->klorchid_screen_action_perms = $mode_perms;
-        return $this;
-    }
-
-    abstract public function actionPermissions(): array;
-
-    /**
-     *
-     * @param string $action
-     * @return bool
-     */
-    public function repositoryActionExists(string $action): bool
-    {
-        // return $this->getRepositoryActions()->get($action) ? true : false;
-        return $this->getRepositoryActions()->get($action) ? true : false;
-    }
-
-    public function getRepositoryActions(): Collection
-    {
-        return $this->available_repository_actions;
     }
 
     /**
@@ -151,6 +104,55 @@ abstract class KlorchidMultiModeScreen extends Screen
         // dd($this->getRepositoryActions(),$this->repository_action_validation_rules_methods,$this->automatic_repository_action_validation_rules_methods);
         return $this;
     }
+
+    /**
+     *
+     * @param string $action
+     * @return bool
+     */
+    public function repositoryActionExists(string $action): bool
+    {
+        // return $this->getRepositoryActions()->get($action) ? true : false;
+        return $this->getRepositoryActions()->get($action) ? true : false;
+    }
+
+    public function getRepositoryActions(): Collection
+    {
+        return $this->available_repository_actions;
+    }
+
+    /**
+     * Get the array from $this->actionPermissions and store it in the screen_action_perms collection
+     *
+     * @return $this
+     */
+    private function setActionPerms(): self
+    {
+        $mode_perms = collect($this->actionPermissions())->mapWithKeys(function ($perm, $action) {
+
+            /*
+            if (! $this->modeExists($action)) {
+                throw new \Exception(self::class . " instance has not an asociated method for \"$action\" mode", 1);
+            }*/
+            if (!$this->repositoryActionExists($action)) {
+                throw new \Exception("Instance of " . self::class . " has not an asociated action method for \"$action\" action", 1);
+            }
+            if (!$this->permissionExists($perm)) {
+                throw new \Exception(self::class . ":  \"$perm\" is not a valid permission key.", 1);
+            }
+            return [
+                $action => $perm
+            ];
+        })
+            ->reject(function ($perm, $action) {
+                return (!$this->permissionExists($perm) and !$this->repositoryActionExists($action));
+            });
+
+        $this->screen_action_perms = $mode_perms;
+        return $this;
+    }
+
+    abstract public function actionPermissions(): array;
 
     private function setRepositoryActions(): self
     {
@@ -243,19 +245,19 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $this->available_screen_modes;
     }
 
-    public function userHasScreenActionPermission(string $action): bool
+    public function userHasActionPermission(string $action): bool
     {
-        return $this->userHasPermission($this->getScreenActionPerm($action));
+        return $this->userHasPermission($this->getActionPerm($action));
     }
 
-    public function getScreenActionPerm(string $mode): string
+    public function getActionPerm(string $mode): string
     {
-        return $this->getScreenActionPerms()->get($mode);
+        return $this->getActionPerms()->get($mode);
     }
 
-    public function getScreenActionPerms(): Collection
+    public function getActionPerms(): Collection
     {
-        return $this->klorchid_screen_action_perms;
+        return $this->screen_action_perms;
     }
 
     public function setAutomaticActionValidation(bool $value = true): self
@@ -279,14 +281,12 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $mode_layout_array; // array_merge($this->multiModeLayout(), $mode_layout_array);
     }
 
-    // \related to the current mode
-
     public function runRepositoryAction(string $repository_action, ?bool $run_validation, Request $request): void
     {
 
 
         // check if the action match some screen mode and if it does check for its permission
-        $mode_perm = $this->getScreenActionPerm($repository_action);
+        $mode_perm = $this->getActionPerm($repository_action);
 
         if ($mode_perm and $this->userHasPermissionOrFail($mode_perm)) {
             Log::warning(self::class . ' user: ' . Auth::user()->id . ' executed runRepositoryAction method with  "' . $repository_action . '" repository action with "' . $mode_perm . '" permission');
@@ -336,6 +336,8 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $this->getActionValidationRulesMethods()->get($action);
     }
 
+    // \related to the current mode
+
     public function getActionValidationRulesMethods(): Collection
     {
         return $this->repository_action_validation_rules_methods;
@@ -367,8 +369,6 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $this->getActionValidationRulesMethods()->get($action) ? true : false;
     }
 
-    // TODO: notify on orchid github issues that if you set the first param as Request type object the, then a null is passesd to the rest of the params
-
     /**
      * Will run the repository save method passing the data from http post, it will try to run a validation if
      * a validation if the name the current screen mode match the validation rule method name
@@ -379,9 +379,9 @@ abstract class KlorchidMultiModeScreen extends Screen
     public function save(?string $screen_mode, Request $request) // ,?string $screen_mode)
     {
         $screen_mode = $screen_mode ?? $this->getMode();
-        $mode_perm = $this->getScreenActionPerm($screen_mode);
+        $mode_perm = $this->getActionPerm($screen_mode);
 
-        if ($mode_perm and $this->screenModePermExists($screen_mode) and !$this->userHasPermission($this->getScreenActionPerm($screen_mode))) {
+        if ($mode_perm and $this->modePermExists($screen_mode) and !$this->userHasPermission($this->getActionPerm($screen_mode))) {
             Log::warning(self::class . ' user: ' . Auth::user()->id . ' tryed to run screen save method on  "' . $screen_mode . '" screen mode, without "' . $mode_perm . '" permission');
             $this->userHasPermissionOrFail($mode_perm);
         } else {
@@ -410,10 +410,50 @@ abstract class KlorchidMultiModeScreen extends Screen
         }
     }
 
-    public function screenModePermExists(string $mode): bool
+    public function modePermExists(string $mode): bool
     {
-        return $this->getScreenActionPerms()->get($mode) ? true : false;
+        return $this->getModePerms()->get($mode) ? true : false;
     }
 
+    public function getModePerm(string $mode)
+    {
+        return $this->getModePerms()->get($mode);
+    }
+
+    public function getModePerms()
+    {
+        return $this->screen_mode_perms;
+    }
+
+    // TODO: notify on orchid github issues that if you set the first param as Request type object the, then a null is passesd to the rest of the params
+
     abstract public function defaultModeLayout(): array;
+
+    private function setModePerms()
+    {
+        $mode_perms = collect($this->modePermissions())->mapWithKeys(function ($perm, $mode) {
+
+            /*
+            if (! $this->modeExists($mode)) {
+                throw new \Exception(self::class . " instance has not an asociated method for \"$mode\" mode", 1);
+            }*/
+            if (!$this->modeExists($mode)) {
+                throw new \Exception("Instance of " . self::class . " has not an asociated action method for \"$mode\" mode", 1);
+            }
+            if (!$this->permissionExists($perm)) {
+                throw new \Exception(self::class . ":  \"$perm\" is not a valid permission key.", 1);
+            }
+            return [
+                $mode => $perm
+            ];
+        })
+            ->reject(function ($perm, $mode) {
+                return (!$this->permissionExists($perm) and !$this->modeExists($mode));
+            });
+
+        $this->screen_mode_perms = $mode_perms;
+        return $this;
+    }
+
+    abstract public function modePermissions(): array;
 }

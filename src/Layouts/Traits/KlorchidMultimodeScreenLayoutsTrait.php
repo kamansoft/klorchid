@@ -15,10 +15,10 @@ trait KlorchidMultimodeScreenLayoutsTrait
 
     }
 
-    public function getScreenActionPerm(string $mode)
+    public function getScreenModePerm(string $mode)
     {
 
-        $query_key_name = config('klorchid.screen_query_required_elements.screen_action_perms');
+        $query_key_name = config('klorchid.screen_query_required_elements.screen_mode_perms');
 
         return $query_key_name ? $this->query->get($query_key_name)->get($mode) : null;
 
