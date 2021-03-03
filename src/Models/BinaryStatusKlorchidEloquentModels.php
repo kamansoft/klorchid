@@ -8,14 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 use Kamansoft\Klorchid\Models\Contracts\BinaryStatusKlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\Traits\BinaryStatusModelsTrait;
+
+/*
 use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidModelsStatusValuesTrait;
-use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;*/
 
 class BinaryStatusKlorchidEloquentModels extends Model implements KlorchidModelsInterface, BinaryStatusKlorchidModelsInterface
 {
-    use KlorchidUserBlamingModelsTrait;
-    use KlorchidEloquentModelsTrait;
+
+
     use BinaryStatusModelsTrait;
-    use KlorchidModelsStatusValuesTrait;
+
+    /*use KlorchidModelsStatusTrait;
+  use KlorchidUserBlamingModelsTrait;
+  use KlorchidEloquentModelsTrait;*/
 }

@@ -6,7 +6,10 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 trait BinaryStatusModelsTrait
 {
-
+    use KlorchidModelsStatusTrait;
+    use KlorchidUserBlamingModelsTrait;
+    use KlorchidEloquentModelsTrait;
+    use KlorchidModelsStatusValuesTrait;
 
     static public function stringToStatus(string $status):bool
     {

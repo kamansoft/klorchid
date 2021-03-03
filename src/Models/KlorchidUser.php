@@ -33,9 +33,6 @@ class KlorchidUser extends User implements BinaryStatusKlorchidModelsInterface
     use Attachable;
 
     //klorchid related
-    use KlorchidModelsStatusTrait;
-    use KlorchidUserBlamingModelsTrait;
-    use KlorchidEloquentModelsTrait;
     use BinaryStatusModelsTrait ;
 
 
