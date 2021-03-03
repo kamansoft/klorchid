@@ -12,7 +12,7 @@ trait KlorchidFormLayoutsTrait
 
     public function getPkField(): Field
     {
-        $model = $this->query->get(data_keyname_prefix()) ;
+        $model = $this->query->get(data_keyname_prefix());
 
         $pk_field_name = $model->getKeyName();
         $field_class = $this->klorchidFieldStatusClass();
@@ -27,11 +27,9 @@ trait KlorchidFormLayoutsTrait
     }
 
 
-
-
     public function klorchidFieldStatusClass(string $extra = '', ?object $element = null)
     {
-        $element = $element ?? $this->query->get(data_keyname_prefix()) ;
+        $element = $element ?? $this->query->get(data_keyname_prefix());
         if ($this->fieldIsDisabled($element)) {
             $to_return = 'text-danger';
         } else {
@@ -44,7 +42,7 @@ trait KlorchidFormLayoutsTrait
 
     public function fieldIsDisabled(?object $element = null): bool
     {
-        $element = $element ?? $this->query->get(data_keyname_prefix()) ;
+        $element = $element ?? $this->query->get(data_keyname_prefix());
         $to_return = false;
         if (property_exists($element, 'status')) {
             $to_return = !boolval($element->status);
@@ -62,7 +60,7 @@ trait KlorchidFormLayoutsTrait
 
     public function getStatusField(): Field
     {
-        $can_see  = $this->query->get(data_keyname_prefix())->exists;
+        $can_see = $this->query->get(data_keyname_prefix())->exists;
         $field_class = $this->klorchidFieldStatusClass();
         return Input::make(data_keyname_prefix('stringStatus'))
             ->class($field_class) //. $this->getFieldCssClass($model))
@@ -74,7 +72,7 @@ trait KlorchidFormLayoutsTrait
 
     public function getStatusReasonField(): Field
     {
-        $can_see  = $this->query->get(data_keyname_prefix())->exists;
+        $can_see = $this->query->get(data_keyname_prefix())->exists;
         $field_class = $this->klorchidFieldStatusClass();
         return TextArea::make(data_keyname_prefix('cur_status_reason'))
             ->class($field_class)
@@ -86,7 +84,7 @@ trait KlorchidFormLayoutsTrait
     public function getBlamingFields(): array
     {
         $field_class = 'form-control text-dark';//$this->klorchidFieldClass();
-        $can_see  = $this->query->get(data_keyname_prefix())->exists;
+        $can_see = $this->query->get(data_keyname_prefix())->exists;
         return [
             Input::make(data_keyname_prefix('creatorName'))
                 ->class($field_class)

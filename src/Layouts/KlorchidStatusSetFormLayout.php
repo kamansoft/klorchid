@@ -4,7 +4,6 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 
@@ -18,14 +17,24 @@ use Orchid\Screen\Fields\Select;
  *
  * @package App\Orchid\Layouts
  */
-class StatusSetFormLayout extends KlorchidFormLayout
+class KlorchidStatusSetFormLayout extends KlorchidFormLayout
 {
 
 
-    public function getStatusOptions(){
-        return $this->query->get(data_keyname_prefix())::statusStringValues();
+    public function getStatusOptions()
+    {
+        return collect($this->query->get(data_keyname_prefix())::statusStringValues())
+            ->mapWithKeys(function ($value, $key) {
+                return [
+                    $value => $key
+                ];
+            })
+            ->toArray();
     }
 
+    public function guessNewStatus(){
+        return !$this->query->get(data_keyname_prefix())->status;
+    }
 
     /**
      * @return array
@@ -34,7 +43,7 @@ class StatusSetFormLayout extends KlorchidFormLayout
     {
 
         $model = $this->query->get(data_keyname_prefix());
-        $show_cur = (!is_null($model->cur_status_reason)and !empty($model->cur_status_reason) );
+        $show_cur = (!is_null($model->cur_status_reason) and !empty($model->cur_status_reason));
 
         /*
         $new_status_string = $model->statusToString(!$model->status);
@@ -53,11 +62,11 @@ class StatusSetFormLayout extends KlorchidFormLayout
                 ->canSee($show_cur)
                 ->class('form-control text-dark')
                 ->title(__('Current status Reason') . ':'),
-                //->disabled(true),
+            //->disabled(true),
 
             Select::make(data_keyname_prefix('new_status'))
-                ->options($model::statusStringValues())
-
+                ->options($this->getStatusOptions())
+                ->value($this->guessNewStatus())
                 ->title(__('New Status') . ':'),
 
             Input::make(data_keyname_prefix('new_status_reason'))
@@ -72,6 +81,8 @@ class StatusSetFormLayout extends KlorchidFormLayout
 
         ];
     }
+
+
 
 
 }

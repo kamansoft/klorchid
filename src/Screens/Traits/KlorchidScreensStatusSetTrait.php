@@ -2,11 +2,11 @@
 
 namespace Kamansoft\Klorchid\Screens\Traits;
 
-use Kamansoft\Klorchid\Layouts\StatusSetFormLayout;
+use Kamansoft\Klorchid\Layouts\KlorchidStatusSetFormLayout;
 use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Actions\ModalToggle;
 
-trait KlorchidScreensStatusChangeTrait
+trait KlorchidScreensStatusSetTrait
 {
     private bool $display_status_set_button = true;
 
@@ -24,7 +24,7 @@ trait KlorchidScreensStatusChangeTrait
     public function statusSetModal()
     {
         $modal = new Modal('status-set-modal', [
-            StatusSetFormLayout::class
+            KlorchidStatusSetFormLayout::class
         ]);
         $modal->title(__('Are you sure to set a new Status ?'))
             ->applyButton(__('Change'))
@@ -36,7 +36,7 @@ trait KlorchidScreensStatusChangeTrait
     public function statusSetButton()
     {
 
-        return ModalToggle::make(__('Status Set'))
+        return ModalToggle::make(__('Set Status'))
             ->modal('status-set-modal')
             ->method('statusSetAction')
             //->canSee($can_see)

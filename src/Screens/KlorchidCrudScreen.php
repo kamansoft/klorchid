@@ -2,11 +2,11 @@
 
 namespace Kamansoft\Klorchid\Screens;
 
-use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensStatusChangeTrait;
+use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensStatusSetTrait;
 
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 {
-    use KlorchidScreensStatusChangeTrait;
+    use KlorchidScreensStatusSetTrait;
 
     private bool $display_save_button = true;
 
@@ -26,14 +26,14 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
         $commands = $this->curdCommandBar();
 
-        if ($this->display_save_button == true and $this->userHasActionPermission($this->getMode())) {
-            array_push($commands, $this->saveButton());
-        }
+
 
         if ($this->getDisplayStatusSetButton() and $this->userHasActionPermission('status_set')) {
             array_push($commands, $this->statusSetButton());
         }
-
+        if ($this->display_save_button == true and $this->userHasActionPermission($this->getMode())) {
+            array_push($commands, $this->saveButton());
+        }
         return $commands;
     }
 

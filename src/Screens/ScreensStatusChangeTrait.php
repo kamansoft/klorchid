@@ -8,7 +8,7 @@ use Kamansoft\Klorchid\Layouts\StatusInvalidateFormLayout;
 use Orchid\Screen\Layout;
 use Orchid\Screen\Actions\ModalToggle;
 use Kamansoft\Klorchid\Layouts\StatusToggleFormLayout;
-use Kamansoft\Klorchid\Layouts\StatusSetFormLayout;
+use Kamansoft\Klorchid\Layouts\KlorchidStatusSetFormLayout;
 use Orchid\Screen\Layouts\Modal;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Support\Facades\Alert;
@@ -28,7 +28,7 @@ trait ScreensStatusChangeTrait
     public function setStatusSetModal()
     {
         $modal = new Modal('statusset-modal', [
-            StatusSetFormLayout::class
+            KlorchidStatusSetFormLayout::class
         ]);
         $modal->title(__('Are you sure to set a new Status ?'))
             ->applyButton(__('Change'))

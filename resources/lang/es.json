@@ -13,6 +13,8 @@
   "Current Status Reason": "Razón de Estado Actual",
   "Inactive": "Inactivo",
   "Active": "Activo",
+  "Disabled": "Deshabilitado",
+  "Enabled": "Habilitado",
   "Created by": "Creado por",
   "Creation date": "Fecha de Creación",
   "Updated by": "Actualizado por",
@@ -27,6 +29,10 @@
   "Retype User Password": "Escriba de nuevo la contraseña anterior",
   "Confirmation Text" : "Texto de Confirmacion",
   "Just type:":"Escriba:",
-  "Please type :value as confirmation for deleting":"Por favor introduzca :value como confirmación para la eliminacion"
+  "Please type :value as confirmation for deleting":"Por favor introduzca :value como confirmación para la eliminacion",
+
+
+  ""
+
 
 }

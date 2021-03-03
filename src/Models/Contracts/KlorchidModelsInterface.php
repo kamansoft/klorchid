@@ -7,6 +7,16 @@ namespace Kamansoft\Klorchid\Models\Contracts;
 interface KlorchidModelsInterface
 {
     /**
+     * used to map the the statues values by a string
+     * @return array the statusvalue => permission value pair array
+     */
+    static public function statusStringValues(): array;
+
+    static public function statusToString($status): string;
+
+    static public function userModelClass(): string;
+
+    /**
      * Retrives the user to user for create or blame
      * @return string
      */
@@ -38,16 +48,7 @@ interface KlorchidModelsInterface
 
     public function getUpdaterNameAttribute();
 
-
-    /**
-     * used to map the the statues values by a string
-     * @return array the statusvalue => permission value pair array
-     */
-    static public function statusStringValues():array;
-
-
-    static public function userModelClass():string;
-
+    public function getStringStatusAttribute(): string;
 
 
 }
