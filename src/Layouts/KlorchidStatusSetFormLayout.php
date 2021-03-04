@@ -26,7 +26,7 @@ class KlorchidStatusSetFormLayout extends KlorchidFormLayout
         return collect($this->query->get(data_keyname_prefix())::statusStringValues())
             ->mapWithKeys(function ($value, $key) {
                 return [
-                    $value => $key
+                    $value => __($key)
                 ];
             })
             ->toArray();

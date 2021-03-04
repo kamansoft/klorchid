@@ -13,8 +13,8 @@ trait StatusChangeRepositoryTrait
 
     public function statusSetValidationRules():array{
         return [
-            data_keyname_prefix('status') => 'required|boolean',
-            data_keyname_prefix('cur_status_reason') => 'required|string|min:15'
+            data_keyname_prefix('new_status') => 'required|boolean',
+            data_keyname_prefix('new_status_reason') => 'required|string|min:15'
         ];
     }
     public function disableValidationRules(){
@@ -24,9 +24,10 @@ trait StatusChangeRepositoryTrait
 
     public function statusSetAction(?array $data = null): bool
     {
+
         $model = $this->getModel();
-        $model->status = $data['status'];
-        $model->cur_status_reason = $data['cur_status_reason'];
+        $model->status = $data['new_status'];
+        $model->cur_status_reason = $data['new_status_reason'];
         return $model->save();
     }
 

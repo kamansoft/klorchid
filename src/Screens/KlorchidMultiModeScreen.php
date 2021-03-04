@@ -250,7 +250,7 @@ abstract class KlorchidMultiModeScreen extends Screen
         return $this->userHasPermission($this->getActionPerm($action));
     }
 
-    public function getActionPerm(string $mode): string
+    public function getActionPerm(string $mode)//: string
     {
         return $this->getActionPerms()->get($mode);
     }
@@ -284,7 +284,6 @@ abstract class KlorchidMultiModeScreen extends Screen
     public function runRepositoryAction(string $repository_action, ?bool $run_validation, Request $request): void
     {
 
-
         // check if the action match some screen mode and if it does check for its permission
         $mode_perm = $this->getActionPerm($repository_action);
 
@@ -292,8 +291,7 @@ abstract class KlorchidMultiModeScreen extends Screen
             Log::warning(self::class . ' user: ' . Auth::user()->id . ' executed runRepositoryAction method with  "' . $repository_action . '" repository action with "' . $mode_perm . '" permission');
         }
 
-        //dd($repository_action,$mode_perm,$this->userHasPermissionOrFail($mode_perm));
-
+        //dd($this->available_repository_actions,$this->repositoryActionExists($repository_action),$repository_action);
         // check for a valid repository action
         if ($this->repositoryActionExists($repository_action)) {
 

@@ -24,8 +24,8 @@ trait BinaryStatusModelsTrait
     static public function statusStringValues():array
     {
         return [
-             __('Inactive')=>'0',
-             __('Active') => '1'
+             'Inactive'=>'0',
+             'Active' => '1'
 
         ];
     }

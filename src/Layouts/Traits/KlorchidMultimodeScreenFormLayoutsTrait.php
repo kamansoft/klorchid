@@ -43,6 +43,7 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
         if ($action == 'default') {
             $to_return = 'text-muted';
         };
+
         if ($this->fieldIsDisabled($element)) {
             $to_return = 'text-danger';
         }

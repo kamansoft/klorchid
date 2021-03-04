@@ -120,12 +120,7 @@ class KlorchidServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/2020_09_02_120819_create_app_settings_table.php' => database_path('migrations/2020_09_02_120819_create_app_settings_table.php'),
             ], 'klorchid-migrations');
 
-            /*if (!class_exists('Kuser')) {
-                                                $this->publishes([
-                                                    __DIR__ . '/../database/migrations/add_klorchid_blaming_fields_to_users_table.php.stub .stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_posts_table.php'),
-                                                    // you can add any number of migrations here
-                                                ], 'migrations');
-            */
+
         }
 
         //$this->loadMigrationsFrom(__DIR__ .'../database/migrations');
@@ -187,7 +182,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
     protected function registerPermissions(Dashboard $dashboard): self
     {
-
+        //todo: we must cache this to avoid loops
         collect(File::files(app_path('Permissions')))
             ->map(function ($file) {
                 return require_once $file->getPathname();

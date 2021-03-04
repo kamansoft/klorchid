@@ -18,7 +18,7 @@ trait KlorchidModelsStatusValuesTrait
     {
 
         $string_values = self::statusStringValues();
-        return array_search(strval(intval($status)), $string_values);
+        return __(array_search(strval(intval($status)), $string_values));
     }
 
 
