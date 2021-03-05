@@ -61,7 +61,7 @@ class KlorchidStatusSetFormLayout extends KlorchidFormLayout
                 ->type('text')
                 ->canSee($show_cur)
                 ->class('form-control text-dark')
-                ->title(__('Current status Reason') . ':'),
+                ->title(__('Current Status Reason') . ':'),
             //->disabled(true),
 
             Select::make(data_keyname_prefix('new_status'))

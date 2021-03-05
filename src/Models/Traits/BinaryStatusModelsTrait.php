@@ -20,8 +20,8 @@ trait BinaryStatusModelsTrait
     static public function statusStringValues(): array
     {
         return [
-            'Inactive' => '0',
-            'Active' => '1'
+            'Inactive' => false,
+            'Active' => true
 
         ];
     }
@@ -31,6 +31,11 @@ trait BinaryStatusModelsTrait
         $this->reason = $reason;
         $this->status = !$this->status;
         return $this;
+    }
+
+
+    static function disabledStatus(){
+        return false;
     }
 
 }

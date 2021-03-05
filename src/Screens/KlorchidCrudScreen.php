@@ -28,7 +28,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
 
 
-        if ($this->getDisplayStatusSetButton() and $this->userHasActionPermission('status_set')) {
+        if ($this->getDisplayStatusSetButton() and $this->getMode()!=='create' and $this->userHasActionPermission('status_set')) {
             array_push($commands, $this->statusSetButton());
         }
         if ($this->display_save_button == true and $this->userHasActionPermission($this->getMode())) {

@@ -11,7 +11,7 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
         $to_return = false;
         $element = $element ?? $this->query->get(data_keyname_prefix());
 
-        if ($this->fieldIsDisabled($element) === false) {
+        if ($this->modelIsProtected($element) == false) {
 
             $to_return = true;
             if (
@@ -44,7 +44,7 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
             $to_return = 'text-muted';
         };
 
-        if ($this->fieldIsDisabled($element)) {
+        if ($this->modelIsProtected($element)) {
             $to_return = 'text-danger';
         }
 

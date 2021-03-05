@@ -26,7 +26,7 @@ trait KlorchidFormLayoutsTrait {
 	public function klorchidFieldStatusClass(string $extra = '',  ? object $element = null) {
 		$element = $element ?? $this->query->get(data_keyname_prefix());
 		$to_return = 'text-success';
-		if ($this->fieldIsDisabled($element)) {
+		if ($this->modelIsProtected($element)) {
 
 			$to_return = 'text-danger';
 		}
@@ -36,11 +36,12 @@ trait KlorchidFormLayoutsTrait {
 		return $to_return;
 	}
 
-	public function fieldIsDisabled( ? object $element = null) : bool{
+	public function modelIsProtected(? object $element = null) : bool{
 		$element = $element ?? $this->query->get(data_keyname_prefix());
+
 		$to_return = false;
-		if (isset($element->status)) {
-			$to_return = !$element->status;
+		if (isset($element->status) and $element->status===$element::disabledStatus()) {
+			$to_return = true;
 		}
 		
 		return $to_return;

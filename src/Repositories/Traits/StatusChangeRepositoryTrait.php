@@ -29,7 +29,7 @@ trait StatusChangeRepositoryTrait
 
     public function statusSetAction(?array $data = null): bool
     {
-        $validated_data = $this->validate($data,$this->validateWith($this->statusSetValidationRules()));
+        $validated_data = $this->validate($data,$this->statusSetValidationRules());
         $model = $this->getModel();
         $model->status = $data['new_status'];
         $model->cur_status_reason = $data['new_status_reason'];
