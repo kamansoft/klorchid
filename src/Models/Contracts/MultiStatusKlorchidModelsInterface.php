@@ -8,4 +8,5 @@ interface MultiStatusKlorchidModelsInterface
 {
     static public function stringToStatus(string $status):string;
     public function statusToggle(string $reason);
+
 }

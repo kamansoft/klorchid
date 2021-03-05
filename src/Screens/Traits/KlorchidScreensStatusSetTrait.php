@@ -33,6 +33,7 @@ trait KlorchidScreensStatusSetTrait {
 
 		return ModalToggle::make(__('Set Status'))
 			->modal('status-set-modal')
+
 			->parameters([
 				'repository_action' => 'status_set',
 				'run_validation' => true,

@@ -3,6 +3,8 @@
 
 namespace Kamansoft\Klorchid\Repositories\Traits;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Trait StatusChangeRepositoryTrait
  * @package klorchid\src\Repositories\Traits
@@ -12,9 +14,12 @@ trait StatusChangeRepositoryTrait
 {
 
     public function statusSetValidationRules():array{
+
+        $table = $this->getModel()->getTable();
+
         return [
             data_keyname_prefix('new_status') => 'required|boolean',
-            data_keyname_prefix('new_status_reason') => 'required|string|min:15'
+            data_keyname_prefix('new_status_reason') => 'required|string|unique:'.$table.',cur_status_reason|min:15'
         ];
     }
     public function disableValidationRules(){
@@ -24,7 +29,7 @@ trait StatusChangeRepositoryTrait
 
     public function statusSetAction(?array $data = null): bool
     {
-
+        $validated_data = $this->validate($data,$this->validateWith($this->statusSetValidationRules()));
         $model = $this->getModel();
         $model->status = $data['new_status'];
         $model->cur_status_reason = $data['new_status_reason'];

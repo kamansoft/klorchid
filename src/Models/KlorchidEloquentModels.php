@@ -9,11 +9,11 @@ use  Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 
 
-abstract class KlorchidEloquentModels extends Model implements KlorchidModelsInterface
+class KlorchidEloquentModels extends Model implements KlorchidModelsInterface
 
 {
     use KlorchidUserBlamingModelsTrait;
-    //use KlorchidModelsStatusTrait;
+    //use KlorchidModelWithStatusTrait;
 
 
     use KlorchidEloquentModelsTrait;

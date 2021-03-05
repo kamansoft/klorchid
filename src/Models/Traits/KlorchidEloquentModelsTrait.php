@@ -33,6 +33,7 @@ trait KlorchidEloquentModelsTrait
 
     public function creator()
     {
+
         return $this->belongsTo(self::userModelClass(), 'created_by', 'id');
     }
 

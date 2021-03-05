@@ -24,4 +24,6 @@ interface KlorchidRepositoryInterface
 
     public function save(array $data):bool  ;
 
+    public function validate(array $data_to_validate, array $rules = []);
+
 }
