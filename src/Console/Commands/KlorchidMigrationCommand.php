@@ -10,21 +10,21 @@ use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
+use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Schema;
 
-class KmigrationCommand extends BaseCommand
+class KlorchidMigrationCommand extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:kmigration {name : The name of the migration}
+    protected $signature = 'klorchid:migration {name : The name of the migration}
         {--table= : The table to migrate}
         {--create= : The table to be created}
-        {--adapt= : The non empty already existent table to add klorchid  fields}
+        {--adapt= : The non empty, already existent table to add klorchid fields}
         {--timestamps-add= : The table to add laravel timestamps}
         
         {--path= : The location where the migration file should be created}
@@ -41,7 +41,7 @@ class KmigrationCommand extends BaseCommand
     /**
      * The migration creator instance.
      *
-     * @var \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator
+     * @var \Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator
      */
     protected $creator;
 
@@ -55,11 +55,11 @@ class KmigrationCommand extends BaseCommand
     /**
      * Create a new migration install command instance.
      *
-     * @param \Kamansoft\Klorchid\Database\Migrations\KmigrationCreator $creator
+     * @param \Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator $creator
      * @param \Illuminate\Support\Composer $composer
      * @return void
      */
-    public function __construct(KmigrationCreator $creator, Composer $composer)
+    public function __construct(KlorchidMigrationCreator $creator, Composer $composer)
     {
         parent::__construct();
 
@@ -93,7 +93,7 @@ class KmigrationCommand extends BaseCommand
         $add_timestamps = $this->input->getOption('timestamps-add') ?: false;
 
 
-        $this->line("<info>The options: create, adapt, and timestamps-add, are mutually exclusive.</info>");
+        $this->line("<info>The options: create, adapt, and timestamps-add, are mutually exclusive. You can only run one at time</info>");
 
 
         // If no table was given as an option but a create option is given then we
@@ -130,7 +130,7 @@ class KmigrationCommand extends BaseCommand
             }
         }
 
-        $this->line("<info>A {$action} migration file for {$table} table is goin to be created.</info>");
+        $this->line("<info>A {$action} migration file for {$table} table is about to be created.</info>");
 
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to

@@ -11,10 +11,10 @@ use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
-use Kamansoft\Klorchid\Console\Commands\KmigrationCommand;
-use Kamansoft\Klorchid\Console\Commands\KmodelCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidMigrationCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
-use Kamansoft\Klorchid\Database\Migrations\KmigrationCreator;
+use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 
@@ -40,8 +40,8 @@ class KlorchidServiceProvider extends ServiceProvider
         SystemUserAddCommand::class,
         BackupAction::class,
         KeditScreenCommand::class,
-        KmigrationCommand::class,
-        KmodelCommand::class,
+        KlorchidMigrationCommand::class,
+        KlorchidModelCommand::class,
         KlorchidInstallCommand::class,
         KlorchidEloquentRepositoryCommand::class,
         KlorchidMultiModeScreenCommand::class,
@@ -237,11 +237,11 @@ class KlorchidServiceProvider extends ServiceProvider
 
     public function registerKmigrationCommandSingleton()
     {
-        $this->app->singleton(KmigrationCommand::class, function ($app) {
-            $creator = $app[KmigrationCreator::class];
+        $this->app->singleton(KlorchidMigrationCommand::class, function ($app) {
+            $creator = $app[KlorchidMigrationCreator::class];
             $composer = $app['composer'];
 
-            return new KmigrationCommand($creator, $composer);
+            return new KlorchidMigrationCommand($creator, $composer);
         });
         return $this;
     }
@@ -249,8 +249,8 @@ class KlorchidServiceProvider extends ServiceProvider
     public function registerKmigrationCreator()
     {
 
-        $this->app->singleton(KmigrationCreator::class, function ($app) {
-            return new KmigrationCreator($app['files'], __DIR__ . '/../resources/stubs');
+        $this->app->singleton(KlorchidMigrationCreator::class, function ($app) {
+            return new KlorchidMigrationCreator($app['files'], __DIR__ . '/../resources/stubs');
         });
         return $this;
     }

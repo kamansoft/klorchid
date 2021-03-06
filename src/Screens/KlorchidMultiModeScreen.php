@@ -171,7 +171,6 @@ abstract class KlorchidMultiModeScreen extends Screen
     public function setRepository($repository): self
     {
         $this->klorchid_repository = $repository;
-        // $this->setActions();
         return $this;
     }
 
@@ -306,12 +305,12 @@ abstract class KlorchidMultiModeScreen extends Screen
                 $validated_data = $this->validateWith($this->getActionValidationRules($repository_action));
                 Log::info(self::class . ' Validation executed for ' . $this->getRepositoryActionMethod($repository_action) . " method");
             } else {
-                $validated_data = $request->get(data_keyname_prefix());
+                $validated_data = $request->get(model_keyname());
                 Log::warning(self::class . "No validation was executed for " . $this->getRepositoryActionMethod($repository_action) . ' method');
             }
 
 
-            $executions_status = $this->getRepository()->{$this->getRepositoryActionMethod($repository_action)}($request->get(data_keyname_prefix()));
+            $executions_status = $this->getRepository()->{$this->getRepositoryActionMethod($repository_action)}($request->get(model_keyname()));
             if ($executions_status) {
                 Alert::success(__("Successfully executed action: :action", [
                     "action" => __($repository_action)
@@ -392,13 +391,13 @@ abstract class KlorchidMultiModeScreen extends Screen
             $validated_data = $this->validateWith($this->getActionValidationRules($screen_mode));
             Log::info(self::class . ' validation performed from repository rules using  "' . $this->getActionValidationRulesMethod($screen_mode) . '" save method executed with screen validation ');
         } else {
-            $validated_data = $request->get(data_keyname_prefix());
+            $validated_data = $request->get(model_keyname());
             Log::warning(self::class . "Validation rule for $screen_mode not found. save method executed without screen validation ");
         }
 
         // dd($screen_mode, $screen_mode, $validation_rules_method, $validated_data,$request);
 
-        $execution_status = $this->getRepository()->save($request->get(data_keyname_prefix()));
+        $execution_status = $this->getRepository()->save($request->get(model_keyname()));
         if ($execution_status) {
             Alert::success(__("Saved"));
             Log::info(self::class . " Repository save method returned true on executed");

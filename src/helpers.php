@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-if (!function_exists('data_keyname_prefix')) {
-    function data_keyname_prefix(?string $attribute_name = null)
+if (!function_exists('model_keyname')) {
+    function model_keyname(?string $attribute_name = null)
     {
 
         $keyname = config('klorchid.screen_query_required_elements.element_to_display');
 
-        if (is_null($keyname)){
+        if (is_null($keyname)) {
             return $attribute_name;
         }
 
@@ -18,5 +18,13 @@ if (!function_exists('data_keyname_prefix')) {
 
             return config('klorchid.screen_query_required_elements.element_to_display') . '.' . $attribute_name;
         }
+    }
+}
+
+if (!function_exists('collection_keyname')) {
+    function collection_keyname(?string $attribute_name = null)
+    {
+        return \Illuminate\Support\Str::plural(model_keyname($attribute_name));
+
     }
 }

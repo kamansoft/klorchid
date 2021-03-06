@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Layouts\Contracts;
 
 
-interface KlorchidLayoutsInterface
+interface KlorchidCurdLayoutsInterface
 {
 
     public function checkScreenQueryAttributes();

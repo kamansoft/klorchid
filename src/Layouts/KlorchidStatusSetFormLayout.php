@@ -17,13 +17,13 @@ use Orchid\Screen\Fields\Select;
  *
  * @package App\Orchid\Layouts
  */
-class KlorchidStatusSetFormLayout extends KlorchidFormLayout
+class KlorchidStatusSetFormLayout extends KlorchidCurdFormLayout
 {
 
 
     public function getStatusOptions()
     {
-        return collect($this->query->get(data_keyname_prefix())::statusStringValues())
+        return collect($this->query->get(model_keyname())::statusStringValues())
             ->mapWithKeys(function ($value, $key) {
                 return [
                     $value => __($key)
@@ -33,7 +33,7 @@ class KlorchidStatusSetFormLayout extends KlorchidFormLayout
     }
 
     public function guessNewStatus(){
-        return !$this->query->get(data_keyname_prefix())->status;
+        return !$this->query->get(model_keyname())->status;
     }
 
     /**
@@ -42,7 +42,7 @@ class KlorchidStatusSetFormLayout extends KlorchidFormLayout
     public function formFields(): array
     {
 
-        $model = $this->query->get(data_keyname_prefix());
+        $model = $this->query->get(model_keyname());
         $show_cur = (!is_null($model->cur_status_reason) and !empty($model->cur_status_reason));
 
         /*
@@ -52,24 +52,24 @@ class KlorchidStatusSetFormLayout extends KlorchidFormLayout
         $current_status_text_class = $model->status ? 'text-success' : 'text-danger';
         return [
 
-            Input::make(data_keyname_prefix('string_status'))
+            Input::make(model_keyname('string_status'))
                 ->class('form-control ' . $current_status_text_class)
                 ->type('text')
                 ->title(__('Current Status') . ':')
                 ->disabled(true),
-            Input::make(data_keyname_prefix('cur_status_reason'))
+            Input::make(model_keyname('cur_status_reason'))
                 ->type('text')
                 ->canSee($show_cur)
                 ->class('form-control text-dark')
                 ->title(__('Current Status Reason') . ':'),
             //->disabled(true),
 
-            Select::make(data_keyname_prefix('new_status'))
+            Select::make(model_keyname('new_status'))
                 ->options($this->getStatusOptions())
                 ->value($this->guessNewStatus())
                 ->title(__('New Status') . ':'),
 
-            Input::make(data_keyname_prefix('new_status_reason'))
+            Input::make(model_keyname('new_status_reason'))
                 ->type('text')
                 ->max(255)
                 ->min(20)

@@ -37,11 +37,11 @@ trait KlorchidUserBlamingModelsTrait
 
 	public function getCreatorNameAttribute() {
 
-		return $this->creator->name ?? '';
+		return  $this->creator->name ?? '';
 	}
 
 	public function getUpdaterNameAttribute() {
-		return $this->updater->name ?? '';
+		return  $this->updater->name ?? '';
 	}
 
 

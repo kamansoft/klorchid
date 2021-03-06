@@ -13,8 +13,10 @@ class {{ class }} extends Migration
      */
     public function up()
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
-            $table->id();
+        Schema::create('{{table}}', function (Blueprint $table) {
+            $table->uuid('id');
+            $table->primary('id');
+            //$table->id();
 
             //add your fields here
 

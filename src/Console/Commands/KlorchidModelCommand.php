@@ -6,7 +6,7 @@ use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 
 
-class KmodelCommand extends GeneratorCommand
+class KlorchidModelCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
@@ -125,6 +125,7 @@ class KmodelCommand extends GeneratorCommand
         $this->call('make:kmigration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
+            '--uuid'
         ]);
     }
 

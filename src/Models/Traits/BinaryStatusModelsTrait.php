@@ -9,7 +9,7 @@ trait BinaryStatusModelsTrait
     use KlorchidModelWithStatusTrait;
     use KlorchidUserBlamingModelsTrait;
     use KlorchidEloquentModelsTrait;
-    use KlorchidModelsStatusValuesTrait;
+    //use KlorchidModelsStatusValuesTrait;
 
     static public function stringToStatus(string $status): bool
     {

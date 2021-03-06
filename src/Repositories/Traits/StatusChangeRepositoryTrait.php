@@ -18,8 +18,8 @@ trait StatusChangeRepositoryTrait
         $table = $this->getModel()->getTable();
 
         return [
-            data_keyname_prefix('new_status') => 'required|boolean',
-            data_keyname_prefix('new_status_reason') => 'required|string|unique:'.$table.',cur_status_reason|min:15'
+            model_keyname('new_status') => 'required|boolean',
+            model_keyname('new_status_reason') => 'required|string|unique:'.$table.',cur_status_reason|min:15'
         ];
     }
     public function disableValidationRules(){

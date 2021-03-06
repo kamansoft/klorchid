@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 use Illuminate\Filesystem\Filesystem;
 
-class KmigrationCreator
+class KlorchidMigrationCreator
 {
   /**
      * The filesystem instance.

@@ -9,7 +9,7 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
     public function fieldIsEditable(?object $element = null)
     {
         $to_return = false;
-        $element = $element ?? $this->query->get(data_keyname_prefix());
+        $element = $element ?? $this->query->get(model_keyname());
 
         if ($this->modelIsProtected($element) == false) {
 
@@ -35,7 +35,7 @@ trait KlorchidMultimodeScreenFormLayoutsTrait
 
     public function klorchidFieldClass(string $extra = 'form-control ', ?object $element = null)
     {
-        $element = $element ?? $this->query->get(data_keyname_prefix());
+        $element = $element ?? $this->query->get(model_keyname());
 
         $to_return = 'text-dark';
 

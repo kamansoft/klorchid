@@ -7,12 +7,12 @@ use Orchid\Screen\Layouts\Rows;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidLayoutsTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidFormLayoutsTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenFormLayoutsTrait;
-use Kamansoft\Klorchid\Layouts\Contracts\KlorchidLayoutsInterface;
+use Kamansoft\Klorchid\Layouts\Contracts\KlorchidCurdLayoutsInterface;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidMultimodeScreenLayoutsTrait;
 
 
 
-abstract class KlorchidMultiModeScreenFormsLayout extends KlorchidFormLayout  {
+abstract class KlorchidMultiModeScreenFormsLayout extends KlorchidCurdFormLayout  {
 
 	use KlorchidPermissionTrait;
 	use KlorchidMultimodeScreenFormLayoutsTrait;
