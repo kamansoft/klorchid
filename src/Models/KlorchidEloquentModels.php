@@ -18,4 +18,6 @@ class KlorchidEloquentModels extends Model implements KlorchidModelsInterface
 
     use KlorchidEloquentModelsTrait;
     //use Uuids;
+
+
 }

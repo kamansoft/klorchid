@@ -8,6 +8,14 @@ use Illuminate\Support\Str;
 
 class KlorchidModelCommand extends GeneratorCommand
 {
+
+    private $status_types = [
+        'boolean-binary',
+        'integer-multistate',
+        'char-multistate'
+
+    ];
+    private $status_type = 'boolean-binary';
     /**
      * The name and signature of the console command.
      *
@@ -15,9 +23,11 @@ class KlorchidModelCommand extends GeneratorCommand
      */
     protected $signature = 'klorchid:model 
         {name? : The name of the Model Class} 
+        {--status-type= : Specify The type of model based on status: [ boolean-binary (default), integer-multistate, char-multistate ]  }
         {--m|migration : Create a migration file using the name of the model} 
-        {--e|editscreen : Create a EditScreen class file using model class name} 
-        {--l|listscreen : Create ListScreen class file using model class name} 
+        {--M|multimodescreen : Create a KlorchidMultimodeScreen class file using model class name} 
+        {--c|crudscreen : Create a KlorchidCrudScreen class file using model class name} 
+        {--l|listscreen : Create KlorchidListScreen class file using model class name} 
         {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';
 
@@ -44,7 +54,20 @@ class KlorchidModelCommand extends GeneratorCommand
      */
     protected function getStub(): string
     {
-        return __DIR__ . '/../../../resources/stubs/kmodel.stub';
+        $stub_path = __DIR__ . '/../../../resources/stubs/';
+
+        $binary = 'klorchid.binarystatus.model.stub';
+
+
+        switch ($this->status_type){
+            case 'binary':
+                $stub_path .=$binary;
+                break;
+            default:
+                $stub_path.=$binary;
+        }
+
+        return $stub_path;
     }
 
     /**
@@ -79,23 +102,50 @@ class KlorchidModelCommand extends GeneratorCommand
      */
     public function handle()
     {
-        parent::handle();
-        if ($this->option('editscreen')) {
-            echo "kedit screen runned";
+
+        if ($this->option('multimodescreen')) {
+            $this->line('a klorchid multimode screen  will be created');
             // $this->createKeditScreen();
         }
         if ($this->option('migration')) {
-            echo "migration runned";
-            $this->createKmigration();
+            $this->line('a migration file will be created');
+            $this->createKlorchidMigration();
         }
 
         if ($this->option('useAppNamePath')) {
             echo "use appname config var ";
+            $this->line('app_name config var value will be used as path');
         }
+
+        $this->setStatusType();
+        $this->line('a ' . $this->status_type . ' model will be created...');
+
+        parent::handle();
+        //if ($this->option('status'))
         return 0;
     }
 
-    protected function createKeditScreen()
+    /**
+     * @return $this
+     * @throws \Exception
+     */
+    protected function setStatusType()
+    {
+        $status_type = $this->input->getOption('status-type');
+        if (is_null($status_type)) {
+
+        } else {
+            if (in_array($status_type, $this->status_types)) {
+                $this->status_type = $status_type;
+            } else {
+                $available_status = implode(', ', $this->status_types);
+                throw new \Exception($status_type . ' is not a valid model status type for creation.  Available status types are: ' . $available_status);
+            }
+        }
+        return $this;
+    }
+
+    protected function createKlorchidEditScreen()
     {
         $screen_folder_name = Str::studly(class_basename($this->argument('name')));
 
@@ -114,7 +164,7 @@ class KlorchidModelCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createKmigration()
+    protected function createKlorchidMigration()
     {
         $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
 
@@ -122,7 +172,7 @@ class KlorchidModelCommand extends GeneratorCommand
             $table = Str::singular($table);
         }
 
-        $this->call('make:kmigration', [
+        $this->call('klorchid:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
             '--uuid'
@@ -158,7 +208,7 @@ class KlorchidModelCommand extends GeneratorCommand
         }
 
 
-        $stub=str_replace(['{{ table }}', '{{table}}'], [$table,$table], $stub);
+        $stub = str_replace(['{{ table }}', '{{table}}'], [$table, $table], $stub);
 
         return $this;
 

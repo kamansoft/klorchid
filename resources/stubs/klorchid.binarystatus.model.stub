@@ -1,0 +1,62 @@
+<?php
+
+namespace {{ namespace }};
+
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Kamansoft\Klorchid\Models\BinaryStatusKlorchidEloquentModel;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
+use Datakrama\Eloquid\Traits\Uuids;
+
+class DummyClass extends BinaryStatusKlorchidEloquentModel
+{
+    use AsSource;
+    use Filterable;
+    //use HasFactory;
+    use Uuids;
+    /*
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = '{{ table }}';
+    //protected $primaryKey ='id';
+
+
+
+    protected $attributes  = [
+        'status'=>True
+    ];
+
+    protected $fillable = [
+
+    ];
+
+    protected $allowedFilters = [
+        'status',
+        'created_at',
+        'created_by',
+
+    ];
+
+
+    protected $appends =[
+        'stringStatus',
+        'creatorName',
+        'updaterName'
+    ];
+
+    protected $casts = [
+        'updated_at' => 'date:d/m/Y h:m:s a',
+        'created_at' => 'date:d/m/Y h:m:s a',
+        'status' => 'boolean'
+    ];
+
+
+
+
+
+
+
+}

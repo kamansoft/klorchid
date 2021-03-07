@@ -15,6 +15,7 @@ trait KlorchidUserBlamingModelsTrait
 
 
 
+
 	public function getUserToBlameId(): string{
 		$to_return = '';
 		if (Auth::check()) {

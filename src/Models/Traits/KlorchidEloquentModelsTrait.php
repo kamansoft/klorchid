@@ -10,7 +10,10 @@ use Kamansoft\Klorchid\Models\KlorchidUser;
 trait KlorchidEloquentModelsTrait
 {
 
+
+
     protected static function bootKlorchidEloquentModelsTrait() {
+
 		static::creating(function ($model) {
 			$model->blameOnCreate();
 		});
