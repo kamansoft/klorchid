@@ -38,9 +38,7 @@ interface KlorchidModelsInterface
 
     public function updater();
 
-    public function getCreatorNameAttribute();
 
-    public function getUpdaterNameAttribute();
 
 
 

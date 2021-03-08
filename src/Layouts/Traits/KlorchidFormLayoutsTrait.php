@@ -81,7 +81,7 @@ trait KlorchidFormLayoutsTrait {
 		$field_class = 'form-control text-dark'; //$this->klorchidFieldClass();
 		$can_see = $this->query->get(model_keyname())->exists;
 		return [
-			Input::make(model_keyname('creatorName'))
+			Input::make(model_keyname('creator.name'))
 				->class($field_class)
 				->type('text')
 				->title(__('Created by') . ':')
@@ -94,13 +94,13 @@ trait KlorchidFormLayoutsTrait {
 				->title(__('Creation date') . ':')
 				->canSee($can_see)
 				->disabled(true),
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.updaterName')
+			Input::make(model_keyname('updater.name'))
 				->class($field_class)
 				->type('text')
 				->title(__('Updated by') . ':')
 				->canSee($can_see)
 				->disabled(true),
-			Input::make(config('klorchid.screen_query_required_elements.element_to_display') . '.updated_at')
+			Input::make(model_keyname('updated_at'))
 				->class($field_class)
 				->type('text')
 				->title(__('Update date') . ':')
