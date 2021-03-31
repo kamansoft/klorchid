@@ -2,13 +2,22 @@
 
 namespace Kamansoft\Klorchid\Screens;
 
+use AdvancedJsonRpc\Request;
+use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensStatusSetTrait;
+use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
 
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 {
-    use KlorchidScreensStatusSetTrait;
+    //use KlorchidScreensStatusSetTrait;
 
     private bool $display_save_button = true;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+    }
 
     public function getDisplaySaveButton()
     {
@@ -20,17 +29,24 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         $this->display_save_button = $status;
         return $this;
     }
+    public function saveButton()
+    {
 
+        return ConfirmationButon::make(__('Save'))
+            ->icon('save')
+            ->method('save');
+    }
     public function commandBar(): array
     {
 
         $commands = $this->curdCommandBar();
 
-
-
-        if ($this->getDisplayStatusSetButton() and $this->getMode()!=='create' and $this->userHasActionPermission('status_set')) {
+        /*
+        if ($this->getDisplayStatusSetButton() and $this->getMode() !== 'create' and $this->userHasActionPermission('status_set')) {
             array_push($commands, $this->statusSetButton());
         }
+        */
+
         if ($this->display_save_button == true and $this->userHasActionPermission($this->getMode())) {
             array_push($commands, $this->saveButton());
         }
@@ -38,6 +54,32 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     }
 
     abstract function curdCommandBar(): array;
+
+    public function store(KlorchidEloquentModel $element,array $data)
+    {
+
+
+        $mode_message = $element->exists ? __("creating element") : __("updating element");
+        $full_message = "Fail on: $mode_message";
+        $action = $element->fill($data)->save();
+        $pk_name = $element->getKeyName();
+        try {
+            if ($action) {
+                $full_message = "Success on: $mode_message";
+                Log::alert(self::class . " $mode_message on" . $element->getTable() . ' table with ' . $pk_name . '=' . $element->$pk_name);
+                Alert::success($full_message);
+            } else {
+                Alert::success($full_message);
+                Log::warning(self::class . "FAILED at $mode_message, on" . $element->getTable() . ' table with ' . $pk_name . '=' . $element->$pk_name);
+            }
+
+        } catch (\Illuminate\Database\QueryException $queryException) {
+            Alert::success($full_message);
+            Log::error("Save repository querry error on model save" . ' ' . $queryException->getMessage());
+            //throw new \Exception("Save repository querry error on model save".' '.$queryException->getMessage());
+
+        }
+    }
 
     /**
      * if $mode is null will try to guess the mode, then set it
@@ -57,9 +99,9 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     {
         $mode_to_return = $this->getMode();
 
-        $repository = $this->getRepository();
 
-        $url_segments = $repository->getRequest()->segments();
+
+        $url_segments = request()->segments();
 
         $last_segment = array_pop($url_segments);
 
@@ -74,8 +116,8 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         if ($last_segment === 'create') {
             $mode_to_return = 'create';
         } else if ($last_segment === 'edit') {
-            $edit_mode_permission = $this->getActionPerm('edit');
-            $view_mode_permission = $this->getActionPerm('view');
+            $edit_mode_permission = $this->crud_pemissions->get('edit');
+            $view_mode_permission = $this->crud_pemissions->get('view');
 
             if (!empty($view_mode_permission) and $this->userHasPermission($view_mode_permission)) {
                 $mode_to_return = 'view';
@@ -97,13 +139,17 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         return $mode_layout;
     }
 
-    abstract public function defaultModeLayout(): array;
+
 
     abstract public function viewModeLayout(): array;
 
     abstract public function editModeLayout(): array;
 
     abstract public function createModeLayout(): array;
+
+
+
+
 
 
 }

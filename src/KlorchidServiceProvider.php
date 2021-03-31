@@ -3,6 +3,7 @@
 namespace Kamansoft\Klorchid;
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -52,7 +53,6 @@ class KlorchidServiceProvider extends ServiceProvider
     public function boot(Dashboard $dashboard)
     {
 
-        //\DeBugbaR::info('Stating KlorchidService Provider boot Method');
 
         $this->dashboard = $dashboard;
         $this
@@ -68,6 +68,8 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerViews();
 
         $this->registerPermissions($dashboard);
+
+
 
     }
 
@@ -194,14 +196,17 @@ class KlorchidServiceProvider extends ServiceProvider
                         ItemPermission::group($group_name)
                             ->addPermission(
                                 $perm_key,
-                                __($name)
+                                $name
                             )
                     );
                 }
             });
 
+
+
         return $this;
     }
+
 
     public function register()
     {
@@ -263,7 +268,7 @@ class KlorchidServiceProvider extends ServiceProvider
             'klorchidlocalization', //KlorchidKuserEnabled::class,
 
         ]);
-        //\DeBugbaR::info('klorchid Middleware gorup registered');
+
         return $this;
     }
 
@@ -299,7 +304,7 @@ class KlorchidServiceProvider extends ServiceProvider
     protected function registerRepository(): self
     {
 
-        $this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentRepository::class);
+        //$this->app->bind(KlorchidRepositoryInterface::class, KlorchidEloquentRepository::class);
 
         return $this;
     }

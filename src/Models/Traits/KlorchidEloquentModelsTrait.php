@@ -23,10 +23,6 @@ trait KlorchidEloquentModelsTrait
 	}
 
 
-	public function refreshFromDb() {
-		$element = self::findOrFail($this->getKey());
-		$this->fill($element->toArray());
-	}
 
 
 	static public function userModelClass():string

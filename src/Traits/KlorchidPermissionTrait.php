@@ -1,6 +1,6 @@
 <?php 
 declare(strict_types=1);
-namespace Kamansoft\Klorchid;
+namespace Kamansoft\Klorchid\Traits;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +29,7 @@ trait KlorchidPermissionTrait {
 	        return false;
         }
     }
+
 
 
 }

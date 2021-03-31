@@ -2,14 +2,16 @@
 
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
+use Orchid\Screen\Repository;
+
 trait KlorchidLayoutsTrait
 {
 
-    public function checkScreenQueryAttributes(){
+    public function checkRequiredRepositoryAttributes(Repository $repository){
 
-        collect(config('klorchid.screen_query_required_elements'))->map(function ($element_key) {
-            if (is_null($this->query->get($element_key))) {
-                throw new \Exception("\"$element_key\" key was not found. '" . self::class . "' instances needs the \"$element_key\" key at the screen query returned array", 1);
+        collect($this->repositoryRequiredKeys())->map(function ($element_key) use ($repository) {
+            if (is_null($repository->get($element_key))) {
+                throw new \Exception("Key name NOT FOUND ( \"$element_key\" ). A Klorchid Layout Instance needs the \"$element_key\" key with some value at the screen's query method returned array.", 1);
             }
         });
         return $this;

@@ -28,3 +28,10 @@ if (!function_exists('collection_keyname')) {
 
     }
 }
+
+if (!function_exists('glueWithDot')) {
+    function implodeWithDot(...$pieces){
+
+       return implode('.',$pieces);
+    }
+}

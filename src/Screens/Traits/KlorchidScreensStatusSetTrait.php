@@ -29,20 +29,13 @@ trait KlorchidScreensStatusSetTrait {
 		return $modal;
 	}
 
-	public function statusSetButton() {
+	public function statusSetButton($request) {
 
 		return ModalToggle::make(__('Set Status'))
 			->modal('status-set-modal')
+            ->parameters(['request'=>$request])
+			->method('setStatus')
 
-			->parameters([
-				'repository_action' => 'status_set',
-				'run_validation' => true,
-			])
-		//->confirm(__("Are you sure? sdfsdfsdf sdufhsidgfs difgsid fsudgfsodfugsodhfgb sofqeojqprugrpt dlzkndlz jn lh ouhh "))
-		//->canSee($this->userHasScreenActionPermission($this->getMode()))
-			->method('runRepositoryAction')
-		//->canSee($can_see)
-		//->class($this->status ? 'btn btn-success' : 'btn btn-danger')
 			->icon('check');
 	}
 
