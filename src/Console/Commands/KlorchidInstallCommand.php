@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Console\Commands;
 use Illuminate\Console\Command;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
 //use Orchid\Platform\Events\InstallEvent;
-use Kamansoft\Klorchid\Models\KlorchidUser;
+use Kamansoft\Klorchid\Models\KlorchidUserModel;
 use Kamansoft\Klorchid\Models\Kuser;
 use Orchid\Platform\Dashboard;
 
@@ -37,7 +37,7 @@ class KlorchidInstallCommand extends Command {
 	public function handle(Dashboard $dashboard) {
 		$this->info('Installation started. Please wait...');
 		//$this->info('Version: '.Dashboard::VERSION);
-		if (config('auth.providers.users.model') !== KlorchidUser::class) {
+		if (config('auth.providers.users.model') !== KlorchidUserModel::class) {
 			throw new \Exception('Klorchid package needs the user model auth provider setted as as ' . KuserUser::class . ' type, instead ' . config('auth.providers.users.model') . ' found');
 		}
 

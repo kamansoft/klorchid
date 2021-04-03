@@ -2,36 +2,38 @@
 
 declare(strict_types=1);
 
-if (!function_exists('model_keyname')) {
-    function model_keyname(?string $attribute_name = null)
+
+if (!function_exists('implodeWithDot')) {
+    function implodeWithDot(...$pieces)
     {
 
-        $keyname = config('klorchid.screen_query_required_elements.element_to_display');
-
-        if (is_null($keyname)) {
-            return $attribute_name;
-        }
-
-        if (is_null($attribute_name)) {
-            return $keyname;
-        } else {
-
-            return config('klorchid.screen_query_required_elements.element_to_display') . '.' . $attribute_name;
-        }
+        return implode('.', $pieces);
     }
 }
 
-if (!function_exists('collection_keyname')) {
-    function collection_keyname(?string $attribute_name = null)
+if (!function_exists('getObjectMethodsWith')) {
+    /**
+     *
+     * Maps through the reflectionClass object from the $object, and returns all the methods
+     * which name's ends with the value at $needle .
+     * and returns a collection with all of those methods with keys names
+     *
+     * @param $object
+     * @param $needle
+     * @return \Illuminate\Support\Collection
+     * @throws ReflectionException
+     */
+    function getObjectMethodsWith($object, $needle)
     {
-        return \Illuminate\Support\Str::plural(model_keyname($attribute_name));
 
+        $reflection = new \ReflectionClass($object);
+        return collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) use ($needle) {
+            return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
+        })->reject(function ($pair) use ($needle) {
+            return !strstr($pair, $needle, true) or
+                strstr($pair, $needle, true) === 'set' or
+                strstr($pair, $needle, true) === 'get';
+        });
     }
 }
 
-if (!function_exists('glueWithDot')) {
-    function implodeWithDot(...$pieces){
-
-       return implode('.',$pieces);
-    }
-}

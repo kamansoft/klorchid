@@ -12,11 +12,6 @@ abstract class KlorchidMultimodeLayout extends KlorchidLayout implements Klorchi
 {
     use KlorchidMultimodeLayoutsTrait;
 
-    public function repositoryRequiredKeys():array{
-        return array_merge([
-            $this->getRepositoryModeKeyName()
-        ],parent::repositoryRequiredKeys());
-    }
 
 
 }

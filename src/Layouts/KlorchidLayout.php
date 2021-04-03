@@ -4,22 +4,27 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-use Kamansoft\Klorchid\Layouts\Contracts\KlorchidLayoutsInterface;
-use Kamansoft\Klorchid\Layouts\Traits\KlorchidLayoutsTrait;
+use Illuminate\Support\Collection;
+
+use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryValidatableInterface;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryValidateForLayoutTrait;
 use Orchid\Screen\Field;
-use Orchid\Screen\Repository;
 
-abstract class KlorchidLayout extends \Orchid\Screen\Layouts\Rows implements KlorchidLayoutsInterface
+
+abstract class KlorchidLayout extends \Orchid\Screen\Layouts\Rows implements KlorchidScreenQueryValidatableInterface
 {
-    use KlorchidLayoutsTrait;
 
-    public function repositoryRequiredKeys():array{
+    use KlorchidScreenQueryValidateForLayoutTrait;
+    public function screenQueryRequiredKeys(): array
+    {
         return [];
     }
-    public function build(Repository $repository)
+
+
+
+    public function __construct()
     {
-        $this->checkRequiredRepositoryAttributes($repository);
-        return parent::build($repository);
+        $this->setScreenQueryRequiredKeys();
     }
 
 

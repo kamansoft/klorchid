@@ -4,13 +4,13 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-use Kamansoft\Klorchid\Layouts\Contracts\KlorchidDataBasedLayoutInterface;
-use Kamansoft\Klorchid\Layouts\Traits\KlorchidDataBasedLayoutTrait;
+use Kamansoft\Klorchid\Layouts\Contracts\KlorchidResourceDataLayoutInterface;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidResourceDataLayoutTrait;
 
-abstract class KlorchidMultimodeFormBasedLayout extends KlorchidMultimodeLayout implements KlorchidDataBasedLayoutInterface
+abstract class KlorchidDataMultimodeFormLayout extends KlorchidMultimodeLayout implements KlorchidResourceDataLayoutInterface
 {
 
-    use KlorchidDataBasedLayoutTrait;
+    use KlorchidResourceDataLayoutTrait;
 
     public function repositoryRequiredKeys(): array
     {

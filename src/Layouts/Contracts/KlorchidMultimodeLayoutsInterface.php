@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Layouts\Contracts;
 interface KlorchidMultimodeLayoutsInterface
 {
 
-    public function getRepositoryModeKeyName():string;
+    public function multimodeScreenQueryRequiredKeys():array;
     public function getScreenMode():string;
 
 }

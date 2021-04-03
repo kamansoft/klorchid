@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Models\Traits;
 
 
-use Kamansoft\Klorchid\Models\KlorchidUser;
+use Kamansoft\Klorchid\Models\KlorchidUserModel;
 
 
 trait KlorchidEloquentModelsTrait
@@ -27,7 +27,7 @@ trait KlorchidEloquentModelsTrait
 
 	static public function userModelClass():string
 	{
-		return KlorchidUser::class;
+		return KlorchidUserModel::class;
 	}
 
     public function creator()

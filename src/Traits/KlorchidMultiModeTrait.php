@@ -76,14 +76,7 @@ trait KlorchidMultiModeTrait
      */
     public function getModesByMethodsName(string $needle = 'Mode'): Collection
     {
-        $reflection = new \ReflectionClass($this);
-        return collect($reflection->getMethods(\ReflectionMethod::IS_PUBLIC))->mapWithKeys(function ($method) use ($needle){
-            return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
-        })->reject(function ($pair) use ($needle) {
-            return !strstr($pair, $needle, true) or
-                strstr($pair, $needle, true) === 'set' or
-                strstr($pair, $needle, true) === 'get';
-        });
+        return getObjectMethodsWith($this,$needle);
     }
 
 

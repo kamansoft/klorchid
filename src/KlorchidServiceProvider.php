@@ -178,7 +178,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
     public function registerKlorchidUserModel()
     {
-        Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\KlorchidUser::class);
+        Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\KlorchidUserModel::class);
         return $this;
     }
 

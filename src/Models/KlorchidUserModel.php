@@ -9,20 +9,21 @@ use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Kamansoft\Klorchid\Models\Contracts\BinaryStatusKlorchidModelsInterface;
+
+
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
-use Kamansoft\Klorchid\Models\Contracts\KlorchidModelWithStatusInterface;
-use Kamansoft\Klorchid\Models\Traits\BinaryStatusModelsTrait;
+use Kamansoft\Klorchid\Models\Contracts\MultiStatusModelInterface;
+use Kamansoft\Klorchid\Models\Traits\BinaryStatusModelTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
-use Kamansoft\Klorchid\Models\Traits\KlorchidModelWithStatusTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
+use Kamansoft\Klorchid\Models\Traits\MultiStatusModelTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
 
-class KlorchidUser extends User implements KlorchidModelWithStatusInterface,BinaryStatusKlorchidModelsInterface
+class KlorchidUserModel extends User implements KlorchidModelsInterface, MultiStatusModelInterface
 {
 
     use HasApiTokens;
@@ -34,7 +35,10 @@ class KlorchidUser extends User implements KlorchidModelWithStatusInterface,Bina
     use Attachable;
 
     //klorchid related
-    use BinaryStatusModelsTrait ;
+    use KlorchidEloquentModelsTrait;
+    use KlorchidUserBlamingModelsTrait;
+    use MultiStatusModelTrait ;
+    use BinaryStatusModelTrait ;
 
 
     /**
