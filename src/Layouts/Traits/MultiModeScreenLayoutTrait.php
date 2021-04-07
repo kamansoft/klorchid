@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
 
-trait KlorchidMultimodeLayoutsTrait
+trait MultiModeScreenLayoutTrait
 {
     private string $repository_mode_keyname = "mode";
 

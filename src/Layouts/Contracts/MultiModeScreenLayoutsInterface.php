@@ -4,7 +4,9 @@
 namespace Kamansoft\Klorchid\Layouts\Contracts;
 
 
-interface KlorchidMultimodeLayoutsInterface
+use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryValidatableInterface;
+
+interface MultiModeScreenLayoutsInterface extends KlorchidScreenQueryValidatableInterface
 {
 
     public function multimodeScreenQueryRequiredKeys():array;

@@ -5,7 +5,7 @@ namespace Kamansoft\Klorchid\Layouts\Traits;
 
 use Kamansoft\Klorchid\Traits\KlorchidScreenQueryValidatable;
 use Orchid\Screen\Repository;
-trait KlorchidScreenQueryValidateForLayoutTrait
+trait ScreenQueryValidationForLayoutTrait
 {
     use KlorchidScreenQueryValidatable;
     public function build(Repository $repository)
