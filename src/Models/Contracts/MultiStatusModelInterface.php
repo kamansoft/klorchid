@@ -31,7 +31,7 @@ interface MultiStatusModelInterface
 
     public function statusSet($status, string $reason): self;
 
-    public function getStringStatusAttribute(): string;
+    public function getStatusNameAttribute(): string;
 
     public function getDisabledStatusValue();
 

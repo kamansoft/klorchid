@@ -12,6 +12,4 @@ abstract class MultiModeScreenLayout extends KlorchidLayout implements MultiMode
 {
     use MultiModeScreenLayoutTrait;
 
-
-
 }

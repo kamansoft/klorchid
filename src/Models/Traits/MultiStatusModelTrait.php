@@ -20,7 +20,7 @@ trait MultiStatusModelTrait
         return $this;
     }
 
-    public function getStringStatusAttribute(): string
+    public function getStatusNameAttribute(): string
     {
         return self::statusToString($this->status);
     }

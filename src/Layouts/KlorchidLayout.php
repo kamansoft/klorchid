@@ -19,9 +19,6 @@ abstract class KlorchidLayout extends \Orchid\Screen\Layouts\Rows implements Klo
     {
         return [];
     }
-
-
-
     public function __construct()
     {
         $this->setScreenQueryRequiredKeys();

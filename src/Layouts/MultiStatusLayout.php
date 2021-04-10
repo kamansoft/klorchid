@@ -4,13 +4,13 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-use Kamansoft\Klorchid\Layouts\Traits\MultiStatusModelLayoutTrait;
+use Kamansoft\Klorchid\Layouts\Traits\MultiStatusModeLayoutTrait;
 use Orchid\Screen\Field;
 
 abstract class MultiStatusLayout extends KlorchidLayout
 {
 
-    use MultiStatusModelLayoutTrait;
+    use MultiStatusModeLayoutTrait;
 
 
     public function statusClassKernels(){
