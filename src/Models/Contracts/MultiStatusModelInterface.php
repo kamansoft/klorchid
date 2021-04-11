@@ -4,6 +4,8 @@
 namespace Kamansoft\Klorchid\Models\Contracts;
 
 
+use Illuminate\Support\Collection;
+
 interface MultiStatusModelInterface
 {
 
@@ -13,6 +15,12 @@ interface MultiStatusModelInterface
      * @return mixed the disabled Status value
      */
     static function disabledStatusValue();
+
+    static function statusColors():array;
+
+    public function getStatusColors():Collection;
+
+    public function getStatusColor(param)
 
     /**
      *
@@ -26,6 +34,9 @@ interface MultiStatusModelInterface
      * @return array
      */
     static function statusValues(): array;
+
+
+
 
     static function statusToString($status): string;
 

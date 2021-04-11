@@ -6,16 +6,12 @@ namespace Kamansoft\Klorchid\Layouts\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-trait MultiStatusModeLayoutTrait
+trait MultiStatusModelLayoutTrait
 {
 
-    use ScreenQueryValidationForLayoutTrait;
-    use ScreenQueryDataBasedLayoutTrait;
+    //use ScreenQueryDataBasedLayoutTrait;
 
     private Collection $status_class_kernels;
-
-
-
 
     public function getStatus()
     {
