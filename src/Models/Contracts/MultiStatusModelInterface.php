@@ -18,9 +18,10 @@ interface MultiStatusModelInterface
 
     static function statusColors():array;
 
-    public function getStatusColors():Collection;
+    static function getStatusColors():Collection;
 
-    public function getStatusColor(param)
+    public function getStatusColor($param);
+
 
     /**
      *

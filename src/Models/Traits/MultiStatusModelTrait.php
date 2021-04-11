@@ -4,14 +4,27 @@
 namespace Kamansoft\Klorchid\Models\Traits;
 
 
+use Illuminate\Support\Collection;
+
 trait MultiStatusModelTrait
 {
 
-    public function getDisabledStatusValue(){
+    public function getDisabledStatusValue()
+    {
         return static::disabledStatusValue();
     }
 
-     public function statusSet($status, string $reason): self
+    static function getStatusColors(): Collection
+    {
+        return self::statusColors();
+    }
+
+    public function getStatusColor($param)
+    {
+        return self::getStatusColors()->get($param);
+    }
+
+    public function statusSet($status, string $reason): self
     {
 
         $this->status = $status;
@@ -30,14 +43,12 @@ trait MultiStatusModelTrait
         $values = static::statusValues();
 
         $statusName = array_search(strval(intval($status)), $values);
-        if (!$statusName){
+        if (!$statusName) {
             throw new \Exception("status name for $status status value not found on statusNameValues model's method returned array  ");
         }
         //$statusName = $values[strval(intval($status))];
         return $statusName;
     }
-
-
 
 
 }

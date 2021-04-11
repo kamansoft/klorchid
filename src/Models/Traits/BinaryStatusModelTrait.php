@@ -20,4 +20,14 @@ trait BinaryStatusModelTrait
         ];
     }
 
+
+    static function statusColors():array{
+        return [
+            'inactive'=>'danger',
+            'active' => 'success'
+        ];
+    }
+
+
+
 }
