@@ -6,7 +6,7 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 use Illuminate\Support\Collection;
 
-trait MultiStatusModelTrait
+trait  MultiStatusModelTrait
 {
 
     public function getDisabledStatusValue()

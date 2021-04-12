@@ -3,7 +3,9 @@
 
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
+use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\TextArea;
 
 trait StatusFieldsTrait
@@ -25,6 +27,31 @@ trait StatusFieldsTrait
 			->canSee($this->query->get($data_keyname)->exists)
 			->disabled(true);
 	}
+
+	public function getNewStatusField($data_keyname,$status_options):Field{
+	    return Select::make(implodeWithDot($data_keyname,'new_status'))
+            ->options($status_options)
+            ->title(__('New Status') . ':');
+    }
+
+    public function getNewStatusReasonField($data_keyname):Field{
+	    return Input::make(implodeWithDot($data_keyname,'new_status_reason'))
+                ->type('text')
+                ->max(255)
+                ->min(20)
+                ->required()
+                ->value("")
+                ->title(__('Status Change Reason') . ':')
+                ->help(__("Short text or verb that explains the reason of the status change of this element"));
+
+    }
+
+    public function getNewStatusFields($data_keyname,$status_options):array{
+	    return [
+	        $this->getNewStatusField($data_keyname,$status_options),
+            $this->getNewStatusReasonField($data_keyname)
+        ];
+    }
 
 	public function getStatusReasonField($data_keyname, $field_class = 'form-control'): Field{
 

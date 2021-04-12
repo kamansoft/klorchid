@@ -11,13 +11,14 @@ trait MultiStatusModelLayoutTrait
 
     //use ScreenQueryDataBasedLayoutTrait;
 
-    private Collection $status_class_kernels;
+    //private Collection $status_class_kernels;
 
     public function getStatus()
     {
-        return $this->query->get($this->getScreenQueryLayoutDataKeyname())->status;
+        return $this->query->get($this->getScreenQueryDataKeyname())->status;
     }
 
+    /*
     public function setStatusClassKernels(): Collection
     {
 
@@ -27,5 +28,5 @@ trait MultiStatusModelLayoutTrait
     public function getClassForStatus(string $status_keyname): string
     {
         return "";
-    }
+    }*/
 }

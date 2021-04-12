@@ -14,23 +14,18 @@ use Kamansoft\Klorchid\Layouts\Traits\ScreenQueryValidationForLayoutTrait;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Field;
 
-abstract class MultiStatusModelLayout extends Rows implements KlorchidScreenQueryValidatableInterface, ScreenQueryDataBasedLayoutInterface, MultiStatusModelLayoutInterface
+abstract class MultiStatusModelLayout extends KlorchidBasicLayout implements ScreenQueryDataBasedLayoutInterface, MultiStatusModelLayoutInterface
 {
-    use ScreenQueryValidationForLayoutTrait;
+
     use ScreenQueryDataBasedLayoutTrait;
     use MultiStatusModelLayoutTrait;
 
-    public function screenQueryRequiredKeys(): array
-    {
-        return [];
-    }
 
     public function __construct()
     {
-        $this->setScreenQueryRequiredKeys();
-        $this->setStatusClassKernels();
+        parent::__construct();
+        //$this->setStatusClassKernels();
     }
-
 
 
 }

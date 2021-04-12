@@ -13,19 +13,9 @@ use Kamansoft\Klorchid\Layouts\Traits\ScreenQueryDataBasedLayoutTrait;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Field;
 
-abstract class MultiModeScreenLayout extends Rows implements KlorchidScreenQueryValidatableInterface, MultiModeScreenLayoutsInterface
+abstract class MultiModeScreenLayout extends KlorchidBasicLayout implements MultiModeScreenLayoutsInterface
 {
     //use ScreenQueryDataBasedLayoutTrait;
-    use ScreenQueryValidationForLayoutTrait;
+
     use MultiModeScreenLayoutTrait;
-
-    public function screenQueryRequiredKeys(): array
-    {
-        return [];
-    }
-
-    public function __construct()
-    {
-        $this->setScreenQueryRequiredKeys();
-    }
 }

@@ -10,7 +10,7 @@ interface ScreenQueryDataBasedLayoutInterface
 
     public function getData();
 
-    public function getScreenQueryLayoutDataKeyname();
+    public function getScreenQueryDataKeyname();
 
     public function multiStatusScreenQueryRequiredKeys(): array;
 }

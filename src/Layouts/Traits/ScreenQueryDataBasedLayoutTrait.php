@@ -11,21 +11,21 @@ trait ScreenQueryDataBasedLayoutTrait
 
     public function dataAttribute(string $attributeName)
     {
-        return implodeWithDot($this->getScreenQueryLayoutDataKeyname(),$attributeName);
+        return implodeWithDot($this->getScreenQueryDataKeyname(),$attributeName);
     }
 
     public function getData(){
-        return $this->query->get($this->getScreenQueryLayoutDataKeyname());
+        return $this->query->get($this->getScreenQueryDataKeyname());
     }
 
-    public function getScreenQueryLayoutDataKeyname()
+    public function getScreenQueryDataKeyname()
     {
         return $this->screen_query_layout_data_keyname;
     }
     public function multiStatusScreenQueryRequiredKeys(): array
     {
         return [
-            $this->getScreenQueryLayoutDataKeyname()
+            $this->getScreenQueryDataKeyname()
         ];
     }
 }
