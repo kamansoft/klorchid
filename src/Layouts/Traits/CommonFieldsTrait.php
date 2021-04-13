@@ -3,6 +3,7 @@
 
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
+use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 
 trait CommonFieldsTrait
@@ -60,7 +61,7 @@ trait CommonFieldsTrait
             ->disabled(true);
     }
 
-    public function getPkField($data_keyname,$field_class): Field
+    public function getPkField($data_keyname,$field_class='form-control'): Field
     {
         $model = $this->query->get($data_keyname);
 

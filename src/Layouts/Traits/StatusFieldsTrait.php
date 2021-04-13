@@ -19,7 +19,6 @@ trait StatusFieldsTrait
 	}
 
 	public function getStatusField($data_keyname, $field_class = 'form-control'): Field{
-
 		return Input::make(implodeWithDot($data_keyname,'stringStatus'))
 			->class($field_class) //. $this->getFieldCssClass($model))
 			->type('text')
