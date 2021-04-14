@@ -11,24 +11,24 @@ trait MultiModeScreenLayoutTrait
 
     private string $repository_mode_keyname = "screen_mode";
 
-    public function multimodeScreenQueryRequiredKeys(): array
+    public function multiModeScreenQueryRequiredKeys(): array
     {
         return [
-            $this->getRepositoryModeKeyname()
+            $this->getScreenQueryModeKeyname()
         ];
     }
 
     /**
      * @return string
      */
-    public function getRepositoryModeKeyname(): string
+    public function getScreenQueryModeKeyname(): string
     {
         return $this->repository_mode_keyname;
     }
 
     public function getScreenMode(): string
     {
-        return $this->query->get($this->getRepositoryModeKeyName());
+        return $this->query->get($this->getScreenQueryModeKeyname());
     }
 
 

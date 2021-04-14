@@ -10,55 +10,61 @@ use Orchid\Screen\Fields\TextArea;
 
 trait StatusFieldsTrait
 {
-	public function getStatusFields($data_keyname,$field_class) : array
-	{
-		return [
-			$this->getStatusField($data_keyname,$field_class),
-			$this->getStatusReasonField($data_keyname,$field_class),
-		];
-	}
+    public function getStatusFields($data_keyname, $field_class): array
+    {
+        return [
+            $this->getStatusField($data_keyname, $field_class),
+            $this->getStatusReasonField($data_keyname, $field_class),
+        ];
+    }
 
-	public function getStatusField($data_keyname, $field_class = 'form-control'): Field{
-		return Input::make(implodeWithDot($data_keyname,'stringStatus'))
-			->class($field_class) //. $this->getFieldCssClass($model))
-			->type('text')
-			->title(__('Current Status') . ':')
-			->canSee($this->query->get($data_keyname)->exists)
-			->disabled(true);
-	}
+    public function getStatusField($data_keyname, $field_class = 'form-control'): Field
+    {
+      
+        return Input::make(implodeWithDot($data_keyname, 'statusName'))
+            ->class($field_class) //. $this->getFieldCssClass($model))
+            ->type('text')
+            ->title(__('Current Status') . ':')
+            ->canSee($this->query->get($data_keyname)->exists)
+            ->disabled(true);
+    }
 
-	public function getNewStatusField($data_keyname,$status_options):Field{
-	    return Select::make(implodeWithDot($data_keyname,'new_status'))
+    public function getStatusReasonField($data_keyname, $field_class = 'form-control'): Field
+    {
+        return TextArea::make(implodeWithDot($data_keyname, 'cur_status_reason'))
+            ->class($field_class)
+            ->title(__('Current Status Reason') . ': ')
+            ->canSee($this->query->get($data_keyname)->exists)
+            ->disabled(true);
+    }
+
+    public function getNewStatusField($data_keyname, $status_options): Field
+    {
+        return Select::make(implodeWithDot($data_keyname, 'new_status'))
             ->options($status_options)
             ->title(__('New Status') . ':');
     }
 
-    public function getNewStatusReasonField($data_keyname):Field{
-	    return Input::make(implodeWithDot($data_keyname,'new_status_reason'))
-                ->type('text')
-                ->max(255)
-                ->min(20)
-                ->required()
-                ->value("")
-                ->title(__('Status Change Reason') . ':')
-                ->help(__("Short text or verb that explains the reason of the status change of this element"));
+    public function getNewStatusReasonField($data_keyname): Field
+    {
+        return Input::make(implodeWithDot($data_keyname, 'new_status_reason'))
+            ->type('text')
+            ->max(255)
+            ->min(20)
+            ->required()
+            ->value("")
+            ->title(__('Status Change Reason') . ':')
+            ->help(__("Short text or verb that explains the reason of the status change of this element"));
 
     }
 
-    public function getNewStatusFields($data_keyname,$status_options):array{
-	    return [
-	        $this->getNewStatusField($data_keyname,$status_options),
+    public function getNewStatusFields($data_keyname, $status_options): array
+    {
+        return [
+            $this->getNewStatusField($data_keyname, $status_options),
             $this->getNewStatusReasonField($data_keyname)
         ];
     }
 
-	public function getStatusReasonField($data_keyname, $field_class = 'form-control'): Field{
 
-
-		return TextArea::make(implodeWithDot($data_keyname,'cur_status_reason'))
-			->class($field_class)
-			->title(__('Current Status Reason') . ': ')
-			->canSee($this->query->get($data_keyname)->exists)
-			->disabled(true);
-	}
 }

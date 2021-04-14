@@ -20,12 +20,4 @@ abstract class MultiStatusModelLayout extends KlorchidBasicLayout implements Scr
     use ScreenQueryDataBasedLayoutTrait;
     use MultiStatusModelLayoutTrait;
 
-
-    public function __construct()
-    {
-        parent::__construct();
-        //$this->setStatusClassKernels();
-    }
-
-
 }

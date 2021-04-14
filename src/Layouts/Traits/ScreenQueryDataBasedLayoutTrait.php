@@ -18,11 +18,11 @@ trait ScreenQueryDataBasedLayoutTrait
         return $this->query->get($this->getScreenQueryDataKeyname());
     }
 
-    public function getScreenQueryDataKeyname()
+    public function getScreenQueryDataKeyname(): string
     {
         return $this->screen_query_layout_data_keyname;
     }
-    public function multiStatusScreenQueryRequiredKeys(): array
+    public function dataBasedScreenQueryRequiredKeys(): array
     {
         return [
             $this->getScreenQueryDataKeyname()

@@ -5,24 +5,16 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 
 use Illuminate\Support\Collection;
+use Kamansoft\Klorchid\Models\Presenters\MultiStatusModelPresenter;
 
 trait  MultiStatusModelTrait
 {
 
-    public function getDisabledStatusValue()
+    public function getDisabledStatusValues()
     {
-        return static::disabledStatusValue();
+        return [];
     }
 
-    static function getStatusColors(): Collection
-    {
-        return self::statusColors();
-    }
-
-    public function getStatusColor($param)
-    {
-        return self::getStatusColors()->get($param);
-    }
 
     public function statusSet($status, string $reason): self
     {
@@ -50,5 +42,15 @@ trait  MultiStatusModelTrait
         return $statusName;
     }
 
+    public function isLockedByStatus(?string $status = null): bool
+    {
+        $status = $status || $this->status;
+        return !in_array($status, $this::lockedStatus());
+    }
+
+    public function statusPresenter()
+    {
+        return new MultiStatusModelPresenter($this);
+    }
 
 }

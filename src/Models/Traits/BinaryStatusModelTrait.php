@@ -6,9 +6,9 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 trait BinaryStatusModelTrait
 {
-    static function disabledStatusValue()
+    static function lockedStatus():array
     {
-        return '0';
+        return ['0'];
     }
 
 
@@ -21,12 +21,7 @@ trait BinaryStatusModelTrait
     }
 
 
-    static function statusColors():array{
-        return [
-            'inactive'=>'danger',
-            'active' => 'success'
-        ];
-    }
+
 
 
 

@@ -12,5 +12,5 @@ interface ScreenQueryDataBasedLayoutInterface
 
     public function getScreenQueryDataKeyname();
 
-    public function multiStatusScreenQueryRequiredKeys(): array;
+
 }

@@ -67,8 +67,8 @@ trait KlorchidMultiModeTrait
 
 
     /**
-     * Maps thorug the reflectionClass object of an instance of this class, and returns all the methods
-     * which name's ends with the value at $needle .
+     * Maps thorough the reflectionClass object of an instance of this class,
+     * get all the methods which name's ends with the value at $needle
      * and returns a collection with all of those methods
      * @param string $needle
      * @return Collection
