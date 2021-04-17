@@ -12,18 +12,18 @@ use Illuminate\Validation\Rule;
 
 
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
-use Kamansoft\Klorchid\Models\Contracts\MultiStatusModelInterface;
-use Kamansoft\Klorchid\Models\Traits\BinaryStatusModelTrait;
+use Kamansoft\Klorchid\Models\Contracts\StatusModelInterface;
+use Kamansoft\Klorchid\Models\Traits\BooleanStatusModelTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
-use Kamansoft\Klorchid\Models\Traits\MultiStatusModelTrait;
+use Kamansoft\Klorchid\Models\Traits\StatusModelTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
 
-class KlorchidUserModel extends User implements KlorchidModelsInterface, MultiStatusModelInterface
+class KlorchidUserModel extends User implements KlorchidModelsInterface, StatusModelInterface
 {
 
     use HasApiTokens;
@@ -37,8 +37,8 @@ class KlorchidUserModel extends User implements KlorchidModelsInterface, MultiSt
     //klorchid related
     use KlorchidEloquentModelsTrait;
     use KlorchidUserBlamingModelsTrait;
-    use MultiStatusModelTrait ;
-    use BinaryStatusModelTrait ;
+    use StatusModelTrait ;
+    use BooleanStatusModelTrait ;
 
 
     /**

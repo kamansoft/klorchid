@@ -14,6 +14,15 @@ trait KlorchidUserBlamingModelsTrait
 
 
 
+    protected static function bootKlorchidEloquentModelsTrait() {
+
+		static::creating(function ($model) {
+			$model->blameOnCreate();
+		});
+		static::updating(function ($model) {
+			$model->blameOnUpdate();
+		});
+	}
 
 
 	public function getUserToBlameId(): string{

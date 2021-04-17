@@ -6,16 +6,8 @@ namespace Kamansoft\Klorchid\Models\Contracts;
 
 use Illuminate\Support\Collection;
 
-interface MultiStatusModelInterface
+interface StatusModelInterface
 {
-
-
-    /*
-        static function statusColors():array;
-
-        static function getStatusColors():Collection;
-
-        public function getStatusColor($param);*/
 
 
     /**
@@ -39,18 +31,13 @@ interface MultiStatusModelInterface
      *
      * @return array the status values to be taken as disabled or locked statues
      */
-    static function lockedStatus(): array;
-
-    public function isLockedByStatus(?string $status = null ):bool;
-
-    static function statusToString($status): string;
-
-    public function statusSet($status, string $reason): self;
+    static function lockedStatuses(): array;
 
     public function getStatusNameAttribute(): string;
 
+    public function isLockedByStatus(?string $status = null): bool;
 
-
+    public function statusSet($status, string $reason): self;
 
 
 }

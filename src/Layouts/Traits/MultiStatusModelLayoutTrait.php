@@ -9,11 +9,6 @@ use Illuminate\Support\Collection;
 trait MultiStatusModelLayoutTrait
 {
 
-    /*
-    public function multiStatusScreenQueryRequiredKeys(): array
-    {
-        return [];
-    }*/
 
     public function getStatus()
     {
