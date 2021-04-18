@@ -21,7 +21,8 @@ trait StatusFieldsTrait
     public function getStatusField($data_keyname, $field_class = 'form-control'): Field
     {
       
-        return Input::make(implodeWithDot($data_keyname, 'statusName'))
+        return Input::make('statusNamePresentation')
+            ->value($this->getData()->statusPresenter()->currentStatus())
             ->class($field_class) //. $this->getFieldCssClass($model))
             ->type('text')
             ->title(__('Current Status') . ':')

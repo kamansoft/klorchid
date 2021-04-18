@@ -14,17 +14,29 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
 {
 
 
+
+
     /**
-     * returns an array of a key pared elements value=>Presentation Name
-     * @return mixed
+     * maps through  Models statusValues array flips it and returns it
+     * bool to int conversions has been taken in consideration for boolean status based models
+     * @return array
      */
-    public function options()
+    public function getOptions(): array
     {
-         return collect(array_flip($this->entity::statusValues()))->mapWithKeys(function($value,$name){
-               return [$value=>Str::ucfirst(__($name))];
-         })->toArray();
+        return collect($this->entity::statusValues())
+            ->mapWithKeys(function ($value, $key) {
+                $value = is_bool($value)?intval($value):value;
+                return [
+                    $value => Str::ucfirst(__($key))
+                ];
+            })
+            ->toArray();
     }
 
+    public function currentStatus(): string
+    {
+        return Str::ucfirst(__($this->entity->getStatusNameAttribute()));
+    }
 
 
 

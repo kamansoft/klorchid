@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare (strict_types=1);
 
 use App\Klorchid\Screens\User\KuserEditScreen;
 use App\Klorchid\Screens\User\KuserListScreen;
@@ -38,41 +38,41 @@ use Tabuna\Breadcrumbs\Trail;
 
 // Main
 Route::screen('/main', App\Klorchid\Screens\KlorchidMainScreen::class)
-	->name('platform.main');
+    ->name('platform.main');
 
 Route::screen('profile', KuserProfileEditScreen::class)
-	->name('platform.profile')
-	->breadcrumbs(function (Trail $trail) {
-		return $trail
-			->parent('platform.index')
-			->push(__('Profile'), route('platform.profile'));
-	});
+    ->name('platform.profile')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Profile'), route('platform.profile'));
+    });
 
 // Platform > System > Users
 Route::screen('users/create', KuserEditScreen::class)
-	->name('platform.systems.users.add')
-	->breadcrumbs(function (Trail $trail) {
-		return $trail
-			->parent('platform.systems.users')
-			->push(__('Add'), route('platform.systems.users.add'));
-	});
+    ->name('platform.systems.users.add')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.systems.users')
+            ->push(__('Add'), route('platform.systems.users.add'));
+    });
 
 Route::screen('users/{users}/edit', KuserEditScreen::class)
-	->name('platform.systems.users.edit')
-	->breadcrumbs(function (Trail $trail, $user) {
-		return $trail
-			->parent('platform.systems.users')
-			->push(__('Edit'), route('platform.systems.users.edit', $user));
-	});
+    ->name('platform.systems.users.edit')
+    ->breadcrumbs(function (Trail $trail, $user) {
+        return $trail
+            ->parent('platform.systems.users')
+            ->push(__('Edit'), route('platform.systems.users.edit', $user));
+    });
 
 // Platform > System > Users > User
 Route::screen('users', KuserListScreen::class)
-	->name('platform.systems.users')
-	->breadcrumbs(function (Trail $trail) {
-		return $trail
-			->parent('platform.systems.index')
-			->push(__('Users'), route('platform.systems.users'));
-	});
+    ->name('platform.systems.users')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.systems.index')
+            ->push(__('Users'), route('platform.systems.users'));
+    });
 
 /*
 |--------------------------------------------------------------------------

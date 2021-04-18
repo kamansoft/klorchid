@@ -8,7 +8,9 @@ trait MultiModeScreenLayoutTrait
 {
 
 
-
+    use ScreenQueryDataBasedLayoutTrait;
+    use ScreenQueryValidationForLayoutTrait;
+    
     private string $repository_mode_keyname = "screen_mode";
 
     public function multiModeScreenQueryRequiredKeys(): array

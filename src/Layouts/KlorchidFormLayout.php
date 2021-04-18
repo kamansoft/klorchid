@@ -73,16 +73,6 @@ abstract class KlorchidFormLayout extends KlorchidLayout
     }
 
 
-    public function getStatusOptions()
-    {
-        return collect($this->getData()::statusValues())
-            ->mapWithKeys(function ($value, $key) {
-                return [
-                    $value => Str::ucfirst(__($key))
-                ];
-            })
-            ->toArray();
-    }
 
 
     /**

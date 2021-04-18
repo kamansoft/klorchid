@@ -32,7 +32,7 @@ trait  StatusModelTrait
         return in_array($status, $this::lockedStatuses());
     }
 
-    public function statusPresenter()
+    public function statusPresenter(): MultiStatusModelPresenter
     {
         return new MultiStatusModelPresenter($this);
     }
