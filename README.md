@@ -27,6 +27,10 @@ Create a new laravel Project
 
     $ composer create-project laravel/laravel brand_new_laravel_project "8.*" --prefer-dist
  
+Cd to your newly created laravel project 
+
+    $ cd brand_new_laravel_project
+
 In order to run some migrations  `doctrine\dbal` is needed so you must add it 
 
     $ composer require doctrine/dbal
@@ -66,7 +70,7 @@ Lets set klorchid Kuser model as default model used by auth, so you must change 
     'providers' => [
        'users' => [
            'driver' => 'eloquent',
-           'model' => Kamansoft\Klorchid\Models\Kuser::class,
+           'model' => Kamansoft\Klorchid\Models\KlorchidUserModel::class,
        ],
        .
        .
