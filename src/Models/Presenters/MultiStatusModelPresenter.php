@@ -38,6 +38,16 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
         return Str::ucfirst(__($this->entity->getStatusNameAttribute()));
     }
 
+    /**
+     * returns the class for fields based on current status
+     * @param string|null $statusName
+     * @return mixed
+     */
+    public function getStatusFieldColorClass(?string $statusName=null){
+        $statusName = $statusName || $this->entity->statusName;
+        return $this->entity::statusColorClasses()[$this->entity->statusName];
+    }
+
 
 
 }

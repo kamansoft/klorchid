@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Kamansoft\Klorchid\Console\Commands\BackupAction;
@@ -68,7 +69,6 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerViews();
 
         $this->registerPermissions($dashboard);
-
 
 
     }
@@ -185,26 +185,30 @@ class KlorchidServiceProvider extends ServiceProvider
     protected function registerPermissions(Dashboard $dashboard): self
     {
         //todo: we must cache this to avoid loops
-        collect(File::files(app_path('Permissions')))
-            ->map(function ($file) {
-                return require_once $file->getPathname();
-            })
-            ->collapse()
-            ->map(function ($values, $group_name) use ($dashboard) {
-                foreach ($values as $perm_key => $name) {
-                    $dashboard->registerPermissions(
-                        ItemPermission::group($group_name)
-                            ->addPermission(
-                                $perm_key,
-                                $name
-                            )
-                    );
-                }
-            });
+        if (file_exists(app_path('Permissions'))) {
+            collect(File::files(app_path('Permissions')))
+                ->map(function ($file) {
+                    return require_once $file->getPathname();
+                })
+                ->collapse()
+                ->map(function ($values, $group_name) use ($dashboard) {
+                    foreach ($values as $perm_key => $name) {
+                        $dashboard->registerPermissions(
+                            ItemPermission::group($group_name)
+                                ->addPermission(
+                                    $perm_key,
+                                    $name
+                                )
+                        );
+                    }
+                });
 
 
-
+        } else {
+            Log::alert("There is NOT Permission Folder to scan for permissions");
+        }
         return $this;
+
     }
 
 

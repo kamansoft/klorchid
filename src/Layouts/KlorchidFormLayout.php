@@ -89,10 +89,10 @@ abstract class KlorchidFormLayout extends KlorchidLayout
         $fields = array_merge($fields, $this->formFields());
 
         if ($this->isEnabledStatusFields()) {
-            $fields = array_merge($fields, $this->getStatusFields($this->getScreenQueryDataKeyname(), 'form-control'));
+            $fields = array_merge($fields, $this->getStatusFields($this->getScreenQueryDataKeyname()));
         }
         if ($this->isEnabledBlamingFields()) {
-            $fields = array_merge($fields, $this->getBlamingFields($this->getScreenQueryDataKeyname(), 'form-control'));
+            $fields = array_merge($fields, $this->getBlamingFields($this->getScreenQueryDataKeyname(), 'form-control text-dark'));
         }
 
         \Debugbar::debug($fields);

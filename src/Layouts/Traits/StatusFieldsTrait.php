@@ -10,7 +10,7 @@ use Orchid\Screen\Fields\TextArea;
 
 trait StatusFieldsTrait
 {
-    public function getStatusFields($data_keyname, $field_class): array
+    public function getStatusFields($data_keyname, $field_class=null): array
     {
         return [
             $this->getStatusField($data_keyname, $field_class),
@@ -18,9 +18,10 @@ trait StatusFieldsTrait
         ];
     }
 
-    public function getStatusField($data_keyname, $field_class = 'form-control'): Field
+    public function getStatusField($data_keyname, $field_class = null): Field
     {
-      
+        $field_class = $field_class ?  : 'form-control '.$this->getData()->statusPresenter()->getStatusFieldColorClass();
+        var_dump($field_class);
         return Input::make('statusNamePresentation')
             ->value($this->getData()->statusPresenter()->currentStatus())
             ->class($field_class) //. $this->getFieldCssClass($model))
@@ -30,8 +31,10 @@ trait StatusFieldsTrait
             ->disabled(true);
     }
 
-    public function getStatusReasonField($data_keyname, $field_class = 'form-control'): Field
+    public function getStatusReasonField($data_keyname, $field_class = null): Field
     {
+        $field_class = $field_class ?: 'form-control '.$this->getData()->statusPresenter()->getStatusFieldColorClass();
+
         return TextArea::make(implodeWithDot($data_keyname, 'cur_status_reason'))
             ->class($field_class)
             ->title(__('Current Status Reason') . ': ')

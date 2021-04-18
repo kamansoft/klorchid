@@ -28,6 +28,14 @@ trait BooleanStatusModelTrait
         ];
     }
 
+    static function statusColorClasses(): array
+    {
+        return [
+            'inactive'=>'text-danger',
+            'active'=>'text-success'
+        ];
+    }
+
 
 
 
