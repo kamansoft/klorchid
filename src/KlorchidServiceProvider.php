@@ -64,7 +64,7 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerTranslations()
             ->registerMigrations()
             //->registerMiddlewaresAlias()
-            // ->reisterMiddlewareGroups()
+            //->reisterMiddlewareGroups()
             ->registerRoutes()
             ->registerViews();
 
@@ -100,8 +100,8 @@ class KlorchidServiceProvider extends ServiceProvider
 
         //a$this->loadRoutesFrom(__DIR__ . '/routes/klorchid.php','platform');
         $this->publishes([
-            //__DIR__ . '/../routes/platform.php' => base_path('routes/platform.php'),
-            //__DIR__ . '/../routes/klorchid.php' => base_path('routes/klorchid.php'),
+            __DIR__ . '/../routes/platform.php' => base_path('routes/platform.php'),
+            __DIR__ . '/../routes/klorchid.php' => base_path('routes/klorchid.php'),
         ], 'klorchid-platform-routes');
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/klorchid_locale.php', 'klorchid');

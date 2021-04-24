@@ -48,24 +48,25 @@ class KlorchidInstallCommand extends Command {
 				'--tag' => [
 					'klorchid-migrations',
 					'klorchid-commons',
-					'klorchid-config',
+				    'klorchid-config',
 					//'klorchid-platform-routes',
                     'klorchid-error-views',
 					'klorchid-views',
 					'klorchid-lang',
 				],
 
-			])
+			]);
+			/*
 			->executeCommand('vendor:publish', [
 				'--provider' => KlorchidServiceProvider::class,
 				'--force' => false,
 				'--tag' => [
 
-					'klorchid-platform-routes',
+					//'klorchid-platform-routes',
 
 				],
 
-			]);
+			]);*/
 		try {
 
 			$this->executeCommand('session:table');
