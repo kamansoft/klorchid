@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Screens\Actions;
 
 use Orchid\Screen\Actions\Button;
 
-class ConfirmationButon extends Button
+class ConfirmationButton extends Button
 {
     protected $view = 'klorchid::actions.confirmation';
 

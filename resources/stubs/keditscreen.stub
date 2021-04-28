@@ -11,7 +11,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Alert;
 
 
-use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
+use Kamansoft\Klorchid\Screens\Actions\ConfirmationButton;
 
 
 class DummyClass extends KeditScreen

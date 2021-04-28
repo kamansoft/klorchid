@@ -21,7 +21,6 @@ trait StatusFieldsTrait
     public function getStatusField($data_keyname, $field_class = null): Field
     {
         $field_class = $field_class ?  : 'form-control '.$this->getData()->statusPresenter()->getStatusFieldColorClass();
-        var_dump($field_class);
         return Input::make('statusNamePresentation')
             ->value($this->getData()->statusPresenter()->currentStatus())
             ->class($field_class) //. $this->getFieldCssClass($model))

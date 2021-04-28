@@ -9,11 +9,11 @@ use Illuminate\Support\Collection;
 trait MultiStatusModelLayoutTrait
 {
 
-    use ScreenQueryDataBasedLayoutTrait;
+    use ScreenQueryFormDataLayoutTrait;
     use ScreenQueryValidationForLayoutTrait;
     public function getStatus()
     {
-        return $this->query->get($this->getScreenQueryDataKeyname())->status;
+        return $this->query->get($this->getScreenFormDataKeyname())->status;
     }
 
 

@@ -5,7 +5,7 @@ namespace Kamansoft\Klorchid\Screens;
 use AdvancedJsonRpc\Request;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensStatusSetTrait;
-use Kamansoft\Klorchid\Screens\Actions\ConfirmationButon;
+use Kamansoft\Klorchid\Screens\Actions\ConfirmationButton;
 
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 {
@@ -32,7 +32,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     public function saveButton()
     {
 
-        return ConfirmationButon::make(__('Save'))
+        return ConfirmationButton::make(__('Save'))
             ->icon('save')
             ->method('save');
     }

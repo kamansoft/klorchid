@@ -22,6 +22,7 @@ use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
 
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Notificator\Notificator;
+
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
 use Kamansoft\Klorchid\Repositories\KlorchidEloquentRepository;
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
@@ -225,6 +226,7 @@ class KlorchidServiceProvider extends ServiceProvider
             ->registerKmigrationCreator()
             ->registerKmigrationCommandSingleton()
             ->registerNotificater()
+            ->registerNotificator()
             ->registerCommands();
 
     }
@@ -241,6 +243,16 @@ class KlorchidServiceProvider extends ServiceProvider
     protected function registerNotificater(): self
     {
         $this->app->bind(NotificaterInterface::class, Notificator::class);
+
+
+
+        return $this;
+    }
+
+    protected function registerNotificator():self{
+        $this->app->singleton(Notificator::class,static function () {
+            return new Notificator();
+        });
         return $this;
     }
 
