@@ -6,12 +6,12 @@ namespace Kamansoft\Klorchid\Layouts\Traits;
 
 trait ScreenQueryFormDataLayoutTrait
 {
-    private string $screen_query_form_data_keyname = 'form_data';
+    public static string $screen_query_form_data_keyname = 'form_data';
 
 
-    public function dataAttribute(string $attributeName)
+    static function fullFormInputName(string $attributeName): string
     {
-        return implodeWithDot($this->getScreenFormDataKeyname(),$attributeName);
+        return implodeWithDot(self::$screen_query_form_data_keyname,$attributeName);
     }
 
     public function getData(){
@@ -20,7 +20,7 @@ trait ScreenQueryFormDataLayoutTrait
 
     public function getScreenFormDataKeyname(): string
     {
-        return $this->screen_query_form_data_keyname;
+        return self::$screen_query_form_data_keyname;
     }
     public function formDataScreenQueryRequiredKeys(): array
     {

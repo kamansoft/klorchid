@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 
 use Kamansoft\Klorchid\Models\KlorchidUserModel;
+use Kamansoft\Klorchid\Models\Presenters\PkPresenter;
 
 
 trait KlorchidEloquentModelsTrait
@@ -34,7 +35,7 @@ trait KlorchidEloquentModelsTrait
      * @return $this
      * @throws \ReflectionException
      */
-    public function setCasts()
+    public function setCasts():self
     {
         getObjectPropertiesWith($this, 'extra_casts', \ReflectionMethod::IS_PROTECTED)
             ->map(function ($extra_class) {
@@ -51,20 +52,11 @@ trait KlorchidEloquentModelsTrait
     }
 
 
-    static public function userModelClass(): string
+
+
+
+    public function pkPresenter(): PkPresenter
     {
-        return KlorchidUserModel::class;
+        return new PkPresenter($this);
     }
-
-    public function creator()
-    {
-
-        return $this->belongsTo(self::userModelClass(), config('klorchid.models_common_field_names.creator'), 'id');
-    }
-
-    public function updater()
-    {
-        return $this->belongsTo(self::userModelClass(),config('klorchid.models_common_field_names.last_updater'), 'id');
-    }
-
 }

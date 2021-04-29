@@ -15,7 +15,7 @@ use Orchid\Screen\Field;
 
 abstract class KlorchidLayout extends KlorchidBasicLayout implements ScreenQueryDataBasedLayoutInterface, MultiModeScreenLayoutsInterface,MultiStatusModelLayoutInterface
 {
-    //use ScreenQueryFormDataLayoutTrait;
+    //use ScreenQueryFormDataLayoutTrait; //its already being loded by the trait below
     use MultiStatusModelLayoutTrait;
     use MultiModeScreenLayoutTrait;
 }

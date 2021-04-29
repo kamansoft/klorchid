@@ -6,7 +6,7 @@ namespace Kamansoft\Klorchid\Layouts\Contracts;
 
 interface ScreenQueryDataBasedLayoutInterface
 {
-    public function dataAttribute(string $attributeName);
+    static function fullFormInputName(string $attributeName):string;
 
     public function getData();
 

@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid\Models\Contracts;
 
 
 use Illuminate\Support\Collection;
+use Kamansoft\Klorchid\Models\Presenters\MultiStatusModelPresenter;
 
 interface StatusModelInterface
 {
@@ -39,5 +40,10 @@ interface StatusModelInterface
 
     public function statusSet($status, string $reason): self;
 
+    /**
+     * @return string[]
+     */
+    static function statusColorClasses(): array;
 
+    public function statusPresenter(): MultiStatusModelPresenter;
 }

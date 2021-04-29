@@ -4,9 +4,10 @@
 namespace Kamansoft\Klorchid\Models\Traits;
 
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Kamansoft\Klorchid\Models\Kuser;
+use Kamansoft\Klorchid\Models\KlorchidUserModel;
 
 
 trait KlorchidUserBlamingModelsTrait
@@ -45,7 +46,20 @@ trait KlorchidUserBlamingModelsTrait
 
 
 
+	static public function userModelClass(): string
+    {
+        return KlorchidUserModel::class;
+    }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(self::userModelClass(), config('klorchid.models_common_field_names.creator'), 'id');
+    }
+
+    public function updater(): BelongsTo
+    {
+        return $this->belongsTo(self::userModelClass(),config('klorchid.models_common_field_names.last_updater'), 'id');
+    }
 
 
 }

@@ -25,11 +25,15 @@
     "Update date": "Fecha de Actualización",
     "Are you absolutely sure ?": "¿Esta Usted Completamente Seguro?",
     "Are you sure?": "¿Esta Usted Seguro?",
+
     "The data sent might not be able to be edited, or the next action could not be reverted ": "La data enviada podria no estar disponible para ser editada, o la accion a continuacion pordria ser irreversible",
     "Password Confirmation": "Confirmación de Contraseña",
     "Type User Password": "Ingrese Contraseña",
     "Retype User Password": "Escriba de nuevo la contraseña anterior",
     "Confirmation Text": "Texto de Confirmacion",
     "Just type:": "Escriba:",
-    "Please type :value as confirmation for deleting": "Por favor introduzca :value como confirmación para la eliminacion"
+    "Please type :value as confirmation for deleting": "Por favor introduzca :value como confirmación para la eliminacion",
+    "Success on Updating :element, record with id: :id": "Actualizacion exitosa de :element con codigo :id",
+    "Success on Creating :element, new record with id: :id" : "Creacion exitosa de :element con codigo :id",
+    "Unable to save element :element :id" : "No fué posible guardar :element :id"
 }
