@@ -15,6 +15,7 @@ use Orchid\Support\Facades\Dashboard;
  */
 trait ScreensPermissionsTrait {
 
+    //listo
 	/**
 	 * hasPermission
 	 *
@@ -23,17 +24,18 @@ trait ScreensPermissionsTrait {
 	 * @param string $permission
 	 * @return bool
 	 */
-	public function hasPermission(string $permission): bool {
+	//listo
+	public function hasPermission(string $permission): bool
+    {
 		if (!Auth::user()->hasAccess($permission)) {
-
 			return false;
 		} else {
 			return true;
 		}
 
-		return false;
 	}
 
+	//listo
 	private function getDasboardPermissions() {
 
 		$to_return = Dashboard::getAllowAllPermission();
@@ -46,6 +48,7 @@ trait ScreensPermissionsTrait {
 		*/
 	}
 
+	//listo
 	private function permExist($perm): bool{
 
 		/*if (property_exists($this, 'permissionsList') and count($this->permissionsList) > 0) {

@@ -26,7 +26,7 @@ class KlorchidModelCommand extends GeneratorCommand
         {--status-type= : Specify The type of model based on status: [ boolean-binary (default), integer-multistate, char-multistate ]  }
         {--m|migration : Create a migration file using the name of the model} 
         {--M|multimodescreen : Create a KlorchidMultimodeScreen class file using model class name} 
-        {--c|crudscreen : Create a KlorchidCrudScreen class file using model class name} 
+        {--c|crudscreen : Create a KlorchidCrudScreenBK class file using model class name} 
         {--l|listscreen : Create KlorchidListScreen class file using model class name} 
         {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';

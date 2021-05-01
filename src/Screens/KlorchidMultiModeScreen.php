@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Kamansoft\Klorchid\Screens;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
 use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Orchid\Screen\Screen;

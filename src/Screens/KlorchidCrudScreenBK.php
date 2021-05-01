@@ -7,7 +7,7 @@ use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensStatusSetTrait;
 use Kamansoft\Klorchid\Screens\Actions\ConfirmationButton;
 
-abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
+abstract class KlorchidCrudScreenBK extends KlorchidMultiModeScreen
 {
     //use KlorchidScreensStatusSetTrait;
 
