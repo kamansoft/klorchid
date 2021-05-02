@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid\Screens\Traits;
 
 use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarInterface;
 use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
@@ -15,7 +16,6 @@ use Illuminate\Support\Collection;
 
 /**
  * Trait KlorchidScreensCommandBarInterface
- * @method  KlorchidScreensPermissionsTrait loggedUserHasActionPermission(string $action)
  * @method  KlorchidMultiModeTrait getMode()
  * @method  KlorchidScreensCommandBarInterface commandBarElements()
  * @package Kamansoft\Klorchid\Screens\Traits
@@ -29,10 +29,14 @@ trait KlorchidScreensCommandBarTrait
     public function addSaveButton()
     {
         if (empty($this->save_button)) {
-            $this->setSaveButton();
-            $this->getSaveButton()->canSee($this->loggedUserHasActionPermission('edit') or $this->loggedUserHasPermission('create'));
-        }
+            $this->setSaveButton()
+                ->getSaveButton()
+                ->canSee(
+                    $this->loggedUserHasActionPermission('edit') or
+                    $this->loggedUserHasPermission('create')
+                );
 
+        }
         $this->elements->add($this->getSaveButton());
         return $this;
 
@@ -44,8 +48,8 @@ trait KlorchidScreensCommandBarTrait
         //initiating elements collection
         $this->elements = collect([]);
 
-        $consumer_elements = $this->commandBarElements();
-        $this->elements->merge($consumer_elements);
+        $this->elements = collect($this->commandBarElements());
+        //$this->elements->add(...$this->commandBarElements());
 
         try {
             if ($this->isEnableSaveButton() == true) {

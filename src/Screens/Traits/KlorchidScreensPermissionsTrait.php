@@ -8,14 +8,12 @@ use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 /**
  * Trait KlorchidScreensPermissionsTrait
  * @method KlorchidScreensPermissionsInterface actionPermissionsMap()
- * @method KlorchidPermissionsTrait loggedUserHasPermission(string $perm): bool
- * @method KlorchidPermissionsTrait loggedUserHasPermissionOrAbort(string $perm): bool
  * @package Kamansoft\Klorchid\Screens\Traits
  *
  */
-trait KlorchidScreensPermissionsTrait
+trait   KlorchidScreensPermissionsTrait
 {
-
+    use KlorchidPermissionsTrait;
     public function getPermissionForAction(string $action): string
     {
         return $this->actionPermissionsMap()[$action];

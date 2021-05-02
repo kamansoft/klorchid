@@ -30,7 +30,7 @@ trait KlorchidPermissionsTrait
 
     public function loggedUserHasPermission(string $perm): bool
     {
-        return !is_null(Auth::user()->hasAccess($perm));
+        return !is_null(Auth::user()->hasAccess($perm))?Auth::user()->hasAccess($perm):false;
     }
 
 
