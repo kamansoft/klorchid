@@ -24,7 +24,7 @@ if (!function_exists('getObjectMethodsWith')) {
      * @return \Illuminate\Support\Collection
      * @throws ReflectionException
      */
-    function getObjectMethodsWith($object, $needle, $accessor = \ReflectionMethod::IS_PUBLIC)
+    function getObjectMethodsWith($object, $needle, int $accessor = \ReflectionMethod::IS_PUBLIC): \Illuminate\Support\Collection
     {
 
         $reflection = new \ReflectionClass($object);

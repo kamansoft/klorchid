@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Models\Traits;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Kamansoft\Klorchid\Models\KlorchidUserModel;
+use Kamansoft\Klorchid\Models\KlorchidUser;
 
 
 trait KlorchidUserBlamingModelsTrait
@@ -48,7 +48,7 @@ trait KlorchidUserBlamingModelsTrait
 
 	static public function userModelClass(): string
     {
-        return KlorchidUserModel::class;
+        return KlorchidUser::class;
     }
 
     public function creator(): BelongsTo

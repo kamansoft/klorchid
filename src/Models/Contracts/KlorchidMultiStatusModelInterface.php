@@ -6,14 +6,15 @@ namespace Kamansoft\Klorchid\Models\Contracts;
 
 use Illuminate\Support\Collection;
 use Kamansoft\Klorchid\Models\Presenters\MultiStatusModelPresenter;
+use Kamansoft\Klorchid\Models\Traits\KlorchidMultiStatusModelTrait;
 
-interface StatusModelInterface
+interface KlorchidMultiStatusModelInterface
 {
 
 
     /**
      *
-     * Should should return a keyname value paired array with all the posible status values for a model, example:
+     * Should return a keyname value paired array with all the posible status values for a model, example:
      *
      * [
      *      "invalid"=>"0",
@@ -38,7 +39,7 @@ interface StatusModelInterface
 
     public function isLockedByStatus(?string $status = null): bool;
 
-    public function statusSet($status, string $reason): self;
+    public function statusSet($status, string $reason): KlorchidMultiStatusModelTrait;
 
     /**
      * @return string[]

@@ -10,7 +10,7 @@ trait KlorchidMultiModeTrait
 {
 
     protected Collection $available_modes;
-    protected string $mode  ;
+    protected string $mode;
 
     /**
      * @return string
@@ -21,30 +21,27 @@ trait KlorchidMultiModeTrait
     }
 
     /**
+     * Only set a mode if it is available
      * @param string $mode
-     * @return KlorchidMultiModeTrait
+     * @return $this
+     * @throws \Exception
      */
-    public function setMode(?string $mode = null)
+    public function setMode(string $mode): self
     {
-        if (is_null($mode)) {
-            Log::warning(self::class . ' avoiding the attempt to set null as mode ');
-            return $this;
-        }
         if ($this->isValidMode($mode)) {
             $this->mode = $mode;
         } else {
-            throw new \Exception('Can\'t set "' . $mode . '" as current  mode, due to "' . $mode . '" is not a '.self::class.' valid mode. ');
+            throw new \Exception('Can\'t set "' . $mode . '" as current  mode, due to "' . $mode . '" is not a ' . self::class . ' valid mode. ');
         }
         return $this;
-
     }
 
-    public function isValidMode($mode)
+    public function isValidMode($mode): bool
     {
-        return $this->getModeMethod($mode) ? true : false;
+        return (bool)$this->getModeMethod($mode);
     }
 
-    public function getModeMethod($mode)
+    public function getModeMethod($mode):string
     {
         return $this->available_modes->get($mode);
     }
@@ -55,14 +52,31 @@ trait KlorchidMultiModeTrait
      * @return $this
      * @throws \ReflectionException
      */
-    public function setAvailableModes(?Collection $modes)
+    public function setAvailableModes(Collection $modes): self
     {
-        $this->available_modes = $modes ?? $this->getModesByMethodsName();
+        $this->available_modes = $modes;
         return $this;
     }
 
-    public function getAvailableModes(){
-        $this->available_modes;
+    /**
+     * @param string $mode_methods_name_suffix
+     * @return $this
+     * @throws \ReflectionException
+     */
+    public function initAvailableModes(string $mode_methods_name_suffix): self
+    {
+        if (!isset($this->available_modes)) {
+            $this->setAvailableModes($this->getModesByMethodsName($mode_methods_name_suffix));
+        }
+        return $this;
+    }
+
+    public function getAvailableModes(?string $mode_methods_name_suffix = null): Collection
+    {
+        if (!is_null($mode_methods_name_suffix)) {
+            $this->initAvailableModes($mode_methods_name_suffix);
+        }
+        return $this->available_modes;
     }
 
 
@@ -76,9 +90,8 @@ trait KlorchidMultiModeTrait
      */
     public function getModesByMethodsName(string $needle = 'Mode'): Collection
     {
-        return getObjectMethodsWith($this,$needle);
+        return getObjectMethodsWith($this, $needle);
     }
-
 
 
 }

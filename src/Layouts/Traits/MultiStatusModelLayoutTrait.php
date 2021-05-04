@@ -10,7 +10,7 @@ trait MultiStatusModelLayoutTrait
 {
 
     use ScreenQueryFormDataLayoutTrait;
-    use ScreenQueryValidationForLayoutTrait;
+    use ScreenQueryValidationForLayoutsTrait;
     public function getStatus()
     {
         return $this->query->get($this->getScreenFormDataKeyname())->status;

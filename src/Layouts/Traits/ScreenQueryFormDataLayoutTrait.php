@@ -4,17 +4,19 @@ namespace Kamansoft\Klorchid\Layouts\Traits;
 
 
 
+use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
+use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
+
 trait ScreenQueryFormDataLayoutTrait
 {
     public static string $screen_query_form_data_keyname = 'form_data';
-
 
     static function fullFormInputName(string $attributeName): string
     {
         return implodeWithDot(self::$screen_query_form_data_keyname,$attributeName);
     }
 
-    public function getData(){
+    public function getData():KlorchidMultiStatusModel{
         return $this->query->get($this->getScreenFormDataKeyname());
     }
 

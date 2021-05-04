@@ -6,7 +6,7 @@ namespace Kamansoft\Klorchid\Models\Traits;
 
 trait IntegerStatusModelTrait
 {
-    use StatusModelTrait;
+    use KlorchidMultiStatusModelTrait;
 
     protected $integer_status_extra_casts = [
         'status' => 'integer'

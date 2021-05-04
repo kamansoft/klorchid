@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Models\Traits;
 
 
-use Kamansoft\Klorchid\Models\KlorchidUserModel;
+use Kamansoft\Klorchid\Models\KlorchidUser;
 use Kamansoft\Klorchid\Models\Presenters\PkPresenter;
 
 

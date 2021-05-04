@@ -4,9 +4,12 @@
 namespace Kamansoft\Klorchid\Layouts\Contracts;
 
 
+use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
+
 interface ScreenQueryDataBasedLayoutInterface
 {
-    static function fullFormInputName(string $attributeName):string;
+
+
 
     public function getData();
 

@@ -7,10 +7,10 @@ namespace Kamansoft\Klorchid\Models\Traits;
 use Illuminate\Support\Collection;
 use Kamansoft\Klorchid\Models\Presenters\MultiStatusModelPresenter;
 
-trait  StatusModelTrait
+trait  KlorchidMultiStatusModelTrait
 {
 
-    public function statusSet($status, string $reason): self
+    public function statusSet($status, string $reason): KlorchidMultiStatusModelTrait
     {
 
         $this->status = $status;

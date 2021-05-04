@@ -70,7 +70,7 @@ Lets set klorchid Kuser model as default model used by auth, so you must change 
     'providers' => [
        'users' => [
            'driver' => 'eloquent',
-           'model' => Kamansoft\Klorchid\Models\KlorchidUserModel::class,
+           'model' => Kamansoft\Klorchid\Models\KlorchidUserModelKlorchidMulti::class,
        ],
        .
        .

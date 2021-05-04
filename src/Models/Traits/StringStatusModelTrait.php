@@ -8,7 +8,7 @@ namespace Kamansoft\Klorchid\Models\Traits;
 trait StringStatusModelTrait
 {
 
-    use StatusModelTrait;
+    use KlorchidMultiStatusModelTrait;
 
 
         protected $string_status_extra_casts = [

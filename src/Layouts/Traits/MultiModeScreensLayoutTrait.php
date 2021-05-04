@@ -4,12 +4,15 @@
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
 
-trait MultiModeScreenLayoutTrait
+use Kamansoft\Klorchid\Screens\Traits\KlorchidScreenLayoutElementsTrait;
+
+trait MultiModeScreensLayoutTrait
 {
 
     
     //use ScreenQueryFormDataLayoutTrait;
-    use ScreenQueryValidationForLayoutTrait;
+    use KlorchidScreenLayoutElementsTrait;
+    use ScreenQueryValidationForLayoutsTrait;
     
     private string $repository_mode_keyname = "screen_mode";
 

@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
 
-class KlorchidFormsTrait
+class KlorchidFormLayoutsTrait
 {
 
 
