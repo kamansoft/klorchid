@@ -6,16 +6,16 @@ namespace Kamansoft\Klorchid\Layouts;
 
 use Illuminate\Support\Collection;
 
-use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryValidatableInterface;
+use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
 use Kamansoft\Klorchid\Layouts\Traits\ScreenQueryValidationForLayoutsTrait;
-use Kamansoft\Klorchid\Traits\KlorchidScreenQueryValidatable;
+use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;
 use Orchid\Screen\Field;
 use Orchid\Screen\Layouts\Rows;
 
 
-abstract class KlorchidBasicLayout extends Rows implements KlorchidScreenQueryValidatableInterface
+abstract class KlorchidBasicLayout extends Rows implements KlorchidScreenQueryRepositoryDependentInterface
 {
-    use KlorchidScreenQueryValidatable;
+    use KlorchidScreenQueryRepositoryDependentTrait;
     use ScreenQueryValidationForLayoutsTrait;
 
     public function screenQueryRequiredKeys(): array

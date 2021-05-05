@@ -6,7 +6,7 @@ namespace Kamansoft\Klorchid\Contracts;
 use Illuminate\Support\Collection;
 use Orchid\Screen\Repository;
 
-interface KlorchidScreenQueryValidatableInterface
+interface KlorchidScreenQueryRepositoryDependentInterface
 {
 
     /**

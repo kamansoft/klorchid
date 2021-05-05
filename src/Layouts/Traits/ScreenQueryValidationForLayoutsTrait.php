@@ -3,11 +3,11 @@
 
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
-use Kamansoft\Klorchid\Traits\KlorchidScreenQueryValidatable;
+use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;
 use Orchid\Screen\Repository;
 trait ScreenQueryValidationForLayoutsTrait
 {
-    use KlorchidScreenQueryValidatable;
+    use KlorchidScreenQueryRepositoryDependentTrait;
     public function build(Repository $repository)
     {
         $this->checkScreenQueryKeys($repository);

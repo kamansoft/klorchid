@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 
-use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryValidatableInterface;
+use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\MultiModeScreenLayoutsInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\MultiStatusModelLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\ScreenQueryDataBasedLayoutInterface;

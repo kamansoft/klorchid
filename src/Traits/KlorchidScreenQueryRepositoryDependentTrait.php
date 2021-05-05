@@ -6,11 +6,13 @@ namespace Kamansoft\Klorchid\Traits;
 use Exception;
 use Illuminate\Support\Collection;
 use Orchid\Screen\Repository;
+use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
 
 /**
- * @method screenQueryRequiredKeys()
+ * @method KlorchidScreenQueryRepositoryDependentInterface screenQueryRequiredKeys()
+ * screenQueryRequiredKeys()
  */
-trait KlorchidScreenQueryValidatable
+trait KlorchidScreenQueryRepositoryDependentTrait
 {
     private Collection $required_keys;
 
