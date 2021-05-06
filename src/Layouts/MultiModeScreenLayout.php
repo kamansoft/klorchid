@@ -7,7 +7,7 @@ use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface
 use Kamansoft\Klorchid\Layouts\Contracts\MultiModeScreenLayoutsInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\ScreenQueryDataBasedLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Traits\MultiModeScreensLayoutTrait;
-use Kamansoft\Klorchid\Layouts\Traits\ScreenQueryValidationForLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreenLayoutElementsInterface;
 use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;

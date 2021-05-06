@@ -10,7 +10,7 @@ trait MultiStatusModelLayoutTrait
 {
 
     use ScreenQueryFormDataLayoutTrait;
-    use ScreenQueryValidationForLayoutsTrait;
+    use KlorchidScreenQueryRepositoryDependantLayoutTrait;
     public function getStatus()
     {
         return $this->query->get($this->getScreenFormDataKeyname())->status;

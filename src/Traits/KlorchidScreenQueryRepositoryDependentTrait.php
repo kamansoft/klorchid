@@ -17,7 +17,7 @@ trait KlorchidScreenQueryRepositoryDependentTrait
     private Collection $required_keys;
 
 
-    public function checkScreenQueryKeys(Repository $repository): self
+    public function screenQueryKeysCheck(Repository $repository): self
     {
 
         $this->required_keys->map(function ($element_key) use ($repository) {
@@ -29,13 +29,14 @@ trait KlorchidScreenQueryRepositoryDependentTrait
     }
 
     /**
-     * Maps through class reflection object of this class using a needle (string for match) in search of methods
-     * that would return extra screen required keys array, an them push it to the required keys collection
+     * Maps through class reflection object of this class using a needle (string used as sufix for name match) in search
+     * of the methods that would return extra screen query required keys as an array, them push it to the required keys collection
      * @param string $needle the name using to match all reflection class methods
      * @return $this
      * @throws \ReflectionException
      */
-    public function pushRequiredKeysFromMethods(string $needle = "ScreenQueryRequiredKeys"):self{
+    public function pushRequiredKeysFromMethods(string $needle = "ScreenQueryRequiredKeys"): self
+    {
         $methods = getObjectMethodsWith($this, $needle);
         $methods->map(function ($query_key_method) {
             collect($this->$query_key_method())->map(function ($query_key) {
@@ -45,17 +46,34 @@ trait KlorchidScreenQueryRepositoryDependentTrait
         return $this;
     }
 
+    public function getAllScreenQueryRequiredKeysFromMethods(string $needle = "ScreenQueryRequiredKeys"): Collection
+    {
+        $methods = getObjectMethodsWith($this, $needle);
+
+        return $methods->map(function ($query_key_method) {
+            collect($this->$query_key_method())->map(function ($query_required_key) {
+                return $query_required_key;
+            });
+        });
+    }
+
     /**
      * @throws \ReflectionException
      */
-    public function setScreenQueryRequiredKeys(): self
+    public function setScreenQueryRequiredKeys(Collection $required_keys): self
     {
-        $this->required_keys = collect($this->screenQueryRequiredKeys());
-        $this->pushRequiredKeysFromMethods();
+        $this->required_keys = $required_keys;
         return $this;
     }
 
-    public function getScreenQueryRequiredKeys(): Collection
+    public function initScreenQueryRequiredKeys(?array $required_keys = null): self
+    {
+        $this->setScreenQueryRequiredKeys(empty($required_keys)?$this->getAllScreenQueryRequiredKeysFromMethods():collect($required_keys));
+        return $this;
+    }
+
+    public
+    function getScreenQueryRequiredKeys(): Collection
     {
         return $this->required_keys;
     }

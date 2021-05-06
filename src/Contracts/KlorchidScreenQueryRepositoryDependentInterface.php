@@ -31,7 +31,7 @@ interface KlorchidScreenQueryRepositoryDependentInterface
      * @param \Orchid\Screen\Repository $repository
      * @return $this
      */
-    public function checkScreenQueryKeys(Repository $repository): self;
+    public function screenQueryKeysCheck(Repository $repository): self;
 
     public function getScreenQueryRequiredKeys(): Collection;
 

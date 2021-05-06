@@ -12,7 +12,7 @@ trait MultiModeScreensLayoutTrait
     
     //use ScreenQueryFormDataLayoutTrait;
     use KlorchidScreenLayoutElementsTrait;
-    use ScreenQueryValidationForLayoutsTrait;
+    use KlorchidScreenQueryRepositoryDependantLayoutTrait;
     
     private string $repository_mode_keyname = "screen_mode";
 

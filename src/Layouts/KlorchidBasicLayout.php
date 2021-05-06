@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Layouts;
 use Illuminate\Support\Collection;
 
 use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
-use Kamansoft\Klorchid\Layouts\Traits\ScreenQueryValidationForLayoutsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;
 use Orchid\Screen\Field;
 use Orchid\Screen\Layouts\Rows;
@@ -16,7 +16,7 @@ use Orchid\Screen\Layouts\Rows;
 abstract class KlorchidBasicLayout extends Rows implements KlorchidScreenQueryRepositoryDependentInterface
 {
     use KlorchidScreenQueryRepositoryDependentTrait;
-    use ScreenQueryValidationForLayoutsTrait;
+    use KlorchidScreenQueryRepositoryDependantLayoutTrait;
 
     public function screenQueryRequiredKeys(): array
     {
