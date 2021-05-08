@@ -32,7 +32,7 @@ abstract class KlorchidStorableRequest extends \Illuminate\Foundation\Http\FormR
             $data_to_store=$this->get($data_to_store);
         }elseif (!is_array($data_to_store) ){
 
-            $data_to_store = $this->get(KlorchidFormLayout::$screen_query_form_data_keyname);
+            $data_to_store = $this->get(KlorchidFormLayout::$screen_query_model_keyname);
         }
        $save_performed = $model->fill($data_to_store)->save();
 

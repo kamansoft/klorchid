@@ -5,13 +5,13 @@ namespace Kamansoft\Klorchid\Layouts;
 
 
 use Illuminate\Support\Str;
-use Kamansoft\Klorchid\Layouts\Traits\CommonFieldsTrait;
+use Kamansoft\Klorchid\Layouts\Traits\BlamingFields;
 use Kamansoft\Klorchid\Layouts\Traits\StatusFieldsTrait;
 use Orchid\Screen\Field;
 
 abstract class KlorchidFormLayout extends KlorchidLayout
 {
-    use CommonFieldsTrait;
+    use BlamingFields;
     use StatusFieldsTrait;
 
     private bool $enabled_pk_field = true;
@@ -83,16 +83,16 @@ abstract class KlorchidFormLayout extends KlorchidLayout
         $fields = [];
 
         if ($this->isEnabledPkField()) {
-            $fields[] = $this->getPkField($this->getScreenFormDataKeyname(), 'form-control text-dark');
+            $fields[] = $this->pkField($this->getScreenQueryModelKeyname(), 'form-control text-dark');
         }
 
         $fields = array_merge($fields, $this->formFields());
 
         if ($this->isEnabledStatusFields()) {
-            $fields = array_merge($fields, $this->getStatusFields($this->getScreenFormDataKeyname()));
+            $fields = array_merge($fields, $this->statusFields($this->getScreenQueryModelKeyname()));
         }
         if ($this->isEnabledBlamingFields()) {
-            $fields = array_merge($fields, $this->getBlamingFields($this->getScreenFormDataKeyname(), 'form-control text-dark'));
+            $fields = array_merge($fields, $this->blamingFields($this->getScreenQueryModelKeyname(), 'form-control text-dark'));
         }
 
         \Debugbar::debug($fields);

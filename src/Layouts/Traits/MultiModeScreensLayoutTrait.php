@@ -10,7 +10,7 @@ trait MultiModeScreensLayoutTrait
 {
 
     
-    //use ScreenQueryFormDataLayoutTrait;
+    //use KlorchidModelDependantLayoutTrait;
     use KlorchidScreenLayoutElementsTrait;
     use KlorchidScreenQueryRepositoryDependantLayoutTrait;
     

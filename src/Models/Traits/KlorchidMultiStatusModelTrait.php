@@ -37,4 +37,9 @@ trait  KlorchidMultiStatusModelTrait
         return new MultiStatusModelPresenter($this);
     }
 
+    static function getStatusColorClass(?string $status_name = null): string
+    {
+        return array_key_exists($status_name,self::statusColorClasses())?self::statusColorClasses()[$status_name]:'';
+    }
+
 }

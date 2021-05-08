@@ -20,6 +20,7 @@ abstract class KlorchidBasicLayout extends Rows implements KlorchidScreenQueryRe
 
     public function screenQueryRequiredKeys(): array
     {
+
         return [];
     }
 

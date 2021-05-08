@@ -8,21 +8,26 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\TextArea;
 
+/**
+ * Trait StatusFieldsTrait
+ * @package Kamansoft\Klorchid\Layouts\Traits
+ * @property \Orchid\Screen\Repository query
+ */
 trait StatusFieldsTrait
 {
-    public function getStatusFields($data_keyname, $field_class=null): array
+    public function statusFields($data_keyname, $field_class = null): array
     {
         return [
-            $this->getStatusField($data_keyname, $field_class),
-            $this->getStatusReasonField($data_keyname, $field_class),
+            $this->statusField($data_keyname, $field_class),
+            $this->statusReasonField($data_keyname, $field_class),
         ];
     }
 
-    public function getStatusField($data_keyname, $field_class = null): Field
+    public function statusField($data_keyname, $field_class = null): Field
     {
-        $field_class = $field_class ?  : 'form-control '.$this->getData()->statusPresenter()->getStatusFieldColorClass();
+        $field_class = $field_class ?: 'form-control ' . $this->getModel()->statusPresenter()->getStatusFieldColorClass();
         return Input::make('statusNamePresentation')
-            ->value($this->getData()->statusPresenter()->currentStatus())
+            ->value($this->getModel()->statusPresenter()->currentStatus())
             ->class($field_class) //. $this->getFieldCssClass($model))
             ->type('text')
             ->title(__('Current Status') . ':')
@@ -30,9 +35,9 @@ trait StatusFieldsTrait
             ->disabled(true);
     }
 
-    public function getStatusReasonField($data_keyname, $field_class = null): Field
+    public function statusReasonField($data_keyname, $field_class = null): Field
     {
-        $field_class = $field_class ?: 'form-control '.$this->getData()->statusPresenter()->getStatusFieldColorClass();
+        $field_class = $field_class ?: 'form-control ' . $this->getModel()->statusPresenter()->getStatusFieldColorClass();
 
         return TextArea::make(implodeWithDot($data_keyname, 'cur_status_reason'))
             ->class($field_class)
@@ -41,14 +46,14 @@ trait StatusFieldsTrait
             ->disabled(true);
     }
 
-    public function getNewStatusField($data_keyname, $status_options): Field
+    public function newStatusField($data_keyname, $status_options): Field
     {
         return Select::make(implodeWithDot($data_keyname, 'new_status'))
             ->options($status_options)
             ->title(__('New Status') . ':');
     }
 
-    public function getNewStatusReasonField($data_keyname): Field
+    public function newStatusReasonField($data_keyname): Field
     {
         return Input::make(implodeWithDot($data_keyname, 'new_status_reason'))
             ->type('text')
@@ -61,11 +66,11 @@ trait StatusFieldsTrait
 
     }
 
-    public function getNewStatusFields($data_keyname, $status_options): array
+    public function newStatusFields($data_keyname, $status_options): array
     {
         return [
-            $this->getNewStatusField($data_keyname, $status_options),
-            $this->getNewStatusReasonField($data_keyname)
+            $this->newStatusField($data_keyname, $status_options),
+            $this->newStatusReasonField($data_keyname)
         ];
     }
 

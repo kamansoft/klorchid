@@ -11,9 +11,9 @@ interface ScreenQueryDataBasedLayoutInterface
 
 
 
-    public function getData();
+    public function getModel();
 
-    public function getScreenFormDataKeyname();
+    public function getScreenQueryModelKeyname();
 
 
 }

@@ -6,21 +6,26 @@ namespace Kamansoft\Klorchid\Layouts\Traits;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 
-trait CommonFieldsTrait
+/**
+ * Trait BlamingFields
+ * @package Kamansoft\Klorchid\Layouts\Traits
+ * @property \Orchid\Screen\Repository query
+ */
+trait BlamingFields
 {
 
 
-    public function getBlamingFields($data_keyname, $field_class): array
+    public function blamingFields($data_keyname, $field_class = 'form-control'): array
     {
         return [
-            $this->getCreatorNameField($data_keyname, $field_class),
-            $this->getCreatedAtField($data_keyname, $field_class),
-            $this->getUpdaterNameField($data_keyname, $field_class),
-            $this->getUpdatedAtField($data_keyname, $field_class),
+            "creator_name"=>$this->creatorNameField($data_keyname, $field_class),
+            "creation_date"=>$this->createdAtField($data_keyname, $field_class),
+            "updater_name"=>$this->updaterNameField($data_keyname, $field_class),
+            "update_date"=>$this->updatedAtField($data_keyname, $field_class),
         ];
     }
 
-    public function getCreatorNameField($data_keyname, $field_class = 'form-control'): Field
+    public function creatorNameField($data_keyname, $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($data_keyname, 'creator.name'))
             ->class($field_class)
@@ -30,7 +35,7 @@ trait CommonFieldsTrait
             ->disabled(true);
     }
 
-    public function getCreatedAtField($data_keyname, $field_class = 'form-control'): Field
+    public function createdAtField($data_keyname, $field_class = 'form-control'): Field
     {
 
         return Input::make(implodeWithDot($data_keyname, 'created_at'))
@@ -41,7 +46,7 @@ trait CommonFieldsTrait
             ->disabled(true);
     }
 
-    public function getUpdaterNameField($data_keyname, $field_class = 'form-control'): Field
+    public function updaterNameField($data_keyname, $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($data_keyname, 'updater.name'))
             ->class($field_class)
@@ -51,7 +56,7 @@ trait CommonFieldsTrait
             ->disabled(true);
     }
 
-    public function getUpdatedAtField($data_keyname, $field_class = 'form-control'): Field
+    public function updatedAtField($data_keyname, $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($data_keyname, 'updated_at'))
             ->class($field_class)
@@ -61,20 +66,7 @@ trait CommonFieldsTrait
             ->disabled(true);
     }
 
-    public function getPkField($data_keyname,$field_class='form-control'): Field
-    {
-        $model = $this->query->get($data_keyname);
 
-        $pk_field_name = $model->getKeyName();
-
-        return Input::make(implodeWithDot($data_keyname,$pk_field_name))
-            ->type('text')
-            ->max(255)
-            ->title(__(ucfirst($pk_field_name)))
-            ->class($field_class) //. $this->getFieldCssClass($model))
-            ->disabled(true)
-            ->canSee($model->exists);
-    }
 
 
 }

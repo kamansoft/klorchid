@@ -11,7 +11,7 @@ trait StringStatusModelTrait
     use KlorchidMultiStatusModelTrait;
 
 
-        protected $string_status_extra_casts = [
+    protected $string_status_extra_casts = [
         'status' => 'string'
     ];
 

@@ -31,12 +31,16 @@ if (!function_exists('getObjectMethodsWith')) {
         return collect($reflection->getMethods($accessor))->mapWithKeys(function ($method) use ($needle) {
             return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
         })->reject(function ($pair) use ($needle) {
-            return !strstr($pair, $needle, true) or
-                strstr($pair, $needle, true) === 'set' or
-                strstr($pair, $needle, true) === 'get';
+            $method_prefix = strstr($pair, $needle, true);
+            return !$method_prefix or
+                str_contains($method_prefix, 'set') or
+                str_contains($method_prefix, 'get') or
+                str_contains($method_prefix, 'init');
         });
+
     }
 }
+
 
 if (!function_exists('getObjectPropertiesWith')) {
     /**
@@ -51,16 +55,16 @@ if (!function_exists('getObjectPropertiesWith')) {
      * @return \Illuminate\Support\Collection
      * @throws ReflectionException
      */
-    function getObjectPropertiesWith($object, $needle,$accessor = \ReflectionMethod::IS_PUBLIC)
+    function getObjectPropertiesWith($object, $needle, $accessor = \ReflectionMethod::IS_PUBLIC)
     {
 
         $reflection = new \ReflectionClass($object);
         return collect($reflection->getProperties($accessor))->mapWithKeys(function ($method) use ($needle) {
             return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
         })->reject(function ($pair) use ($needle) {
-            return !strstr($pair, $needle, true) ;//or
-                //strstr($pair, $needle, true) === 'set' or
-                //strstr($pair, $needle, true) === 'get';
+            return !strstr($pair, $needle, true);//or
+            //strstr($pair, $needle, true) === 'set' or
+            //strstr($pair, $needle, true) === 'get';
         });
     }
 }

@@ -16,8 +16,8 @@ class KlorchidStatusSetFormLayout extends KlorchidBasicLayout implements  MultiS
 
     public function fields():array
     {
-        $current_status_fields=$this->getStatusFields($this->getScreenFormDataKeyname());
-        $new_status_fields=$this->getNewStatusField($this->getScreenFormDataKeyname(),$this->getData());
+        $current_status_fields=$this->statusFields($this->getScreenQueryModelKeyname());
+        $new_status_fields=$this->newStatusField($this->getScreenQueryModelKeyname(),$this->getModel());
         return ;
     }
 }

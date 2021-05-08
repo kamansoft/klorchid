@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 /**
  * Class MultiStatusModelPresenter
  * @package Kamansoft\Klorchid\Models\Presenters
- * @method
+ * @property
  */
 class MultiStatusModelPresenter extends \Orchid\Support\Presenter
 {
@@ -45,7 +45,8 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
      */
     public function getStatusFieldColorClass(?string $statusName=null){
         $statusName = $statusName || $this->entity->statusName;
-        return $this->entity::statusColorClasses()[$this->entity->statusName];
+        return $this->entity::getStat()[$statusName];
+        //return $this->entity::statusColorClasses()[$this->entity->statusName];
     }
 
 
