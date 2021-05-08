@@ -15,54 +15,54 @@ trait BlamingFields
 {
 
 
-    public function blamingFields($data_keyname, $field_class = 'form-control'): array
+    public function blamingFields($screen_query_model_keyname, $field_class = 'form-control'): array
     {
         return [
-            "creator_name"=>$this->creatorNameField($data_keyname, $field_class),
-            "creation_date"=>$this->createdAtField($data_keyname, $field_class),
-            "updater_name"=>$this->updaterNameField($data_keyname, $field_class),
-            "update_date"=>$this->updatedAtField($data_keyname, $field_class),
+            "creator_name"=>$this->creatorNameField($screen_query_model_keyname, $field_class),
+            "creation_date"=>$this->createdAtField($screen_query_model_keyname, $field_class),
+            "updater_name"=>$this->updaterNameField($screen_query_model_keyname, $field_class),
+            "update_date"=>$this->updatedAtField($screen_query_model_keyname, $field_class),
         ];
     }
 
-    public function creatorNameField($data_keyname, $field_class = 'form-control'): Field
+    public function creatorNameField($screen_query_model_keyname, $field_class = 'form-control'): Field
     {
-        return Input::make(implodeWithDot($data_keyname, 'creator.name'))
+        return Input::make(implodeWithDot($screen_query_model_keyname, 'creator.name'))
             ->class($field_class)
             ->type('text')
             ->title(__('Created by') . ':')
-            ->canSee($this->query->get($data_keyname)->exists)
+            ->canSee($this->query->get($screen_query_model_keyname)->exists)
             ->disabled(true);
     }
 
-    public function createdAtField($data_keyname, $field_class = 'form-control'): Field
+    public function createdAtField($screen_query_model_keyname, $field_class = 'form-control'): Field
     {
 
-        return Input::make(implodeWithDot($data_keyname, 'created_at'))
+        return Input::make(implodeWithDot($screen_query_model_keyname, 'created_at'))
             ->class($field_class)
             ->type('text')
             ->title(__('Creation date') . ':')
-            ->canSee($this->query->get($data_keyname)->exists)
+            ->canSee($this->query->get($screen_query_model_keyname)->exists)
             ->disabled(true);
     }
 
-    public function updaterNameField($data_keyname, $field_class = 'form-control'): Field
+    public function updaterNameField($screen_query_model_keyname, $field_class = 'form-control'): Field
     {
-        return Input::make(implodeWithDot($data_keyname, 'updater.name'))
+        return Input::make(implodeWithDot($screen_query_model_keyname, 'updater.name'))
             ->class($field_class)
             ->type('text')
             ->title(__('Updated by') . ':')
-            ->canSee($this->query->get($data_keyname)->exists)
+            ->canSee($this->query->get($screen_query_model_keyname)->exists)
             ->disabled(true);
     }
 
-    public function updatedAtField($data_keyname, $field_class = 'form-control'): Field
+    public function updatedAtField($screen_query_model_keyname, $field_class = 'form-control'): Field
     {
-        return Input::make(implodeWithDot($data_keyname, 'updated_at'))
+        return Input::make(implodeWithDot($screen_query_model_keyname, 'updated_at'))
             ->class($field_class)
             ->type('text')
             ->title(__('Update date') . ':')
-            ->canSee($this->query->get($data_keyname)->exists)
+            ->canSee($this->query->get($screen_query_model_keyname)->exists)
             ->disabled(true);
     }
 

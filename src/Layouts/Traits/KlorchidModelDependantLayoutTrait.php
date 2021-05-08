@@ -15,6 +15,7 @@ trait KlorchidModelDependantLayoutTrait
 
     public function getModel()
     {
+        $this->query->get($this->getScreenQueryModelKeyname());
         return $this->query->get($this->getScreenQueryModelKeyname());
     }
 

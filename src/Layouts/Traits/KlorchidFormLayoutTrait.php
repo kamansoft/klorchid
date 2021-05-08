@@ -20,13 +20,13 @@ trait KlorchidFormLayoutTrait
 
     protected Collection $form_fields;
 
-    public function initFormFields(?array $form_fields = null): KlorchidFormLayoutTrait
+    public function initFormFields(?array $form_fields = null): self
     {
 
         if (is_null($form_fields)) {
             $form_fields = array_merge(
-                ['pk' => $this->pkField($this->fullFormInputAttributeName($this->getModel()->getKeyName()))],
-                $this->blamingFields($this->fullFormInputAttributeName($this->getModel()->getKeyName()))
+                ['pk' => $this->pkField($this->fullFormInputAttributeName($this->getModel()->getKeyName()),'form-control text-dark')],
+                $this->blamingFields(self::$screen_query_model_keyname,'form-control text-dark')
             );
 
         }
@@ -38,7 +38,7 @@ trait KlorchidFormLayoutTrait
     }
 
 
-    public function setFormFields(Collection $form_fields): KlorchidFormLayoutTrait
+    public function setFormFields(Collection $form_fields): self
     {
         $this->form_fields = $form_fields;
         return $this;
@@ -46,17 +46,18 @@ trait KlorchidFormLayoutTrait
 
     public function fields(): array
     {
-        //$this->initFormFields();
+        $this->initFormFields();
 
         //this must be here so some actions can be peforme on $this->form_fields from
         //within the execution of formFIelds method
         //order matter do not change the next lines
-        //$child_form_fields = $this->formFields();
-        //$first_field=$this->form_fields->splice(1);
-        //$this->form_fields->prepend($child_form_fields)->prepend($first_field);
-        //do not change execution of above statements
+        $child_form_fields = $this->formFields();
 
-        return [];
+        $last_fields=$this->form_fields->splice(1);
+        $this->setFormFields( $this->form_fields->push(...$child_form_fields)->concat($last_fields));
+
+
+        return $this->form_fields->toArray();
     }
 
     static function fullFormInputAttributeName(string $attribute_name): string
