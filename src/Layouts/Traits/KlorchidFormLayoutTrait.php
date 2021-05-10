@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 /**
  * Class KlorchidFormLayoutsTrait
  * @package Kamansoft\Klorchid\Layouts\Traits
- * @method \Kamansoft\Klorchid\Models\KlorchidEloquentModel getModel()
+ * @method \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel getModel()
  */
 trait KlorchidFormLayoutTrait
 {
@@ -17,15 +17,20 @@ trait KlorchidFormLayoutTrait
     use KlorchidModelDependantLayoutTrait;
     use PkFields;
     use BlamingFields;
+    use StatusFieldsTrait;
 
     protected Collection $form_fields;
 
     public function initFormFields(?array $form_fields = null): self
     {
 
+
+        //dd($this->statusFields(self::$screen_query_model_keyname,$this->getModel()->statusPresenter()->getStatusFieldColorClass()));
         if (is_null($form_fields)) {
             $form_fields = array_merge(
                 ['pk' => $this->pkField($this->fullFormInputAttributeName($this->getModel()->getKeyName()),'form-control text-dark')],
+                //$this->newStatusFields(self::$screen_query_model_keyname,$this->getModel()->statusPresenter()->getOptions()),
+                $this->statusFields(self::$screen_query_model_keyname),
                 $this->blamingFields(self::$screen_query_model_keyname,'form-control text-dark')
             );
 

@@ -10,6 +10,7 @@ trait KlorchidScreenQueryRepositoryDependantLayoutTrait
     use KlorchidScreenQueryRepositoryDependentTrait;
     public function build(Repository $repository)
     {
+
         $this->initScreenQueryRequiredKeys()->screenQueryKeysCheck($repository);
         return parent::build($repository);
     }

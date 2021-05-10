@@ -41,17 +41,8 @@ trait BooleanStatusModelTrait
 
     static function getStatusName(bool $status): string
     {
-        //$names = array_flip(static::statusValues());
         $status = self::statusValues();
         return array_search($status, $status);
-        /*
-        $name = array_search($status,$status);
-        if ($name){
-            return $name;
-        }else{
-            throw new \Exception("status name for ".strval($status)." status value not found on statusNameValues model's method returned array  ");
-        }*/
-
     }
 
 

@@ -10,7 +10,6 @@ use Kamansoft\Klorchid\Models\Contracts\KlorchidMultiStatusModelInterface;
 /**
  * Trait MultiStatusModelLayoutTrait
  * @package Kamansoft\Klorchid\Layouts\Traits
- * @method KlorchidMultiStatusModelInterface getModel()
  */
 trait MultiStatusModelLayoutTrait
 {
@@ -21,10 +20,10 @@ trait MultiStatusModelLayoutTrait
 
 
 
+
     public function getStatus()
     {
-        $this->getModel()->status;
-        //return $this->query->get($this->getScreenQueryModelKeyname())->status;
+        return $this->getModel()->status;
     }
 
 

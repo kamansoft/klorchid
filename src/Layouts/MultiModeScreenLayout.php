@@ -4,8 +4,8 @@
 namespace Kamansoft\Klorchid\Layouts;
 
 use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
-use Kamansoft\Klorchid\Layouts\Contracts\MultiModeScreenLayoutsInterface;
-use Kamansoft\Klorchid\Layouts\Contracts\ScreenQueryDataBasedLayoutInterface;
+use Kamansoft\Klorchid\Layouts\Contracts\MultiModeScreensLayoutInterface;
+use Kamansoft\Klorchid\Layouts\Contracts\KlorchidModelDependantLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Traits\MultiModeScreensLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreenLayoutElementsInterface;
@@ -15,8 +15,8 @@ use Kamansoft\Klorchid\Layouts\Traits\KlorchidModelDependantLayoutTrait;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Field;
 
-abstract class MultiModeScreenLayout extends KlorchidBasicLayout implements KlorchidScreenLayoutElementsInterface, MultiModeScreenLayoutsInterface
+abstract class MultiModeScreenLayout extends KlorchidBasicLayout implements  MultiModeScreensLayoutInterface
 {
-    use KlorchidMultiModeTrait;
+
     use MultiModeScreensLayoutTrait;
 }

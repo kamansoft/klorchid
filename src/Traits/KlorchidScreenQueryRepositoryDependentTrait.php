@@ -57,8 +57,7 @@ trait KlorchidScreenQueryRepositoryDependentTrait
         return $this;
     }
 
-    public
-    function getScreenQueryRequiredKeys(): Collection
+    public function getScreenQueryRequiredKeys(): Collection
     {
         return $this->required_keys;
     }

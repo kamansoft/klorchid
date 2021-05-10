@@ -8,12 +8,10 @@ use Illuminate\Support\Str;
 /**
  * Class MultiStatusModelPresenter
  * @package Kamansoft\Klorchid\Models\Presenters
- * @property
+ * @property \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel $entity
  */
 class MultiStatusModelPresenter extends \Orchid\Support\Presenter
 {
-
-
 
 
     /**
@@ -25,7 +23,7 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
     {
         return collect($this->entity::statusValues())
             ->mapWithKeys(function ($value, $key) {
-                $value = is_bool($value)?intval($value):value;
+                $value = is_bool($value) ? intval($value) : value;
                 return [
                     $value => Str::ucfirst(__($key))
                 ];
@@ -43,12 +41,13 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
      * @param string|null $statusName
      * @return mixed
      */
-    public function getStatusFieldColorClass(?string $statusName=null){
-        $statusName = $statusName || $this->entity->statusName;
-        return $this->entity::getStat()[$statusName];
+    public function getStatusFieldColorClass(?string $statusName = null)
+    {
+
+        $statusName = $statusName ?: $this->entity->statusName;
+        return $this->entity::getStatusColorClass($statusName);
         //return $this->entity::statusColorClasses()[$this->entity->statusName];
     }
-
 
 
 }
