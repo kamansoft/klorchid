@@ -44,6 +44,7 @@ trait StatusFieldsTrait
 
         return TextArea::make(implodeWithDot($screen_query_model_keyname,'cur_status_reason'))
             ->class($field_class)
+
             ->title(__('Current Status Reason') . ': ')
             ->canSee($this->getModel()->exists)
             ->disabled(true);

@@ -10,13 +10,13 @@ use Kamansoft\Klorchid\Models\Presenters\MultiStatusModelPresenter;
 trait  KlorchidMultiStatusModelTrait
 {
 
-    public function statusSet($status, string $reason): KlorchidMultiStatusModelTrait
+    public function statusSet($status, string $reason): bool
     {
 
         $this->status = $status;
         $this->cur_status_reason = $reason;
-        $this->save();
-        return $this;
+        return $this->save();
+
     }
 
 
@@ -39,7 +39,7 @@ trait  KlorchidMultiStatusModelTrait
 
     static function getStatusColorClass(?string $status_name = null): string
     {
-        return array_key_exists($status_name,self::statusColorClasses())?self::statusColorClasses()[$status_name]:'';
+        return array_key_exists($status_name, self::statusColorClasses()) ? self::statusColorClasses()[$status_name] : '';
     }
 
 }

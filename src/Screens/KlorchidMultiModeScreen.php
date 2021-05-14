@@ -16,7 +16,12 @@ abstract class KlorchidMultiModeScreen extends Screen implements KlorchidMultimo
     use KlorchidScreenLayoutElementsTrait;
 
     const METHODS_MODES_NAME_SUFFIX = 'ModeLayout';
+    protected static string $screen_query_mode_keyname = 'screen_mode';
 
+    /**
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->initAvailableModes(self::METHODS_MODES_NAME_SUFFIX)->setMode('default');

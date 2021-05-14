@@ -11,7 +11,7 @@ interface KlorchidModelDependantLayoutInterface
 
     public function getModel();
 
-    public function getScreenQueryModelKeyname(): string;
+    public static function getScreenQueryModelKeyname(): string;
 
     public function modelDependantScreenQueryRequiredKeys(): array;
 

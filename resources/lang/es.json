@@ -33,7 +33,10 @@
     "Confirmation Text": "Texto de Confirmacion",
     "Just type:": "Escriba:",
     "Please type :value as confirmation for deleting": "Por favor introduzca :value como confirmación para la eliminacion",
-    "Success on Updating :element, record with id: :id": "Actualizacion exitosa de :element con codigo :id",
-    "Success on Creating :element, new record with id: :id" : "Creacion exitosa de :element con codigo :id",
-    "Unable to save element :element :id" : "No fué posible guardar :element :id"
+    "Success on Updating :element": "Actualizacion exitosa de registro :element",
+
+    "Success on Creating :element" : "Creacion exitosa de nuevo registro :element",
+    "Unable to save element :element" : "No fué posible guardar registro :element",
+    "Success on new status set": "Exito estableciendo nuevo estado  de registro",
+    "Error on new status set": "Error estableciendo nuevo estado  de registro"
 }

@@ -20,7 +20,12 @@ interface KlorchidFormsLayoutInterface
 
     static function fullFormInputAttributeName(string $attribute_name): string;
 
+    //pkfields
+
     public function pkField($data_keyname, $field_class = 'form-control'): Field;
+
+
+    //blamming fields
 
     public function blamingFields($screen_query_model_keyname, $field_class = 'form-control'): array;
 
@@ -32,17 +37,19 @@ interface KlorchidFormsLayoutInterface
 
     public function updatedAtField($screen_query_model_keyname, $field_class = 'form-control'): Field;
 
-    public function statusFields($screen_query_model_keyname, $field_class = null): array;
 
-    public function statusField($screen_query_model_keyname, $field_class = null): Field;
+    // status fields
 
-    public function statusReasonField($screen_query_model_keyname, $field_class = null): Field;
+    public function statusFields($screen_query_model_keyname, ?string $field_class = null): array;
 
-    public function newStatusField($screen_query_model_keyname, $status_options): Field;
+    public function statusField($screen_query_model_keyname, ?string $field_class = null): Field;
+
+    public function statusReasonField($screen_query_model_keyname, ?string $field_class = null): Field;
+
+    public function newStatusField($screen_query_model_keyname, array $status_options): Field;
 
     public function newStatusReasonField($screen_query_model_keyname): Field;
 
-    public function newStatusFields($screen_query_model_keyname, $status_options): array;
-
+    public function newStatusFields($screen_query_model_keyname, array $status_options): array;
 
 }

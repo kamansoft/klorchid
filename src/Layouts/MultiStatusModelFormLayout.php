@@ -14,7 +14,7 @@ use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayo
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Field;
 
-abstract class MultiStatusModelLayoutLayout extends KlorchidBasicLayout
+abstract class MultiStatusModelFormLayout extends KlorchidBasicFormLayout
     implements KlorchidModelDependantLayoutInterface, MultiStatusModelLayoutInterface
 {
 

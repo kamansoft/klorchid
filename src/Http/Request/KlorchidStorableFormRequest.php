@@ -4,18 +4,36 @@
 namespace Kamansoft\Klorchid\Http\Request;
 
 use Illuminate\Database\Eloquent\Model;
-use Kamansoft\Klorchid\Layouts\KlorchidFormLayout;
+use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
+use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
+use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
 use Illuminate\Support\Facades\Log;
+use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
+use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
-abstract class KlorchidStorableRequest extends \Illuminate\Foundation\Http\FormRequest
+abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
+    implements KlorchidPermissionsInterface,KlorchidMultimodeInterface
 {
+    use KlorchidPermissionsTrait;
+    use KlorchidMultiModeTrait;
 
-    public abstract function entityName():string;
-
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        $action = $this->getModel()->exists?"edit":"create";
+        return $this->loggedUserHasPermission(implodeWithDot(
+            'platform',
+            $this->entityRouteParamName(),
+            $action));
+    }
     /**
      * Performs a common tasks that include notification on update or create a new item
      *
@@ -32,12 +50,12 @@ abstract class KlorchidStorableRequest extends \Illuminate\Foundation\Http\FormR
             $data_to_store=$this->get($data_to_store);
         }elseif (!is_array($data_to_store) ){
 
-            $data_to_store = $this->get(KlorchidFormLayout::$screen_query_model_keyname);
+            $data_to_store = $this->get(KlorchidCrudFormLayout::getScreenQueryModelKeyname());
         }
        $save_performed = $model->fill($data_to_store)->save();
 
         $message_data = [
-            'element' => __($this->entityName()),
+            'element' => __($this->entityRouteParamName()),
             //'id' => $model->pkPresenter()->shortPk()
         ];
 
@@ -45,8 +63,8 @@ abstract class KlorchidStorableRequest extends \Illuminate\Foundation\Http\FormR
             $message = $isUpdating ?
                 //__('Success on Updating :element, record with id: :id', $message_data) :
                 //__('Success on Creating :element, new record with id: :id', $message_data);
-                __('Success on Updating :element ', $message_data) :
-                __('Success on Creating :element ', $message_data);
+                __('Success on Updating :element', $message_data) :
+                __('Success on Creating :element', $message_data);
             Notificator::success($message);
             Log::info($message.' record primary key: '.$model->getKey());
         } else {

@@ -14,8 +14,9 @@ use Orchid\Screen\Field;
 use Orchid\Screen\Layouts\Rows;
 
 
-abstract class KlorchidBasicLayout extends Rows
-    implements KlorchidScreenQueryRepositoryDependentInterface, KlorchidModelDependantLayoutInterface
+
+abstract  class KlorchidBasicFormLayout extends Rows
+    implements KlorchidScreenQueryRepositoryDependentInterface
 {
     use KlorchidScreenQueryRepositoryDependentTrait;
     use KlorchidScreenQueryRepositoryDependantLayoutTrait;

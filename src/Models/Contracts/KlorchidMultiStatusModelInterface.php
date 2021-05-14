@@ -39,7 +39,7 @@ interface KlorchidMultiStatusModelInterface
 
     public function isLockedByStatus(?string $status = null): bool;
 
-    public function statusSet($status, string $reason): KlorchidMultiStatusModelTrait;
+    public function statusSet($status, string $reason): bool;
 
     /**
      * @return string[]

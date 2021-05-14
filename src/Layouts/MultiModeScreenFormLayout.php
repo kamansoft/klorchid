@@ -15,7 +15,7 @@ use Kamansoft\Klorchid\Layouts\Traits\KlorchidModelDependantLayoutTrait;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\Field;
 
-abstract class MultiModeScreenLayout extends KlorchidBasicLayout implements  MultiModeScreensLayoutInterface
+abstract class MultiModeScreenFormLayout extends KlorchidBasicFormLayout implements  MultiModeScreensLayoutInterface
 {
 
     use MultiModeScreensLayoutTrait;

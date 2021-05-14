@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Kamansoft\\Klorchid\\": "src"
+      "Kamansoft\\Klorchid\\": "src/"
     },
     "files": [
       "src/helpers.php"

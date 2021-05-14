@@ -17,7 +17,7 @@ trait KlorchidScreenQueryRepositoryDependentTrait
     private Collection $required_keys;
 
 
-    public function screenQueryKeysCheck(Repository $repository): self
+    public function screenQueryKeysCheck(Repository $repository): KlorchidScreenQueryRepositoryDependentInterface
     {
 
         $this->required_keys->map(function ($element_key) use ($repository) {
@@ -45,13 +45,13 @@ trait KlorchidScreenQueryRepositoryDependentTrait
     /**
      * @throws \ReflectionException
      */
-    public function setScreenQueryRequiredKeys(Collection $required_keys): self
+    public function setScreenQueryRequiredKeys(Collection $required_keys): KlorchidScreenQueryRepositoryDependentInterface
     {
         $this->required_keys = $required_keys;
         return $this;
     }
 
-    public function initScreenQueryRequiredKeys(?array $required_keys = null): self
+    public function initScreenQueryRequiredKeys(?array $required_keys = null): KlorchidScreenQueryRepositoryDependentInterface
     {
         $this->setScreenQueryRequiredKeys(empty($required_keys) ? $this->getAllScreenQueryRequiredKeysFromMethods() : collect($required_keys));
         return $this;

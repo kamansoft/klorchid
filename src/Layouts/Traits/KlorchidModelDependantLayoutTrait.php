@@ -10,16 +10,16 @@ use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 trait KlorchidModelDependantLayoutTrait
 {
     use KlorchidScreenQueryRepositoryDependantLayoutTrait;
-    protected static string $screen_query_model_keyname = 'model';
+    private static string $screen_query_model_keyname = 'model';
 
 
     public function getModel()
     {
-        $this->query->get($this->getScreenQueryModelKeyname());
-        return $this->query->get($this->getScreenQueryModelKeyname());
+        $this->query->get(self::getScreenQueryModelKeyname());
+        return $this->query->get(self::getScreenQueryModelKeyname());
     }
 
-    public function getScreenQueryModelKeyname(): string
+  public static function getScreenQueryModelKeyname(): string
     {
         return self::$screen_query_model_keyname;
     }
@@ -27,7 +27,7 @@ trait KlorchidModelDependantLayoutTrait
     public function modelDependantScreenQueryRequiredKeys(): array
     {
         return [
-            $this->getScreenQueryModelKeyname()
+            self::getScreenQueryModelKeyname()
         ];
     }
 }

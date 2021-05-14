@@ -10,6 +10,7 @@ use Kamansoft\Klorchid\Models\Contracts\KlorchidMultiStatusModelInterface;
 /**
  * Trait MultiStatusModelLayoutTrait
  * @package Kamansoft\Klorchid\Layouts\Traits
+ * @method \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel getModel()
  */
 trait MultiStatusModelLayoutTrait
 {

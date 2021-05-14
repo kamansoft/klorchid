@@ -94,4 +94,14 @@ trait KlorchidMultiModeTrait
     }
 
 
+    public function detectMode(){
+
+
+        //detection curd action discrimantion order:
+        //check check if it is posible create or edit
+        //if edit determinate if it is view or edit
+        //if has not
+    }
+
+
 }
