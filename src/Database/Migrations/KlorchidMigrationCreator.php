@@ -10,7 +10,7 @@ use Illuminate\Filesystem\Filesystem;
 
 class KlorchidMigrationCreator
 {
-  /**
+    /**
      * The filesystem instance.
      *
      * @var \Illuminate\Filesystem\Filesystem
@@ -34,8 +34,8 @@ class KlorchidMigrationCreator
     /**
      * Create a new migration creator instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  string  $customStubPath
+     * @param \Illuminate\Filesystem\Filesystem $files
+     * @param string $customStubPath
      * @return void
      */
     public function __construct(Filesystem $files, $customStubPath)
@@ -64,7 +64,7 @@ class KlorchidMigrationCreator
      * @param null $table
      * @return string
      */
-    public function create($name, $path,  $action,$table = null)
+    public function create($name, $path, $action, $table = null, $status_field = null)
     {
         $this->ensureMigrationDoesntAlreadyExist($name, $path);
 
@@ -78,7 +78,7 @@ class KlorchidMigrationCreator
         $this->files->ensureDirectoryExists(dirname($path));
 
         $this->files->put(
-            $path, $this->populateStub($name, $stub, $table)
+            $path, $this->populateStub($name, $stub, $table, $status_field)
         );
 
         // Next, we will fire any hooks that are supposed to fire after a migration is
@@ -90,19 +90,19 @@ class KlorchidMigrationCreator
     }
 
 
-      /**
+    /**
      * Ensure that a migration with the given name doesn't already exist.
      *
-     * @param  string  $name
-     * @param  string  $migrationPath
+     * @param string $name
+     * @param string $migrationPath
      * @return void
      *
      * @throws \InvalidArgumentException
      */
     protected function ensureMigrationDoesntAlreadyExist($name, $migrationPath = null)
     {
-        if (! empty($migrationPath)) {
-            $migrationFiles = $this->files->glob($migrationPath.'/*.php');
+        if (!empty($migrationPath)) {
+            $migrationFiles = $this->files->glob($migrationPath . '/*.php');
 
             foreach ($migrationFiles as $migrationFile) {
                 $this->files->requireOnce($migrationFile);
@@ -125,20 +125,20 @@ class KlorchidMigrationCreator
      */
     protected function getStub($table, $action)
     {
-        
+
         if (is_null($table)) {
             $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.stub')
                 ? $customPath
                 : $this->stubPath() . '/migration.stub';
-        } elseif ($action==='create') {
+        } elseif ($action === 'create') {
             $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.create.stub')
                 ? $customPath
                 : $this->stubPath() . '/migration.create.stub';
-        } elseif ($action==='adapt') {
+        } elseif ($action === 'adapt') {
             $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.klorchidupdate.stub')
                 ? $customPath
                 : $this->stubPath() . '/migration.klorchidupdate.stub';
-        }elseif ($action==='timestamps-add') {
+        } elseif ($action === 'timestamps-add') {
             $stub = $this->files->exists($customPath = $this->customStubPath . '/migration.timestampsadd.stub')
                 ? $customPath
                 : $this->stubPath() . '/migration.klorchidupdate.stub';
@@ -154,12 +154,12 @@ class KlorchidMigrationCreator
     /**
      * Populate the place-holders in the migration stub.
      *
-     * @param  string  $name
-     * @param  string  $stub
-     * @param  string|null  $table
+     * @param string $name
+     * @param string $stub
+     * @param string|null $table
      * @return string
      */
-    protected function populateStub($name, $stub, $table)
+    protected function populateStub($name, $stub, $table, $status_field = null)
     {
         $stub = str_replace(
             ['DummyClass', '{{ class }}', '{{class}}'],
@@ -169,10 +169,55 @@ class KlorchidMigrationCreator
         // Here we will replace the table place-holders with the table specified by
         // the developer, which is useful for quickly creating a tables creation
         // or update migration from the console instead of typing it manually.
-        if (! is_null($table)) {
+        if (!is_null($table)) {
             $stub = str_replace(
                 ['DummyTable', '{{ table }}', '{{table}}'],
                 $table, $stub
+            );
+        }
+
+
+        if (!empty($status_field)) {
+            //the field status exits so it must came with a reson for change
+            $cur_status_reason_field = '$table->text(config(\'klorchid.models_common_field_names.reason\'))->nullable();';
+            $stub = str_replace(
+                array(
+                    'DummyStatusField',
+                    '{{status_field}}',
+                    '{{ status_field }}',
+                    'DummyStatusReasonField',
+                    '{{status_reason_field}}',
+                    '{{ status_reason_field }}'
+                ),
+                array(
+                    $status_field,
+                    $status_field,
+                    $status_field,
+                    $cur_status_reason_field,
+                    $cur_status_reason_field,
+                    $cur_status_reason_field,
+                ),
+                $stub
+            );
+        } elseif (!is_null($status_field) && empty($status_field)) {
+            $stub = str_replace(
+                array(
+                    'DummyStatusField',
+                    '{{status_field}}',
+                    '{{ status_field }}',
+                    'DummyStatusReasonField',
+                    '{{status_reason_field}}',
+                    '{{ status_reason_field }}'
+                ),
+                array(
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                ),
+                $stub
             );
         }
 
@@ -182,7 +227,7 @@ class KlorchidMigrationCreator
     /**
      * Get the class name of a migration name.
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
     protected function getClassName($name)
@@ -193,19 +238,19 @@ class KlorchidMigrationCreator
     /**
      * Get the full path to the migration.
      *
-     * @param  string  $name
-     * @param  string  $path
+     * @param string $name
+     * @param string $path
      * @return string
      */
     protected function getPath($name, $path)
     {
-        return $path.'/'.$this->getDatePrefix().'_'.$name.'.php';
+        return $path . '/' . $this->getDatePrefix() . '_' . $name . '.php';
     }
 
     /**
      * Fire the registered post create hooks.
      *
-     * @param  string|null  $table
+     * @param string|null $table
      * @return void
      */
     protected function firePostCreateHooks($table)
@@ -218,7 +263,7 @@ class KlorchidMigrationCreator
     /**
      * Register a post migration create hook.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
      * @return void
      */
     public function afterCreate(Closure $callback)
@@ -243,7 +288,7 @@ class KlorchidMigrationCreator
      */
     public function stubPath()
     {
-        return __DIR__.'/stubs';
+        return __DIR__ . '/stubs';
     }
 
     /**

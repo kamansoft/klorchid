@@ -22,8 +22,8 @@ class {{ class }} extends Migration
 
             //common fields to be used on klorchid based apps
             $table->timestamps();
-            $table->boolean(config('klorchid.models_common_field_names.status'))->default(1);
-            $table->text(config('klorchid.models_common_field_names.reason'))->nullable();
+            {{status_field}}
+            {{status_reason_field}}
             $table->foreignId(config('klorchid.models_common_field_names.creator'))->constrained('users');
             $table->foreignId(config('klorchid.models_common_field_names.last_updater'))->constrained('users');
 

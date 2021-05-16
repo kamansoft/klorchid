@@ -13,6 +13,7 @@ use InvalidArgumentException;
 use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Schema;
+use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
 
 class KlorchidMigrationCommand extends BaseCommand
 {
@@ -21,12 +22,12 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:migration:boolean-state {name : The name of the migration}
+    protected $signature = 'klorchid:migration {name : The name of the migration}
         {--table= : The table to migrate}
         {--create= : The table to be created}
         {--adapt= : The non empty, already existent table to add klorchid fields}
         {--timestamps-add= : The table to add laravel timestamps}
-        
+        {--status-type= : Specify The type of model based on status: [ ' . KlorchidModelCommand::BOOLEAN_BINARY . ' (default), ' . KlorchidModelCommand::INTEGER_MULTI . ', ' . KlorchidModelCommand::STRING_MULTI . ' ]  }
         {--path= : The location where the migration file should be created}
         {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
         {--fullpath : Output the full path of the migration}';
@@ -66,7 +67,6 @@ class KlorchidMigrationCommand extends BaseCommand
         $this->creator = $creator;
         $this->composer = $composer;
     }
-
 
 
     /**
@@ -124,18 +124,32 @@ class KlorchidMigrationCommand extends BaseCommand
 
         }
 
-        if ($action!=='create'){
-            if (! Schema::hasTable($table)){
-                throw new \Exception(' Unable to find "'.$table.'" table for "'.$action.'" action  in your database');
+        if ($action !== 'create') {
+            if (!Schema::hasTable($table)) {
+                throw new \Exception(' Unable to find "' . $table . '" table for "' . $action . '" action  in your database');
             }
+        }
+
+
+        $status_field = '';
+
+
+        //
+        if ($this->input->getOption('status-type') === KlorchidModelCommand::BOOLEAN_BINARY) {
+            $status_field = '$table->boolean(config(\'klorchid.models_common_field_names.status\'))->default(1);';
+        } elseif ($this->input->getOption('status-type') === KlorchidModelCommand::INTEGER_MULTI) {
+            $status_field = '$table->integer(config(\'klorchid.models_common_field_names.status\'));';
+        } elseif ($this->input->getOption('status-type') === KlorchidModelCommand::STRING_MULTI) {
+            $status_field = '$table->string(config(\'klorchid.models_common_field_names.status\'));';
         }
 
         $this->line("<info>A {$action} migration file for {$table} table is about to be created.</info>");
 
+
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-        $this->writeMigration($name,  $action,$table);
+        $this->writeMigration($name, $action, $table, $status_field);
 
         $this->composer->dumpAutoloads();
     }
@@ -147,11 +161,12 @@ class KlorchidMigrationCommand extends BaseCommand
      * @param $action
      * @param $table
      */
-    protected function writeMigration($name,  $action,$table)
+    protected
+    function writeMigration($name, $action, $table, $status = null)
     {
 
         $file = $this->creator->create(
-            $name, $this->getMigrationPath(), $action,$table
+            $name, $this->getMigrationPath(), $action, $table, $status
         );
 
         if (!$this->option('fullpath')) {
@@ -166,7 +181,8 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @return string
      */
-    protected function getMigrationPath()
+    protected
+    function getMigrationPath()
     {
         if (!is_null($targetPath = $this->input->getOption('path'))) {
             return !$this->usingRealPath()

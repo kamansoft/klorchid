@@ -4,29 +4,30 @@ namespace {{ namespace }};
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Kamansoft\Klorchid\Models\BinaryStatusKlorchidEloquentModel;
+use Kamansoft\Klorchid\Models\KlorchidBooleanStatusModel;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 use Datakrama\Eloquid\Traits\Uuids;
 
-class DummyClass extends BinaryStatusKlorchidEloquentModel
+class DummyClass extends KlorchidBooleanStatusModel
 {
     use AsSource;
     use Filterable;
+
     //use HasFactory;
     use Uuids;
+
     /*
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = '{{ table }}';
-    //protected $primaryKey ='id';
 
+    protected $primaryKey = 'id';
 
-
-    protected $attributes  = [
-        'status'=>True
+    protected $attributes = [
+        'status' => True
     ];
 
     protected $fillable = [
@@ -34,21 +35,18 @@ class DummyClass extends BinaryStatusKlorchidEloquentModel
     ];
 
     protected $allowedFilters = [
-        'status',
         'updated_at',
         'updated_by',
         'created_at',
         'created_by',
         'status'
-
 
     ];
     /**
      * @var array
      */
     protected $allowedSorts = [
-        'id',
-        'name',
+
         'updated_at',
         'updated_by',
         'created_at',
@@ -57,24 +55,9 @@ class DummyClass extends BinaryStatusKlorchidEloquentModel
 
     ];
 
-
-
-    protected $appends =[
-        'stringStatus',
-        'creatorName',
-        'updaterName'
+    protected $appends = [
+        'statusName'
     ];
-
-    protected $casts = [
-        'updated_at' => 'date:d/m/Y h:m:s a',
-        'created_at' => 'date:d/m/Y h:m:s a',
-        'status' => 'boolean'
-    ];
-
-
-
-
-
 
 
 }

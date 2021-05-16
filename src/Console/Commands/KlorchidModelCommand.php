@@ -12,12 +12,22 @@ class KlorchidModelCommand extends GeneratorCommand
     const BOOLEAN_BINARY = 'boolean-binary';
     const INTEGER_MULTI = 'integer-multi';
     const STRING_MULTI = 'string-multi';
-    private $status_types = [
+    private static $status_types = [
         self::BOOLEAN_BINARY,
         self::INTEGER_MULTI,
         self::STRING_MULTI
 
     ];
+
+    /**
+     * @return string[]
+     */
+    public static function getStatusTypes(): array
+    {
+        return self::$status_types;
+    }
+
+
     private $status_type = 'boolean-binary';
     /**
      * The name and signature of the console command.
@@ -26,12 +36,10 @@ class KlorchidModelCommand extends GeneratorCommand
      */
     protected $signature = 'klorchid:model
         {name? : The name of the Model Class} 
-        {--status-type= : Specify The type of model based on status: [ '.self::BOOLEAN_BINARY.' (default), '.self::INTEGER_MULTI.', '.self::STRING_MULTI.' ]  }
+        {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
         {--m|migration : Create a migration file using the name of the model} 
-        {--M|multimodescreen : Create a KlorchidMultimodeScreen class file using model class name} 
-        {--c|crudscreen : Create a KlorchidCrudScreenBK class file using model class name} 
-        {--l|listscreen : Create KlorchidListScreen class file using model class name} 
-        {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}
+        {--s|screen : Create a KlorchidCrudScreen class file using model class name} 
+        {--a|app-name-as-path : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';
 
     /**
@@ -59,15 +67,15 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $stub_path = __DIR__ . '/../../../resources/stubs/';
 
-        $booan_binary = 'klorchid.model.boolean.binarys.tub';
+        $booan_binary = 'klorchid.model.boolean.binary.stub';
 
         //intentionally used switch for other cases like integer and string status
-        switch ($this->status_type){
+        switch ($this->status_type) {
 
-            //TODO: add other cases with diferents stubs for integer and string status
+            //TODO: add other cases with different stubs for integer and string status
 
             default:
-                $stub_path.=$booan_binary;
+                $stub_path .= $booan_binary;
         }
 
         return $stub_path;
@@ -85,7 +93,7 @@ class KlorchidModelCommand extends GeneratorCommand
         $app_name_path = '';
         $path_to_return = $rootNamespace;
 
-        if ($this->option('useAppNamePath')) {
+        if ($this->option('app-name-as-path')) {
             $app_name = Str::studly((config('app.name')));
             $app_name_screens_path = '\\' . $app_name . '\Models';
             $path_to_return .= '\\' . $app_name_screens_path;
@@ -108,7 +116,7 @@ class KlorchidModelCommand extends GeneratorCommand
 
 
 
-        if ($this->option('useAppNamePath')) {
+        if ($this->option('app-name-as-path')) {
             echo "use appname config var ";
             $this->line('app_name config var value will be used as path');
         }
@@ -134,11 +142,11 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $status_type = $this->input->getOption('status-type');
         if (is_null($status_type)) {
-            $this->status_type=self::BOOLEAN_BINARY;
-        } else if (in_array($status_type, $this->status_types, true)) {
+            $this->status_type = self::BOOLEAN_BINARY;
+        } else if (in_array($status_type, self::getStatusTypes(), true)) {
             $this->status_type = $status_type;
         } else {
-            $available_status = implode(', ', $this->status_types);
+            $available_status = implode(', ', self::getStatusTypes());
             throw new \Exception($status_type . ' is not a valid model status type for creation.  Available status types are: ' . $available_status);
         }
         return $this;
@@ -167,14 +175,19 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
 
+
+
         if ($this->option('pivot')) {
             $table = Str::singular($table);
         }
 
+
         $this->call('klorchid:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
+            '--status-type' =>$this->status_type,
             '--uuid'
+
         ]);
     }
 
