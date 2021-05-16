@@ -21,7 +21,7 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:migration {name : The name of the migration}
+    protected $signature = 'klorchid:migration:boolean-state {name : The name of the migration}
         {--table= : The table to migrate}
         {--create= : The table to be created}
         {--adapt= : The non empty, already existent table to add klorchid fields}
@@ -36,7 +36,7 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Create a new klorchid compatible migration file';
+    protected $description = 'Create a new klorchid binary state model compatible migration file for a table';
 
     /**
      * The migration creator instance.

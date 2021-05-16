@@ -4,7 +4,8 @@
   "type": "library",
   "require": {
     "php": "^7.4|^8.0",
-    "laravel-lang/lang": "~8.0"
+    "laravel-lang/lang": "~8.0",
+    "datakrama/eloquid": "^2.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.5"

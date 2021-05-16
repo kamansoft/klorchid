@@ -35,10 +35,28 @@ class DummyClass extends BinaryStatusKlorchidEloquentModel
 
     protected $allowedFilters = [
         'status',
+        'updated_at',
+        'updated_by',
         'created_at',
         'created_by',
+        'status'
+
 
     ];
+    /**
+     * @var array
+     */
+    protected $allowedSorts = [
+        'id',
+        'name',
+        'updated_at',
+        'updated_by',
+        'created_at',
+        'created_by',
+        'status'
+
+    ];
+
 
 
     protected $appends =[

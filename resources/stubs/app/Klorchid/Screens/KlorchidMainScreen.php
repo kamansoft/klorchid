@@ -37,6 +37,7 @@ class KlorchidMainScreen extends Screen
      */
     public function commandBar(): array
     {
+
         return [];
     }
 

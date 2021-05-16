@@ -15,8 +15,8 @@ trait KlorchidFormLayoutTrait
 {
 
     use KlorchidModelDependantLayoutTrait;
-    use PkFields;
-    use BlamingFields;
+    use PkFieldsTrait;
+    use BlamingFieldsTrait;
     use StatusFieldsTrait;
 
     protected Collection $form_fields;

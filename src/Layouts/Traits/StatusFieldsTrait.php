@@ -42,7 +42,7 @@ trait StatusFieldsTrait
 
 
 
-        return TextArea::make(implodeWithDot($screen_query_model_keyname,'cur_status_reason'))
+        return TextArea::make(implodeWithDot($screen_query_model_keyname,config('klorchid.models_common_field_names.reason')))
             ->class($field_class)
 
             ->title(__('Current Status Reason') . ': ')

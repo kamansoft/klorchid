@@ -7,11 +7,11 @@ use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 
 /**
- * Trait BlamingFields
+ * Trait BlamingFieldsTrait
  * @package Kamansoft\Klorchid\Layouts\Traits
  * @property \Orchid\Screen\Repository query
  */
-trait BlamingFields
+trait BlamingFieldsTrait
 {
 
 

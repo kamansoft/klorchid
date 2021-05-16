@@ -8,12 +8,12 @@ use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layout;
 /**
- * Trait PkFields
+ * Trait PkFieldsTrait
  * @package Kamansoft\Klorchid\Layouts\Traits
  * @property \Orchid\Screen\Repository query
  *
  */
-trait PkFields
+trait PkFieldsTrait
 {
     use KlorchidModelDependantLayoutTrait;
     public function pkField($data_keyname, $field_class = 'form-control'):Field

@@ -9,10 +9,13 @@ use Illuminate\Support\Str;
 class KlorchidModelCommand extends GeneratorCommand
 {
 
+    const BOOLEAN_BINARY = 'boolean-binary';
+    const INTEGER_MULTI = 'integer-multi';
+    const STRING_MULTI = 'string-multi';
     private $status_types = [
-        'boolean-binary',
-        'integer-multistate',
-        'char-multistate'
+        self::BOOLEAN_BINARY,
+        self::INTEGER_MULTI,
+        self::STRING_MULTI
 
     ];
     private $status_type = 'boolean-binary';
@@ -21,9 +24,9 @@ class KlorchidModelCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:model 
+    protected $signature = 'klorchid:model
         {name? : The name of the Model Class} 
-        {--status-type= : Specify The type of model based on status: [ boolean-binary (default), integer-multistate, char-multistate ]  }
+        {--status-type= : Specify The type of model based on status: [ '.self::BOOLEAN_BINARY.' (default), '.self::INTEGER_MULTI.', '.self::STRING_MULTI.' ]  }
         {--m|migration : Create a migration file using the name of the model} 
         {--M|multimodescreen : Create a KlorchidMultimodeScreen class file using model class name} 
         {--c|crudscreen : Create a KlorchidCrudScreenBK class file using model class name} 
@@ -56,15 +59,15 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $stub_path = __DIR__ . '/../../../resources/stubs/';
 
-        $binary = 'klorchid.binarystatus.model.stub';
+        $booan_binary = 'klorchid.model.boolean.binarys.tub';
 
-
+        //intentionally used switch for other cases like integer and string status
         switch ($this->status_type){
-            case 'binary':
-                $stub_path .=$binary;
-                break;
+
+            //TODO: add other cases with diferents stubs for integer and string status
+
             default:
-                $stub_path.=$binary;
+                $stub_path.=$booan_binary;
         }
 
         return $stub_path;
@@ -85,9 +88,9 @@ class KlorchidModelCommand extends GeneratorCommand
         if ($this->option('useAppNamePath')) {
             $app_name = Str::studly((config('app.name')));
             $app_name_screens_path = '\\' . $app_name . '\Models';
-            $path_to_return = $path_to_return . '\\' . $app_name_screens_path;
+            $path_to_return .= '\\' . $app_name_screens_path;
         } else {
-            $path_to_return = $path_to_return . '\Models';
+            $path_to_return .= '\Models';
         }
 
         return $path_to_return;
@@ -103,14 +106,7 @@ class KlorchidModelCommand extends GeneratorCommand
     public function handle()
     {
 
-        if ($this->option('multimodescreen')) {
-            $this->line('a klorchid multimode screen  will be created');
-            // $this->createKeditScreen();
-        }
-        if ($this->option('migration')) {
-            $this->line('a migration file will be created');
-            $this->createKlorchidMigration();
-        }
+
 
         if ($this->option('useAppNamePath')) {
             echo "use appname config var ";
@@ -122,6 +118,11 @@ class KlorchidModelCommand extends GeneratorCommand
 
         parent::handle();
         //if ($this->option('status'))
+        if ($this->option('migration')) {
+            $this->line('a migration file will be created');
+            $this->createKlorchidMigration();
+        }
+
         return 0;
     }
 
@@ -133,14 +134,12 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $status_type = $this->input->getOption('status-type');
         if (is_null($status_type)) {
-
+            $this->status_type=self::BOOLEAN_BINARY;
+        } else if (in_array($status_type, $this->status_types, true)) {
+            $this->status_type = $status_type;
         } else {
-            if (in_array($status_type, $this->status_types)) {
-                $this->status_type = $status_type;
-            } else {
-                $available_status = implode(', ', $this->status_types);
-                throw new \Exception($status_type . ' is not a valid model status type for creation.  Available status types are: ' . $available_status);
-            }
+            $available_status = implode(', ', $this->status_types);
+            throw new \Exception($status_type . ' is not a valid model status type for creation.  Available status types are: ' . $available_status);
         }
         return $this;
     }
