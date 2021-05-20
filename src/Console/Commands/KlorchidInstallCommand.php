@@ -44,7 +44,7 @@ class KlorchidInstallCommand extends Command {
 		$this
 			->executeCommand('vendor:publish', [
 				'--provider' => KlorchidServiceProvider::class,
-				'--force' => true,
+				//'--force' => true,
 				'--tag' => [
 					'klorchid-migrations',
 					'klorchid-commons',
@@ -53,6 +53,7 @@ class KlorchidInstallCommand extends Command {
                     'klorchid-error-views',
 					'klorchid-views',
 					'klorchid-lang',
+                    'klorchid-seeders'
 				],
 
 			]);

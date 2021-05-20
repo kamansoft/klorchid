@@ -64,6 +64,7 @@ class KlorchidServiceProvider extends ServiceProvider
             //->registerProviders()
             ->registerTranslations()
             ->registerMigrations()
+            ->registerSeeders()
             //->registerMiddlewaresAlias()
             //->reisterMiddlewareGroups()
             ->registerRoutes()
@@ -120,13 +121,38 @@ class KlorchidServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
                 __DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php'),
                 __DIR__ . '/../database/migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php' => database_path('migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php'),
-                __DIR__ . '/../database/migrations/2020_09_02_120819_create_app_settings_table.php' => database_path('migrations/2020_09_02_120819_create_app_settings_table.php'),
+
+                //__DIR__ . '/../database/migrations/2020_09_02_120819_create_app_settings_table.php' => database_path('migrations/2020_09_02_120819_create_app_settings_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_112932_create_countries_table.php' => database_path('migrations/2021_05_18_112932_create_countries_table.php'),
+                __DIR__ .'/../database/migrations/2021_05_18_112933_create_regions_table.php'=>database_path('migrations/2021_05_18_112933_create_regions_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_161302_create_states_table.php' => database_path('migrations/2021_05_18_161302_create_states_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_190635_create_cities_table.php' => database_path('migrations/2021_05_18_190635_create_cities_table.php'),
+
             ], 'klorchid-migrations');
 
 
         }
 
         //$this->loadMigrationsFrom(__DIR__ .'../database/migrations');
+        return $this;
+    }
+
+
+    protected function registerSeeders(): self
+    {
+
+
+        if ($this->app->runningInConsole()) {
+            // Export the migration
+
+            $this->publishes([
+                __DIR__ . '/../database/seeders/CountrySeeder.php' => database_path('seeders/CountrySeeder.php'),
+
+            ], 'klorchid-seeders');
+
+
+        }
+
         return $this;
     }
 
@@ -155,7 +181,7 @@ class KlorchidServiceProvider extends ServiceProvider
         $this->publishes([
             //__DIR__ . '/../resources/stubs/app/Klorchid' => app_path('Klorchid'),
             __DIR__ . '/../resources/stubs/app/Permissions' => app_path('Permissions'),
-           // __DIR__ . '/../resources/stubs/app/Providers' => app_path('Providers'),
+            // __DIR__ . '/../resources/stubs/app/Providers' => app_path('Providers'),
             //__DIR__ . '/../resources/stubs/app/Repositories' => app_path('Repositories'),
         ], 'klorchid-commons');
 
@@ -245,12 +271,12 @@ class KlorchidServiceProvider extends ServiceProvider
         $this->app->bind(NotificaterInterface::class, Notificator::class);
 
 
-
         return $this;
     }
 
-    protected function registerNotificator():self{
-        $this->app->singleton(Notificator::class,static function () {
+    protected function registerNotificator(): self
+    {
+        $this->app->singleton(Notificator::class, static function () {
             return new Notificator();
         });
         return $this;

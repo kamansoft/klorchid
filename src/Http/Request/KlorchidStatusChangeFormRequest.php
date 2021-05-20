@@ -7,7 +7,7 @@ namespace Kamansoft\Klorchid\Http\Request;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
-use Kamansoft\Klorchid\Screens\KlorchidCurdScreen;
+use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;

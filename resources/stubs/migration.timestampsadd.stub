@@ -14,7 +14,9 @@ class {{ class }} extends Migration
     public function up()
     {
         Schema::table('{{ table }}', function (Blueprint $table) {
-            $table->timestamps();
+            //$table->timestamps();
+            $this->timestamp('created_at', 0)->nullable();
+            $this->timestamp('updated_at', 0)->nullable();
         });
 
 

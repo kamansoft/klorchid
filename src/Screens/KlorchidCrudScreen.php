@@ -34,7 +34,7 @@ use Orchid\Support\Facades\Layout;
 use Illuminate\Database\Eloquent\Builder;
 
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
-abstract class KlorchidCurdScreen extends KlorchidMultiModeScreen
+abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     implements KlorchidPermissionsInterface, KlorchidScreensPermissionsInterface, SaveCommandInterface,
     StatusChangeCommandInterface, KlorchidScreensCommandBarElementsInterface
 {
@@ -42,7 +42,7 @@ abstract class KlorchidCurdScreen extends KlorchidMultiModeScreen
     use KlorchidPermissionsTrait;
     use KlorchidScreensPermissionsTrait;
     use StatusChangeCommandTrait;
-
+    use SaveCommandTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
     public static string $screen_query_model_keyname = 'model';

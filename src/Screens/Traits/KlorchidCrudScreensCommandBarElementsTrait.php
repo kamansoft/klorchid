@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Layouts\StatusChangeCommandModalFormLayout;
 use Kamansoft\Klorchid\Layouts\Traits\StatusFieldsTrait;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
-use Kamansoft\Klorchid\Screens\KlorchidCurdScreen;
+use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
@@ -88,7 +88,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
         $this->initCommandBarElements();
 
         $mode ='';
-        if ($this->isEnableStatusChangeButton() == true and $mode!==KlorchidCurdScreen::COLLECTION_MODE) {
+        if ($this->isEnableStatusChangeButton() == true and $mode!==KlorchidCrudScreen::COLLECTION_MODE) {
             if (!isset($this->model)) {
                 throw new \Exception(' You must initialize the $model attribute with a 
                 ' . KlorchidMultiStatusModel::class . ' object  prior the screen commandBar method call, you can do that at 
@@ -129,7 +129,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
             );
         }
 
-        if ($this->isEnableSaveButton() == true and $mode!==KlorchidCurdScreen::COLLECTION_MODE) {
+        if ($this->isEnableSaveButton() == true and $mode!==KlorchidCrudScreen::COLLECTION_MODE) {
             $this->getCommandBarElements()->add($this->getSaveButton());
         }
 

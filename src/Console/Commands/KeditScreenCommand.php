@@ -9,13 +9,26 @@ use Illuminate\Support\Str;
 
 class KeditScreenCommand extends ScreenCommand
 {
+
+    public const CRUD_SCREEN_TYPE = 'crud';
+
+    public static function getScreenTypes(): array
+    {
+        return [
+            self::CRUD_SCREEN_TYPE,
+        ];
+    }
+
+    private $kind='';//self::CRUD_SCREEN_TYPE;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'klorchid:editscreen 
+    protected $signature = 'klorchid:screen 
         {name : The name of the screen class }
+        {--kind= : The kind of screen to create, valid types are: '.self::CRUD_SCREEN_TYPE.' (default) ,    }
         {model? : The full model name with its namespace like: \Namespace\Model\ModelName } 
         {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}';
 
@@ -24,14 +37,14 @@ class KeditScreenCommand extends ScreenCommand
      *
      * @var string
      */
-    protected $description = 'Generate a new klorchid edit screen';
+    protected $description = 'Generate a new klorchid  screen';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'KeditScreen';
+    protected $type = 'KlorchidCrudScreen';
 
 
     /**
@@ -42,7 +55,9 @@ class KeditScreenCommand extends ScreenCommand
     protected function getStub(): string
     {
         //return app_path('Kaman/resources/stubs/keditscreen.stub');
-        return __DIR__ . '/../../../resources/stubs/keditscreen.stub';
+        return __DIR__ . '/../../../resources/stubs/klo.stub';
+
+        //if ($this)
     }
 
         /**
