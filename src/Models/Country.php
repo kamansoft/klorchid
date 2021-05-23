@@ -3,6 +3,7 @@
 namespace Kamansoft\Klorchid\Models;
 
 
+use App\Models\Region;
 use Datakrama\Eloquid\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Kamansoft\Klorchid\Models\KlorchidBooleanStatusModel;
@@ -33,11 +34,15 @@ class Country extends KlorchidBooleanStatusModel
     protected $fillable = [
         'name',
         'alpha2',
+        'region_id',
+        'state_id'
     ];
 
     protected $allowedFilters = [
         'name',
         'alpha2',
+        'region_id',
+        'state_id',
         'updated_at',
         'updated_by',
         'created_at',
@@ -51,6 +56,8 @@ class Country extends KlorchidBooleanStatusModel
     protected $allowedSorts = [
         'name',
         'alpha2',
+        'region_id',
+        'state_id',
         'updated_at',
         'updated_by',
         'created_at',
@@ -64,6 +71,15 @@ class Country extends KlorchidBooleanStatusModel
     ];
 
 
+    public function states()
+    {
+        return $this->hasMany(State::class);
+    }
+
+    public function regions()
+    {
+        return $this->hasMany(Region::class);
+    }
 
 
 }

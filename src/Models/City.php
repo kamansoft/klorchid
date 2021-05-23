@@ -3,6 +3,7 @@
 namespace Kamansoft\Klorchid\Models;
 
 
+use App\Models\Address;
 use Datakrama\Eloquid\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Kamansoft\Klorchid\Models\KlorchidBooleanStatusModel;
@@ -67,6 +68,8 @@ class City extends KlorchidBooleanStatusModel
     public function state(){
         return $this->belongsTo(State::class);
     }
+
+
 
 
 }
