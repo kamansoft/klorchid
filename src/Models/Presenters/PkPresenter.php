@@ -16,7 +16,7 @@ use Orchid\Screen\Actions\Link;
  */
 class PkPresenter extends \Orchid\Support\Presenter
 {
-    public function shortPk(): string
+    public function short(): string
     {
         /*
         $this->entity->getKey()
@@ -30,7 +30,7 @@ class PkPresenter extends \Orchid\Support\Presenter
 
     public function link(?string $display_text = null)
     {
-        $display_text = $display_text ?: $this->shortPk();
+        $display_text = $display_text ?: $this->short();
         return Link::make($display_text);
     }
 

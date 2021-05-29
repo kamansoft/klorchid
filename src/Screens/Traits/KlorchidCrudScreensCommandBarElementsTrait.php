@@ -10,6 +10,7 @@ use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Screen;
@@ -23,7 +24,7 @@ use Illuminate\Support\Collection;
 /**
  * Trait KlorchidScreensCommandBarElementsInterface
  * @method  string getMode()
- * @method  KlorchidScreensCommandBarElementsInterface commandBarElements()
+ * @method  array commandBarElements()
  * @package Kamansoft\Klorchid\Screens\Traits
  */
 trait KlorchidCrudScreensCommandBarElementsTrait
@@ -64,8 +65,15 @@ trait KlorchidCrudScreensCommandBarElementsTrait
      */
     public function initCommandBarElements(array $elements = null): self
     {
+
         if (!isset($this->command_bar_elements)) {
-            $this->setCommandBarElements(is_null($elements) ? $this->commandBarElements() : $elements);
+
+            $this->setCommandBarElements(is_null($elements) ? [] : $elements);
+        }
+        $child_elements = $this->commandBarElements();
+
+        if (!empty($child_elements)) {
+            $this->getCommandBarElements()->prepend(...$child_elements);
         }
         return $this;
     }
@@ -78,7 +86,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
     public function getCommandBarElements(): Collection
     {
-        return $this->initCommandBarElements()->command_bar_elements;
+        return $this->command_bar_elements;
     }
 
 
@@ -87,8 +95,8 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
         $this->initCommandBarElements();
 
-        $mode ='';
-        if ($this->isEnableStatusChangeButton() == true and $mode!==KlorchidCrudScreen::COLLECTION_MODE) {
+        $mode = $this->getMode();
+        if ($this->isEnableStatusChangeButton() == true and $mode !== KlorchidCrudScreen::COLLECTION_MODE) {
             if (!isset($this->model)) {
                 throw new \Exception(' You must initialize the $model attribute with a 
                 ' . KlorchidMultiStatusModel::class . ' object  prior the screen commandBar method call, you can do that at 
@@ -112,24 +120,24 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                 Layout::modal(
                     self::$status_change_modal_name,
                     StatusChangeCommandModalFormLayout::class
-                    /*Layout::rows(
-                        array_merge(
-                            $this->statusFields(
-                                self::$screen_query_model_keyname,
-                            ),
-                            $this->newStatusFields(
-                                self::$screen_query_model_keyname,
-                                $this->getModel()->statusPresenter()->getOptions()
-                            )
+                /*Layout::rows(
+                    array_merge(
+                        $this->statusFields(
+                            self::$screen_query_model_keyname,
+                        ),
+                        $this->newStatusFields(
+                            self::$screen_query_model_keyname,
+                            $this->getModel()->statusPresenter()->getOptions()
                         )
-                    )*/
+                    )
+                )*/
                 )
 
 
             );
         }
 
-        if ($this->isEnableSaveButton() == true and $mode!==KlorchidCrudScreen::COLLECTION_MODE) {
+        if ($this->isEnableSaveButton() == true and $mode !== KlorchidCrudScreen::COLLECTION_MODE) {
             $this->getCommandBarElements()->add($this->getSaveButton());
         }
 
@@ -140,12 +148,22 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
     }
 
+
+    /**
+     * Makes sure exists all the methos name as attributte of each action if exists
+     * @return $this
+     */
     public function commandBarCheck(): self
     {
         collect($this->command_bar_elements)->map(function ($action) {
-            if ($action->isSee() and !method_exists($this, $action->get('method'))) {
-                throw new \Exception("The command bar of some Klorchid Screen has a button named: \"" . $action->get('name') . "\" with a method attribute name set to (\"" . $action->get('method') . "\"). Method name is not implemented (do not exists) on " . self::class . " instance");
 
+            // TODO: change the way links actions are detected  as they do not use screen methods
+            if (
+                !is_null($action->get('method')) and
+                $action->isSee() and
+                !method_exists($this, $action->get('method'))
+            ) {
+                throw new \Exception("The command bar of some Klorchid Screen has a action element named: \"" . $action->get('name') . "\" with a method attribute name set to (\"" . $action->get('method') . "\"). Method name is not implemented (do not exists) on " . self::class . " instance");
             }
         });
         return $this;

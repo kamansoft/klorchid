@@ -25,6 +25,7 @@ use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
 use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Action;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Dashboard;
 use Orchid\Screen\Actions\Button;
@@ -45,34 +46,36 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     use SaveCommandTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
-    public static string $screen_query_model_keyname = 'model';
-    const COLLECTION_MODE='list';
-    const CREATE_MODE='create';
-    const EDIT_MODE='edit';
-    const VIEW_MODE='view';
+
+    const COLLECTION_MODE = 'list';
+    const CREATE_MODE = 'create';
+    const EDIT_MODE = 'edit';
+    const VIEW_MODE = 'view';
     const DELETE_ACTION = 'delete';
     const STATUS_CHANGE_ACTION = 'status_change';
 
     abstract public function permissionsGroupName(): string;
+
     abstract public function collectionQuery();
+
 
     public function actionPermissionsMap(): array
     {
         return [
-            self::COLLECTION_MODE => implodeWithDot('platform', $this->actionPermissionsMap(), self::COLLECTION_MODE),
-            self::EDIT_MODE => implodeWithDot('platform', $this->actionPermissionsMap(), self::EDIT_MODE),
-            self::CREATE_MODE => implodeWithDot('platform', $this->actionPermissionsMap(), self::CREATE_MODE),
-            self::VIEW_MODE => implodeWithDot('platform', $this->actionPermissionsMap(), self::VIEW_MODE),
-            self::STATUS_CHANGE_ACTION => implodeWithDot('platform', $this->actionPermissionsMap(), self::STATUS_CHANGE_ACTION),
-            self::DELETE_ACTION => implodeWithDot('platform', $this->actionPermissionsMap(), self::DELETE_ACTION),
+            self::COLLECTION_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::COLLECTION_MODE),
+            self::EDIT_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::EDIT_MODE),
+            self::CREATE_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::CREATE_MODE),
+            self::VIEW_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::VIEW_MODE),
+            self::STATUS_CHANGE_ACTION => implodeWithDot('platform', $this->permissionsGroupName(), self::STATUS_CHANGE_ACTION),
+            self::DELETE_ACTION => implodeWithDot('platform', $this->permissionsGroupName(), self::DELETE_ACTION),
         ];
     }
 
     public function blamingFieldsQuery(Builder $query): Builder
     {
-		return $query->with(['creator', 'updater'])
-			->addSelect('created_by', 'updated_by');
-	}
+        return $query->with(['creator', 'updater'])
+            ->addSelect('created_by', 'updated_by');
+    }
 
 
     public function commandBarElements(): array
@@ -80,6 +83,10 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
         //$this->getSaveButton()
         //->canSee($this->loggedUserHasActionPermission("edit") or $this->loggedUserHasActionPermission("create"));
+        $this->getCommandBarElements()->add(Link::make(__("Create"))
+            ->icon('add')
+            ->canSee($this->getMode() === self::COLLECTION_MODE)
+            ->route($this->crudRouteNames()['edit']));
         return [
 
         ];

@@ -18,4 +18,6 @@ interface KlorchidScreensCommandBarElementsInterface
     public function commandBarElements(): array;
 
     public function commandBarCheck(): self;
+
+    public function crudRouteNames(): array;
 }
