@@ -22,7 +22,7 @@ trait KlorchidPermissionsTrait
     }
 
 
-    public function permissionExists(string $perm): bool
+    public function permissionExists(string $perm, ?Collection $perms_collection = null): bool
     {
         $perms_collection = $perms_collection ?? self::getAllSystemPermissions();
         return $perms_collection->contains($perm);
@@ -30,7 +30,8 @@ trait KlorchidPermissionsTrait
 
     public function loggedUserHasPermission(string $perm): bool
     {
-        return !is_null(Auth::user()->hasAccess($perm))?Auth::user()->hasAccess($perm):false;
+
+        return (Auth::check() && !is_null(Auth::user()->hasAccess($perm))) ? Auth::user()->hasAccess($perm) : false;
     }
 
 
