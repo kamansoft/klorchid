@@ -55,7 +55,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     const DELETE_ACTION = 'delete';
     const STATUS_CHANGE_ACTION = 'status_change';
 
-    abstract public function permissionsGroupName(): string;
+    //abstract public function permissionsGroupName(): string;
 
     abstract public function collectionQuery();
 
