@@ -96,7 +96,11 @@ trait KlorchidCrudScreensCommandBarElementsTrait
         $this->initCommandBarElements();
 
         $mode = $this->getMode();
-        if ($this->isEnableStatusChangeButton() == true and $mode !== KlorchidCrudScreen::COLLECTION_MODE) {
+        if (
+            $this->isEnableStatusChangeButton() == true and
+            $mode !== KlorchidCrudScreen::COLLECTION_MODE and
+            $mode !== KlorchidCrudScreen::CREATE_MODE
+        ) {
             if (!isset($this->model)) {
                 throw new \Exception(' You must initialize the $model attribute with a 
                 ' . KlorchidMultiStatusModel::class . ' object  prior the screen commandBar method call, you can do that at 

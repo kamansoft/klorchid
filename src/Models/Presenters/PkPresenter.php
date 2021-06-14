@@ -28,10 +28,14 @@ class PkPresenter extends \Orchid\Support\Presenter
     }
 
 
-    public function link( ?string $display_text = null):Link
+    public function link(string $url_name, ?string $display_text = null): Link
     {
         $display_text = $display_text ?: $this->short();
-        return Link::make($display_text);
+
+        return Link::make($display_text)->route(
+            $url_name,
+            $this->entity->getKey()
+        );
     }
 
 

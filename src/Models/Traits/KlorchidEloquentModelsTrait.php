@@ -35,7 +35,7 @@ trait KlorchidEloquentModelsTrait
      * @return $this
      * @throws \ReflectionException
      */
-    public function setCasts():self
+    public function setCasts(): self
     {
         getObjectPropertiesWith($this, 'extra_casts', \ReflectionMethod::IS_PROTECTED)
             ->map(function ($extra_class) {
@@ -44,15 +44,11 @@ trait KlorchidEloquentModelsTrait
                     throw new \Error(self::class . 'class attribute: ' . $extra_class . ' must be an array');
                 }
 
-
                 $this->casts = array_merge($this->casts, $this->$extra_class);
             });
 
         return $this;
     }
-
-
-
 
 
     public function pkPresenter(): PkPresenter

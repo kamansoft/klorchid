@@ -14,8 +14,10 @@ use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayo
 use Kamansoft\Klorchid\Layouts\Traits\MultiModeScreensLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\MultiStatusModelLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidModelDependantLayoutTrait;
+use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;
 use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
 
 abstract class KlorchidCrudFormLayout extends KlorchidBasicFormLayout
     implements KlorchidModelDependantLayoutInterface, MultiModeScreensLayoutInterface,
@@ -26,4 +28,29 @@ abstract class KlorchidCrudFormLayout extends KlorchidBasicFormLayout
     use MultiModeScreensLayoutTrait;
     use MultiStatusModelLayoutTrait;
     use KlorchidFormLayoutTrait;
+
+
+    protected array $displayable_modes = [
+        KlorchidCrudScreen::EDIT_MODE,
+        KlorchidCrudScreen::CREATE_MODE,
+        KlorchidCrudScreen::VIEW_MODE
+    ];
+
+    public function isEditable()
+    {
+        return $this->getScreenMode() === KlorchidCrudScreen::EDIT_MODE or
+            $this->getScreenMode() === KlorchidCrudScreen::CREATE_MODE;
+    }
+
+    public function crudClass()
+    {
+
+        return 'form-control ' . ($this->isEditable() ?: 'text-dark');
+    }
+
+    public function isDisplayable()
+    {
+        $mode = $this->getScreenMode();
+        return in_array($this->getScreenMode(), $this->displayable_modes, true);
+    }
 }

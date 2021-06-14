@@ -79,11 +79,10 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
     }
 
-    public function mergeWithCrudElements(array $elements):array
+    public function mergeWithCrudElements(array $elements): array
     {
-        return array_merge($this->crudElementsArray(),$elements);
+        return array_merge($this->crudElementsArray(), $elements);
     }
-
 
 
     public function crudElementsArray(): array
@@ -94,7 +93,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
         \Debugbar::info($this->getMode());
         return array_merge([
-            'actionRouteNames'=>$this->actionRouteNames,
+            'actionRouteNames' => $this->actionRouteNames,
             self::$screen_query_mode_keyname => $this->getMode(),
         ], $data);
     }
@@ -130,13 +129,15 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         $action_from_route = $this->getActionFromCurrentRoute();
 
 
+        if ($action_from_route === self::EDIT_MODE && !empty($this->getRouteEntityParamName())) {
+            $mode = self::VIEW_MODE;
+        }
+
         if ($action_from_route === self::EDIT_MODE && empty($this->getRouteEntityParamValue())) {
             $mode = self::CREATE_MODE;
         }
 
-        if ($action_from_route === self::EDIT_MODE && !empty($this->getRouteEntityParamName())) {
-            $mode = self::VIEW_MODE;
-        }
+
         //dd($action_from_route === self::EDIT_MODE , !empty($this->getRouteEntityParamValue()) , $this->loggedUserHasActionPermission(self::EDIT_MODE));
         if ($action_from_route === self::EDIT_MODE && !empty($this->getRouteEntityParamValue()) && $this->loggedUserHasActionPermission(self::EDIT_MODE)) {
             $mode = self::EDIT_MODE;
@@ -190,15 +191,8 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
     abstract function listModeLayout(): array;
 
-    public function createModeLayout(): array
-    {
-        return $this->editModeLayout();
-    }
+    abstract function createModeLayout(): array;
 
-    public function viewModeLayout(): array
-    {
-        return $this->editModeLayout();
-    }
-
+    abstract function viewModeLayout(): array;
 
 }
