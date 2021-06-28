@@ -28,11 +28,14 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
+
+        /*
         $action = $this->getModel()->exists?"edit":"create";
         return $this->loggedUserHasPermission(implodeWithDot(
             'platform',
             $this->entityRouteParamName(),
-            $action));
+            $action));*/
+        return true;
     }
     /**
      * Performs a common tasks that include notification on update or create a new item

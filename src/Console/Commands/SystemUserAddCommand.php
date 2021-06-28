@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use  App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
 use Kamansoft\Klorchid\Models\Kuser;
@@ -89,33 +90,44 @@ class SystemUserAddCommand extends Command
 
     protected function handleUser($id = null): User
     {
-
+        $user = new User();
+        $user->name = 'system';
+        $user->email = 'system@' . config('app.name');
 
         if (!empty($id)) {
             try {
                 $user = User::findOrfail($id);
             } catch (Exception $e) {
 
-                throw new Exception('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
+                Log::error('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
+                Log::info('attempt to create a system user id with SYSTE_USER_ID=' . $id . ' value from .env file ');
+
+                //throw  new Exception('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
 
 
             }
         } else {
-            $user = new User();
-            $user->name = 'system';
-            $user->email = 'system@' . config('app.name');
 
+            $user->id = $id;
         }
 
 
         $user->password = '';
-        if ($this->checkMigration(KlorchidServiceProvider::$blaming_fields_migration_filename)) {
-            DB::transaction(function () use ($user) {
-                $user->updated_by = $user->created_by = $this->getMysqlAutoIncrement();
+
+        try {
+            if ($this->checkMigration(KlorchidServiceProvider::$blaming_fields_migration_filename)) {
+                DB::transaction(function () use ($user) {
+                    $user->updated_by = $user->created_by = $this->getMysqlAutoIncrement();
+                    $user->save();
+                });
+            } else {
                 $user->save();
-            });
-        } else {
-            $user->save();
+            }
+        } catch (Exception $e) {
+            Log::error('System User insertion Fail');
+            Log::error($e->getMessage());
+
+            throw  new Exception('The user was not inserted on the database' . $e->getMessage());
         }
 
 

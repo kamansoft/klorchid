@@ -146,7 +146,7 @@ class KlorchidServiceProvider extends ServiceProvider
             // Export the migration
 
             $this->publishes([
-                __DIR__ . '/../database/seeders/CountrySeeder.php' => database_path('seeders/CountrySeeder.php'),
+                __DIR__ . '/../database/seeders/CountrySeeder.php' => database_path('seeders/CountryDevSeeder.php'),
 
             ], 'klorchid-seeders');
 

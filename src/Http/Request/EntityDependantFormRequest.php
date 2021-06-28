@@ -13,7 +13,10 @@ abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\Fo
     abstract public function entityRouteParamName():string;
 
 
-    public function getModel():KlorchidMultiStatusModel
+    /**
+     * @return \Illuminate\Routing\Route|object|string|null|KlorchidMultiStatusModel
+     */
+    public function getModel()
     {
 
         //TODO: this must be improoved
