@@ -25,6 +25,7 @@ use Illuminate\Support\Collection;
  * Trait KlorchidScreensCommandBarElementsInterface
  * @method  string getMode()
  * @method  array commandBarElements()
+ * @property array $actionRouteNames
  * @package Kamansoft\Klorchid\Screens\Traits
  */
 trait KlorchidCrudScreensCommandBarElementsTrait
@@ -95,6 +96,26 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
         $this->initCommandBarElements();
 
+        /*
+        dd(
+            $this->getMode() !== self::COLLECTION_MODE and
+            property_exists($this, 'actionRouteNames') and
+            is_array($this->actionRouteNames) and
+            array_key_exists(self::COLLECTION_MODE, $this->actionRouteNames)
+        );*/
+
+
+        if ($this->getMode() !== self::COLLECTION_MODE and
+            property_exists($this, 'actionRouteNames') and
+            is_array($this->actionRouteNames) and
+            array_key_exists(self::COLLECTION_MODE, $this->actionRouteNames)) {
+            $this->getCommandBarElements()->add(
+                Link::make(__('List'))
+                    ->route($this->actionRouteNames[self::COLLECTION_MODE])
+                    ->icon('list')
+            );
+        }
+
         $mode = $this->getMode();
         if (
             $this->isEnableStatusChangeButton() == true and
@@ -119,8 +140,6 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
 
             $this->getLayoutElements()->add(
-
-
                 Layout::modal(
                     self::$status_change_modal_name,
                     StatusChangeCommandModalFormLayout::class
@@ -136,7 +155,6 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                     )
                 )*/
                 )
-
 
             );
         }

@@ -11,6 +11,7 @@ use Kamansoft\Klorchid\Layouts\Contracts\KlorchidModelDependantLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 use Kamansoft\Klorchid\Traits\KlorchidScreenQueryRepositoryDependentTrait;
 use Orchid\Screen\Field;
+use Orchid\Screen\Layout;
 use Orchid\Screen\Layouts\Rows;
 
 

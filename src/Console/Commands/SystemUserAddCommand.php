@@ -101,13 +101,8 @@ class SystemUserAddCommand extends Command
 
                 Log::error('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
                 Log::info('attempt to create a system user id with SYSTE_USER_ID=' . $id . ' value from .env file ');
-
-                //throw  new Exception('The user specified on .env file or config at SYSTE_USER_ID was not found on DB. ' . $e->getMessage());
-
-
             }
         } else {
-
             $user->id = $id;
         }
 
@@ -146,8 +141,8 @@ class SystemUserAddCommand extends Command
     /**
      * @param string $constant
      * @param string $value
-     *
-     * @return InstallCommand
+     * @return self
+     * @throws Exception
      */
     private function setValueEnv(string $constant, string $value = 'null'): self
     {
@@ -157,7 +152,7 @@ class SystemUserAddCommand extends Command
         if ($str !== false && strpos($str, $constant) === false) {
             file_put_contents(app_path('../.env'), $str . PHP_EOL . $constant . '=' . $value . PHP_EOL);
         } else {
-            throw new Exception('Cant add ' . $constant . ' entry on projects .env  file you must  remove it  by hand');
+            throw new Exception('Cant add ' . $constant . ' entry on the project´s .env  file you must  remove it  by hand');
         }
 
         $this->info("Constant successfully added to file");

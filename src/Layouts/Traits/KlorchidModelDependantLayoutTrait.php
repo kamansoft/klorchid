@@ -3,6 +3,7 @@
 namespace Kamansoft\Klorchid\Layouts\Traits;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
@@ -12,6 +13,7 @@ trait KlorchidModelDependantLayoutTrait
     use KlorchidScreenQueryRepositoryDependantLayoutTrait;
 
     private static string $screen_query_model_keyname = 'model';
+
 
 
     public function getModel()

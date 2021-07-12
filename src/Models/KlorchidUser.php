@@ -24,7 +24,8 @@ use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
 
 
-class KlorchidUser extends User implements KlorchidModelsInterface, KlorchidMultiStatusModelInterface,BooleanStatusModelInterface
+class KlorchidUser extends User implements KlorchidModelsInterface,
+    KlorchidMultiStatusModelInterface,BooleanStatusModelInterface
 {
 
     use HasApiTokens;
@@ -173,7 +174,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface, KlorchidMult
 
                 DB::beginTransaction();
 
-                //check if the user to be deleted is self referencend on updated_by or created_by
+                //check if the user to be deleted is self referencend on updated_by or created_by and change by system user
                 if ($this->updated_by == $this->id) {
                     DB::update('update users set  `email_verified_at` = NULL, `updated_by` = ' . config('klorchid.system_user_id') . ' where id = ?', [$this->id]);
 

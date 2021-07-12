@@ -5,11 +5,13 @@ namespace Kamansoft\Klorchid\Layouts;
 
 
 use Kamansoft\Klorchid\Layouts\Contracts\KlorchidFormsLayoutInterface;
+use Kamansoft\Klorchid\Layouts\Contracts\KlorchidRouteNamesDependantLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\MultiModeScreensLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\MultiStatusModelLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\KlorchidModelDependantLayoutInterface;
 use Kamansoft\Klorchid\Layouts\KlorchidBasicFormLayout;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidFormLayoutTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidRouteNamesDependantLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\MultiModeScreensLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\MultiStatusModelLayoutTrait;
@@ -21,16 +23,18 @@ use Orchid\Screen\Fields\Input;
 
 abstract class KlorchidCrudFormLayout extends KlorchidBasicFormLayout
     implements KlorchidModelDependantLayoutInterface, MultiModeScreensLayoutInterface,
+    KlorchidRouteNamesDependantLayoutInterface,
     KlorchidFormsLayoutInterface//, MultiStatusModelLayoutInterface
 
 {
     use KlorchidModelDependantLayoutTrait;
+    use KlorchidRouteNamesDependantLayoutTrait;
     use MultiModeScreensLayoutTrait;
     use MultiStatusModelLayoutTrait;
     use KlorchidFormLayoutTrait;
 
 
-    protected array $displayable_modes = [
+    static public  array $displayable_modes = [
         KlorchidCrudScreen::EDIT_MODE,
         KlorchidCrudScreen::CREATE_MODE,
         KlorchidCrudScreen::VIEW_MODE
@@ -51,6 +55,6 @@ abstract class KlorchidCrudFormLayout extends KlorchidBasicFormLayout
     public function isDisplayable()
     {
         $mode = $this->getScreenMode();
-        return in_array($this->getScreenMode(), $this->displayable_modes, true);
+        return in_array($this->getScreenMode(), self::$displayable_modes, true);
     }
 }

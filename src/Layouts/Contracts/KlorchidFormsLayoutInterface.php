@@ -22,7 +22,7 @@ interface KlorchidFormsLayoutInterface
 
     //pkfields
 
-    public function pkField($data_keyname, $field_class = 'form-control'): Field;
+    public static function pkField(KlorchidModelDependantLayoutInterface $form_layout, $data_keyname, $field_class = 'form-control'): Field;
 
 
     //blamming fields
@@ -51,5 +51,4 @@ interface KlorchidFormsLayoutInterface
     public function newStatusReasonField($screen_query_model_keyname): Field;
 
     public function newStatusFields($screen_query_model_keyname, array $status_options): array;
-
 }

@@ -16,6 +16,10 @@ use Orchid\Screen\Actions\Link;
  */
 class PkPresenter extends \Orchid\Support\Presenter
 {
+    /**
+     * short value representation of an element uuid
+     * @return string
+     */
     public function short(): string
     {
         /*

@@ -89,9 +89,13 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     {
         $data = $this->getMode() === self::COLLECTION_MODE ?
             [KlorchidListLayout::getScreenQueryCollectionKeyname() => $this->collectionQuery()->filters()->defaultSort('updated_at', 'desc')->paginate()] :
-            [KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel()];
+            [
+                KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel(),
+                KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname()=> $this->actionRouteNames
+                ];
 
-        \Debugbar::info($this->getMode());
+
+        //\Debugbar::info($this->getMode());
         return array_merge([
             'actionRouteNames' => $this->actionRouteNames,
             self::$screen_query_mode_keyname => $this->getMode(),
@@ -152,8 +156,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
     }
 
-    public
-    function blamingFieldsQuery(Builder $query): Builder
+    public function blamingFieldsQuery(Builder $query): Builder
     {
         return $query->with(['creator', 'updater'])
             ->addSelect('created_by', 'updated_by');
@@ -168,12 +171,16 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
         //$this->getSaveButton()
         //->canSee($this->loggedUserHasActionPermission("edit") or $this->loggedUserHasActionPermission("create"));
+
+
         $this->getCommandBarElements()->add(
             Link::make(__("Add"))
                 ->icon('add')
                 ->canSee($this->getMode() === self::COLLECTION_MODE)
                 ->route($this->getRouteNameFromAction(self::EDIT_MODE))
         );
+
+
 
         return [
 

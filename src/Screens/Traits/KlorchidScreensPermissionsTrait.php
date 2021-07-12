@@ -25,6 +25,8 @@ trait   KlorchidScreensPermissionsTrait
 
     public function initPermission(): self
     {
+
+
         $this->permission = array_values($this->actionPermissionsMap);
         return $this;
     }
