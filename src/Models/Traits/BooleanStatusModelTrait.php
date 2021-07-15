@@ -39,7 +39,7 @@ trait BooleanStatusModelTrait
 
 
 
-    static function getStatusName(bool $status): string
+    static function getStatusName(?bool $status): string
     {
         $status_values = self::statusValues();
         return array_search($status, $status_values);
