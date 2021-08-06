@@ -22,33 +22,33 @@ interface KlorchidFormsLayoutInterface
 
     //pkfields
 
-    public static function pkField(KlorchidModelDependantLayoutInterface $form_layout, $data_keyname, $field_class = 'form-control'): Field;
+    public static function pkField(KlorchidModelDependantLayoutInterface $form_layout, string $data_keyname,string  $field_class = 'form-control'): Field;
 
 
     //blamming fields
 
-    public function blamingFields($screen_query_model_keyname, $field_class = 'form-control'): array;
+    public function blamingFields(string $screen_query_model_keyname,?string $field_class = 'form-control'): array;
 
-    public function creatorNameField($screen_query_model_keyname, $field_class = 'form-control'): Field;
+    public function creatorNameField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field;
 
-    public function createdAtField($screen_query_model_keyname, $field_class = 'form-control'): Field;
+    public function createdAtField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field;
 
-    public function updaterNameField($screen_query_model_keyname, $field_class = 'form-control'): Field;
+    public function updaterNameField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field;
 
-    public function updatedAtField($screen_query_model_keyname, $field_class = 'form-control'): Field;
+    public function updatedAtField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field;
 
 
     // status fields
 
-    public function statusFields($screen_query_model_keyname, ?string $field_class = null): array;
+    public function statusFields(string $screen_query_model_keyname, ?string $field_class = null): array;
 
-    public function statusField($screen_query_model_keyname, ?string $field_class = null): Field;
+    public function statusField(string $screen_query_model_keyname, ?string $field_class = null): Field;
 
-    public function statusReasonField($screen_query_model_keyname, ?string $field_class = null): Field;
+    public function statusReasonField(string $screen_query_model_keyname, ?string $field_class = null): Field;
 
-    public function newStatusField($screen_query_model_keyname, array $status_options): Field;
+    public function newStatusField(string $screen_query_model_keyname, array $status_options): Field;
 
-    public function newStatusReasonField($screen_query_model_keyname): Field;
+    public function newStatusReasonField(string $screen_query_model_keyname): Field;
 
-    public function newStatusFields($screen_query_model_keyname, array $status_options): array;
+    public function newStatusFields(string $screen_query_model_keyname, array $status_options): array;
 }

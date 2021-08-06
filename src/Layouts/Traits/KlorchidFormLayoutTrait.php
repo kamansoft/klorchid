@@ -28,14 +28,24 @@ trait KlorchidFormLayoutTrait
 
         //dd($this->statusFields(self::$screen_query_model_keyname,$this->getModel()->statusPresenter()->getStatusFieldColorClass()));
         if (is_null($form_fields)) {
+
             $form_fields = array_merge(
-                ['pk' => self::pkField($this,$this->fullFormInputAttributeName($this->getModel()->getKeyName()),'form-control text-dark')],
+                [
+                    'pk' => self::pkField(
+                        $this,
+                        $this->fullFormInputAttributeName(
+                            $this->getModel()->getKeyName()
+                        ),
+                        'form-control text-dark'
+                    )
+                ],
                 //$this->newStatusFields(self::$screen_query_model_keyname,$this->getModel()->statusPresenter()->getOptions()),
                 $this->statusFields(self::$screen_query_model_keyname),
                 $this->blamingFields(self::$screen_query_model_keyname,'form-control text-dark')
             );
 
         }
+
 
         if (!isset($this->form_fields)) {
             $this->setFormFields(collect($form_fields));

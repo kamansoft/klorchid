@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Kamansoft\Klorchid\Http\Request;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +15,7 @@ use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
 abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
-    implements KlorchidPermissionsInterface,KlorchidMultimodeInterface
+implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
 {
     use KlorchidPermissionsTrait;
     use KlorchidMultiModeTrait;
@@ -45,17 +44,17 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      * to fill the model with. If is an array it will be taken as the values to fill the model with.
      * @return bool
      */
-    public function store(Model $model,$data_to_store=null): bool
+    public function store(Model $model, $data_to_store = null): bool
     {
-        Notificator::setMode("alert");
+                    Notificator::setMode("alert");
         $isUpdating = $model->exists;
-        if (is_string($data_to_store) and  !is_null($this->get($data_to_store))){
-            $data_to_store=$this->get($data_to_store);
-        }elseif (!is_array($data_to_store) ){
+        if (is_string($data_to_store) and  !is_null($this->get($data_to_store))) {
+            $data_to_store = $this->get($data_to_store);
+        } elseif (!is_array($data_to_store)) {
 
             $data_to_store = $this->get(KlorchidCrudFormLayout::getScreenQueryModelKeyname());
         }
-       $save_performed = $model->fill($data_to_store)->save();
+        $save_performed = $model->fill($data_to_store)->save();
 
         $message_data = [
             'element' => __($this->entityRouteParamName()),
@@ -69,11 +68,11 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
                 __('Success on Updating :element', $message_data) :
                 __('Success on Creating :element', $message_data);
             Notificator::success($message);
-            Log::info($message.' record primary key: '.$model->getKey());
+            Log::info($message . ' record primary key: ' . $model->getKey());
         } else {
             $message = __('Unable to save element :element', $message_data);
             Notificator::error($message);
-            Log::warning($message.' record primary key: '.$model->getKey());
+            Log::warning($message . ' record primary key: ' . $model->getKey());
         }
 
         return $save_performed;
@@ -82,9 +81,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
 
     public function rules(): array
     {
-        return empty($this->all())?[]:$this->validationRules();
+        return empty($this->all()) ? [] : $this->validationRules();
     }
-    abstract function validationRules():array;
-
-
+    abstract function validationRules(): array;
 }

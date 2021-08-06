@@ -36,7 +36,18 @@ trait PkFieldsTrait
             ->canSee($model->exists);
     }*/
 
-    public static function pkField(KlorchidModelDependantLayoutInterface $form_layout, $data_keyname, $field_class = 'form-control'): Field
+    /**
+     *
+     * Returns a well formed id field for klorchid apps
+     *
+     * @param KlorchidModelDependantLayoutInterface $form_layout the layout instance
+     * @param string $data_keyname the html form input keyname
+     * @param string $field_class
+     * @return Field
+     */
+    public static function pkField(
+        KlorchidModelDependantLayoutInterface $form_layout,
+        string $data_keyname,string $field_class = 'form-control'): Field
     {
         $model = $form_layout->getModel();
         return Input::make($data_keyname)

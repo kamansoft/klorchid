@@ -17,12 +17,12 @@ trait KlorchidRouteNamesDependantLayoutTrait
 
     public function getActionRouteNames()
     {
-        return $this->query->get(self::getScreenQueryRouteNamesKeyname());
+        return $this->query->get(static::getScreenQueryRouteNamesKeyname());
     }
 
     public function getActionRouteName(string $key)
     {
-        return $this->query->get(self::getScreenQueryRouteNamesKeyname())[$key];
+        return $this->query->get(static::getScreenQueryRouteNamesKeyname())[$key];
     }
 
     public static function getScreenQueryRouteNamesKeyname(): string
@@ -33,7 +33,7 @@ trait KlorchidRouteNamesDependantLayoutTrait
     public function routeNamesDependantScreenQueryRequiredKeys(): array
     {
         return [
-            self::getScreenQueryRouteNamesKeyname()
+            static::getScreenQueryRouteNamesKeyname()
         ];
     }
 }

@@ -211,7 +211,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
     protected function registerPermissions(Dashboard $dashboard): self
     {
-        //todo: we must cache this to avoid loops
+        //todo: we must cache this to avoid loop the files folder each time is called
         if (file_exists(app_path('Permissions'))) {
             collect(File::files(app_path('Permissions')))
                 ->map(function ($file) {

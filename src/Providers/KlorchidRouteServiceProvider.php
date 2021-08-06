@@ -5,14 +5,9 @@ namespace Kamansoft\Klorchid\Providers;
 
 
 use Illuminate\Contracts\Http\Kernel;
-
-
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
-
 use Orchid\Platform\Dashboard;
-use Laravel\Jetstream\Features;
-use Illuminate\Routing\Router;
 
 
 class KlorchidRouteServiceProvider extends RouteServiceProvider

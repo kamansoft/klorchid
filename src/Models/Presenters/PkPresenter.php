@@ -31,7 +31,13 @@ class PkPresenter extends \Orchid\Support\Presenter
         return substr($this->entity->getKey(), -12);
     }
 
-
+    /**
+     *  Returns a formated commom link for klorchid
+     *
+     * @param string $url_name
+     * @param string|null $display_text
+     * @return Link
+     */
     public function link(string $url_name, ?string $display_text = null): Link
     {
         $display_text = $display_text ?: $this->short();

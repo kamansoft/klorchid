@@ -15,7 +15,7 @@ trait BlamingFieldsTrait
 {
 
 
-    public function blamingFields($screen_query_model_keyname, $field_class = 'form-control'): array
+    public function blamingFields(string $screen_query_model_keyname,?string $field_class = 'form-control'): array
     {
         return [
             "creator_name"=>$this->creatorNameField($screen_query_model_keyname, $field_class),
@@ -25,7 +25,7 @@ trait BlamingFieldsTrait
         ];
     }
 
-    public function creatorNameField($screen_query_model_keyname, $field_class = 'form-control'): Field
+    public function creatorNameField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($screen_query_model_keyname, 'creator.name'))
             ->class($field_class)
@@ -35,7 +35,7 @@ trait BlamingFieldsTrait
             ->disabled(true);
     }
 
-    public function createdAtField($screen_query_model_keyname, $field_class = 'form-control'): Field
+    public function createdAtField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field
     {
 
         return Input::make(implodeWithDot($screen_query_model_keyname, 'created_at'))
@@ -46,7 +46,7 @@ trait BlamingFieldsTrait
             ->disabled(true);
     }
 
-    public function updaterNameField($screen_query_model_keyname, $field_class = 'form-control'): Field
+    public function updaterNameField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($screen_query_model_keyname, 'updater.name'))
             ->class($field_class)
@@ -56,7 +56,7 @@ trait BlamingFieldsTrait
             ->disabled(true);
     }
 
-    public function updatedAtField($screen_query_model_keyname, $field_class = 'form-control'): Field
+    public function updatedAtField(string $screen_query_model_keyname,?string $field_class = 'form-control'): Field
     {
         return Input::make(implodeWithDot($screen_query_model_keyname, 'updated_at'))
             ->class($field_class)
