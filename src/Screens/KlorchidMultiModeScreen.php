@@ -35,7 +35,7 @@ abstract class KlorchidMultiModeScreen extends Screen implements KlorchidMultimo
     public function __construct()
     {
 
-        $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX)->setMode('default');
+        $this->initAvailableModes(static::MODES_METHODS_NAME_SUFFIX)->setMode('default');
 
     }
 

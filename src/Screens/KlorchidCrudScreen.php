@@ -3,37 +3,19 @@
 namespace Kamansoft\Klorchid\Screens;
 
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Builder;
+use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
+use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Layouts\KlorchidListLayout;
-use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
-use Kamansoft\Klorchid\Notificator\Notificator;
+use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarElementsInterface;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensPermissionsInterface;
 use Kamansoft\Klorchid\Screens\Contracts\SaveCommandInterface;
-use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarElementsInterface;
 use Kamansoft\Klorchid\Screens\Contracts\StatusChangeCommandInterface;
-use Kamansoft\Klorchid\Screens\KlorchidCrudScreenBK;
-use Kamansoft\Klorchid\Screens\KlorchidMultiModeScreen;
-
 use Kamansoft\Klorchid\Screens\Traits\KlorchidCrudScreensCommandBarElementsTrait;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensPermissionsTrait;
-
 use Kamansoft\Klorchid\Screens\Traits\SaveCommandTrait;
 use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
-use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
-use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
-use Orchid\Screen\Action;
-use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Screen;
-use Orchid\Support\Facades\Dashboard;
-use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Fields\Input;
-use Orchid\Support\Facades\Alert;
-use Orchid\Support\Facades\Layout;
-use Illuminate\Database\Eloquent\Builder;
 
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
@@ -48,34 +30,26 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     use KlorchidCrudScreensCommandBarElementsTrait;
 
 
-    const COLLECTION_MODE = 'list';
-    const CREATE_MODE = 'create';
-    const EDIT_MODE = 'edit';
-    const VIEW_MODE = 'view';
+    //action
+    const CREATE_ACTION = KlorchidStorableFormRequest::CREATE_ACTION_NAME;
+    const EDIT_ACTION = KlorchidStorableFormRequest::EDIT_ACTION_NAME;
+    const VIEW_ACTION = 'view';
     const DELETE_ACTION = 'delete';
-    const STATUS_CHANGE_ACTION = 'status_change';
+    const STATUS_CHANGE_ACTION = KlorchidStatusChangeFormRequest::STATUS_CHANGE_ACTION_NAME;
+
+    //modes
+    const COLLECTION_MODE = 'list';
+    const CREATE_MODE = self::CREATE_ACTION;
+    const EDIT_MODE = self::EDIT_ACTION;
+    const VIEW_MODE = self::VIEW_ACTION;
 
     //abstract public function permissionsGroupName(): string;
-
-    abstract public function collectionQuery();
-
-    /*
-        public function actionPermissionsMap(): array
-        {
-            return [
-                self::COLLECTION_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::COLLECTION_MODE),
-                self::EDIT_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::EDIT_MODE),
-                self::CREATE_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::CREATE_MODE),
-                self::VIEW_MODE => implodeWithDot('platform', $this->permissionsGroupName(), self::VIEW_MODE),
-                self::STATUS_CHANGE_ACTION => implodeWithDot('platform', $this->permissionsGroupName(), self::STATUS_CHANGE_ACTION),
-                self::DELETE_ACTION => implodeWithDot('platform', $this->permissionsGroupName(), self::DELETE_ACTION),
-            ];
-        }*/
 
     public function __construct()
     {
         parent::__construct();
         $this->initPermission()->setMode('default');
+
 
     }
 
@@ -84,15 +58,14 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         return array_merge($this->crudElementsArray(), $elements);
     }
 
-
     public function crudElementsArray(): array
     {
         $data = $this->getMode() === self::COLLECTION_MODE ?
             [KlorchidListLayout::getScreenQueryCollectionKeyname() => $this->collectionQuery()->filters()->defaultSort('updated_at', 'desc')->paginate()] :
             [
                 KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel(),
-                KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname()=> $this->actionRouteNames
-                ];
+                KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => $this->actionRouteNames
+            ];
 
 
         //\Debugbar::info($this->getMode());
@@ -102,30 +75,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
         ], $data);
     }
 
-    public function isRouteWithEntityParam(): bool
-    {
-        return count(request()->route()->parameterNames) > 1;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function getRouteEntityParamName()
-    {
-        if ($this->isRouteWithEntityParam()) {
-            return request()->route()->parameterNames[0];
-        } else {
-            throw new \Exception(self::class . ' There is not a route param to retrieve for the crud screen');
-        }
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function getRouteEntityParamValue()
-    {
-        return request()->route($this->getRouteEntityParamName());
-    }
+    abstract public function collectionQuery();
 
     public function detectMode(): string
     {
@@ -156,40 +106,39 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function getRouteEntityParamName()
+    {
+        if ($this->isRouteWithEntityParam()) {
+            return request()->route()->parameterNames[0];
+        } else {
+            throw new \Exception(self::class . ' There is not a route param to retrieve for the crud screen');
+        }
+    }
+
+    public function isRouteWithEntityParam(): bool
+    {
+        return count(request()->route()->parameterNames) > 1;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getRouteEntityParamValue()
+    {
+        return request()->route($this->getRouteEntityParamName());
+    }
+
     public function blamingFieldsQuery(Builder $query): Builder
     {
         return $query->with(['creator', 'updater'])
             ->addSelect('created_by', 'updated_by');
     }
 
-    /**
-     * @throws \Exception
-     */
-    public
-    function commandBarElements(): array
-    {
 
-        //$this->getSaveButton()
-        //->canSee($this->loggedUserHasActionPermission("edit") or $this->loggedUserHasActionPermission("create"));
-
-
-        $this->getCommandBarElements()->add(
-            Link::make(__("Add"))
-                ->icon('add')
-                ->canSee($this->getMode() === self::COLLECTION_MODE)
-                ->route($this->getRouteNameFromAction(self::EDIT_MODE))
-        );
-
-
-
-        return [
-
-        ];
-    }
-
-
-    public
-    function defaultModeLayout(): array
+    public function defaultModeLayout(): array
     {
         return [];
     }

@@ -34,11 +34,17 @@ class KlorchidModelCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:model
+   /* protected $signature = 'klorchid:model
         {name? : The name of the Model Class} 
         {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
-        {--m|migration : Create a migration file using the name of the model} 
+        {--m|migration : Create a migration file using the name of the model}
         {--s|screen : Create a KlorchidCrudScreen class file using model class name} 
+        {--a|app-name-as-path : Create files inside a folder with the name as laravel app_name config value}
+        {--pivot}';*/
+    protected $signature = 'klorchid:model
+        {name? : The Class name of the Model} 
+        {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
+        {--m|migration : Create a migration file using the name of the model} 
         {--a|app-name-as-path : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';
 

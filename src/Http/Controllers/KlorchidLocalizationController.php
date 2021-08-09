@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\App;
 
 class KlorchidLocalizationController extends Controller {
 	public function index(Request $request, $locale) {
-		if (!in_array($locale, config('klorchid.aviable_locales'))) {
+		if (!in_array($locale, config('klorchid.available locales'))) {
 			App::abort(404);
 		}
 		app()->setlocale($locale);

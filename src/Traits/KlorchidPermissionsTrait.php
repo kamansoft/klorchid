@@ -12,6 +12,8 @@ trait KlorchidPermissionsTrait
 {
 
 
+
+
     /**
      * retrieves all the permissions registered on the system
      * @return \Illuminate\Support\Collection

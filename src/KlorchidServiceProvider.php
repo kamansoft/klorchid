@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Kamansoft\Klorchid\Console\Commands\BackupAction;
 use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidCrudScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMigrationCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidStorableFormRequestCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
@@ -26,6 +28,7 @@ use Kamansoft\Klorchid\Notificator\Notificator;
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
 use Kamansoft\Klorchid\Repositories\KlorchidEloquentRepository;
 use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
+use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
@@ -48,6 +51,8 @@ class KlorchidServiceProvider extends ServiceProvider
         KlorchidInstallCommand::class,
         KlorchidEloquentRepositoryCommand::class,
         KlorchidMultiModeScreenCommand::class,
+        KlorchidCrudScreenCommand::class, //
+        KlorchidStorableFormRequestCommand::class
 
     ];
     protected $dashboard;

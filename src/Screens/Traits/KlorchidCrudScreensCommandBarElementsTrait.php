@@ -3,23 +3,12 @@
 
 namespace Kamansoft\Klorchid\Screens\Traits;
 
-use Illuminate\Support\Facades\Log;
-use Kamansoft\Klorchid\Layouts\StatusChangeCommandModalFormLayout;
+use Illuminate\Support\Collection;
 use Kamansoft\Klorchid\Layouts\Traits\StatusFieldsTrait;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
-use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Fields\Input;
-use Orchid\Support\Facades\Layout;
-use Orchid\Screen\Screen;
-use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarElementsInterface;
-use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
-use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensPermissionsTrait;
-use Kamansoft\Klorchid\Screens\Contracts\SaveCommandInterface;
-use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensPermissionsInterface;
-use Illuminate\Support\Collection;
 
 /**
  * Trait KlorchidScreensCommandBarElementsInterface
@@ -37,59 +26,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
 
     public KlorchidMultiStatusModel $model;
-
-    /**
-     * @return \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel
-     */
-    public function getModel(): KlorchidMultiStatusModel
-    {
-        return $this->model;
-    }
-
-    /**
-     * @param \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel $model
-     * @return KlorchidCrudScreensCommandBarElementsTrait
-     */
-    public function setModel(KlorchidMultiStatusModel $model): self
-    {
-        $this->model = $model;
-        return $this;
-    }
-
     private Collection $command_bar_elements;
-
-
-    /**
-     * Initialize the $command_bar_elements collection
-     * @param array|null $elements if null, the returned array from screen commandBarElements method will be used
-     * @return $this
-     */
-    public function initCommandBarElements(array $elements = null): self
-    {
-
-        if (!isset($this->command_bar_elements)) {
-
-            $this->setCommandBarElements(is_null($elements) ? [] : $elements);
-        }
-        $child_elements = $this->commandBarElements();
-
-        if (!empty($child_elements)) {
-            $this->getCommandBarElements()->prepend(...$child_elements);
-        }
-        return $this;
-    }
-
-    public function setCommandBarElements(array $elements = null): self
-    {
-        $this->command_bar_elements = collect($elements);
-        return $this;
-    }
-
-    public function getCommandBarElements(): Collection
-    {
-        return $this->command_bar_elements;
-    }
-
 
     public function commandBar(): array
     {
@@ -104,7 +41,14 @@ trait KlorchidCrudScreensCommandBarElementsTrait
             array_key_exists(self::COLLECTION_MODE, $this->actionRouteNames)
         );*/
 
-
+        if ($this->getMode() == self::COLLECTION_MODE) {
+            $this->getCommandBarElements()
+                ->add(Link::make(__("Add"))
+                    ->icon('add')
+                    //->canSee($this->getMode() === self::COLLECTION_MODE)
+                    ->route($this->getRouteNameFromAction(self::EDIT_MODE))
+                );
+        }
         if ($this->getMode() !== self::COLLECTION_MODE and
             property_exists($this, 'actionRouteNames') and
             is_array($this->actionRouteNames) and
@@ -140,23 +84,9 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
 
             $this->getLayoutElements()->add(
-                Layout::modal(
-                    self::$status_change_modal_name,
-                    StatusChangeCommandModalFormLayout::class
-                /*Layout::rows(
-                    array_merge(
-                        $this->statusFields(
-                            self::$screen_query_model_keyname,
-                        ),
-                        $this->newStatusFields(
-                            self::$screen_query_model_keyname,
-                            $this->getModel()->statusPresenter()->getOptions()
-                        )
-                    )
-                )*/
-                )
-
+                $this->statusChangeModalLayout()
             );
+
         }
 
         if ($this->isEnableSaveButton() == true and $mode !== KlorchidCrudScreen::COLLECTION_MODE) {
@@ -170,6 +100,54 @@ trait KlorchidCrudScreensCommandBarElementsTrait
 
     }
 
+    /**
+     * Initialize the $command_bar_elements collection
+     * @param array|null $elements if null, the returned array from screen commandBarElements method will be used
+     * @return $this
+     */
+    public function initCommandBarElements(array $elements = null): self
+    {
+
+        if (!isset($this->command_bar_elements)) {
+
+            $this->setCommandBarElements(is_null($elements) ? [] : $elements);
+        }
+        $child_elements = $this->commandBarElements();
+
+        if (!empty($child_elements)) {
+            $this->getCommandBarElements()->prepend(...$child_elements);
+        }
+        return $this;
+    }
+
+    public function getCommandBarElements(): Collection
+    {
+        return $this->command_bar_elements;
+    }
+
+    public function setCommandBarElements(array $elements = null): self
+    {
+        $this->command_bar_elements = collect($elements);
+        return $this;
+    }
+
+    /**
+     * @return \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel
+     */
+    public function getModel(): KlorchidMultiStatusModel
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel $model
+     * @return KlorchidCrudScreensCommandBarElementsTrait
+     */
+    public function setModel(KlorchidMultiStatusModel $model): self
+    {
+        $this->model = $model;
+        return $this;
+    }
 
     /**
      * Makes sure exists all the methos name as attributte of each action if exists

@@ -23,16 +23,23 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
     implements KlorchidPermissionsInterface
 {
     use KlorchidPermissionsTrait;
+    const STATUS_CHANGE_ACTION_NAME = 'status_change';
 
-    public function authorize()
-    {
 
-        return $this->loggedUserHasPermission(implodeWithDot(
-            'platform',
-            $this->entityRouteParamName(),
-            'status_change'));
+    abstract  public function permissionsGroup():string ;
+
+
+    protected function checkStorablePermission(?string $permission){
+
+        if (empty($permission)){
+            return $this->loggedUserHasPermission(implodeWithDot($this->permissionsGroup(),self::STATUS_CHANGE_ACTION_NAME ));
+        }else{
+
+            return $this->loggedUserHasPermission($permission);
+        }
 
     }
+
 
 
     public function rules(): array

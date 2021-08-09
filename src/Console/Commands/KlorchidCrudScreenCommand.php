@@ -7,30 +7,29 @@ use Orchid\Platform\Commands\ScreenCommand;
 use Orchid\Platform\Dashboard;
 use Illuminate\Support\Str;
 
-class KlorchidMultiModeScreenCommand extends ScreenCommand
+class KlorchidCrudScreenCommand extends ScreenCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'klorchid:multimodescreen 
-        {name : The name of the screen class }
-        {--a|useAppNamePath : Create files inside a folder with the name as laravel app_name config value}';
+    protected $signature = 'klorchid:make:crud:screen
+        {name : The name of the screen class }';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate a new klorchid multimode screen';
+    protected $description = 'Generate a new Klorchid Crud Screen';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'KlorchidMultiModeScreen';
+    protected $type = 'KlorchidCrudScreen';
 
 
     /**

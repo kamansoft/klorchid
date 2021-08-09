@@ -20,6 +20,9 @@ implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
     use KlorchidPermissionsTrait;
     use KlorchidMultiModeTrait;
 
+    Const CREATE_ACTION_NAME = 'create';
+    Const EDIT_ACTION_NAME = 'edit';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -46,7 +49,7 @@ implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
      */
     public function store(Model $model, $data_to_store = null): bool
     {
-                    Notificator::setMode("alert");
+        Notificator::setMode("alert");
         $isUpdating = $model->exists;
         if (is_string($data_to_store) and  !is_null($this->get($data_to_store))) {
             $data_to_store = $this->get($data_to_store);

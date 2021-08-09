@@ -3,14 +3,10 @@
 
 namespace Kamansoft\Klorchid\Screens\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
 use Kamansoft\Klorchid\Layouts\StatusChangeCommandModalFormLayout;
-use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
-use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Actions\ModalToggle;https://towardsdatascience.com/top-10-in-demand-web-development-frameworks-in-2021-8a5b668be0d6
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Support\Facades\Layout;
 
 trait StatusChangeCommandTrait
@@ -41,15 +37,28 @@ trait StatusChangeCommandTrait
     }
 
 
-    public function getStatusChangeButton(Collection $layout_elements,array $status_set_modal_layout_options): Button
+    public function getStatusChangeButton(Collection $layout_elements, array $status_set_modal_layout_options): Button
     {
-        return $this->initStatusChangeButton($layout_elements,$status_set_modal_layout_options)->status_change_button;
+        return $this->initStatusChangeButton(
+            $layout_elements,
+            $status_set_modal_layout_options
+        )->status_change_button;
+    }
+
+    public function setStatusChangeButton(
+        Collection $layout_elements,
+        array      $status_set_modal_layout_options,
+        Button     $status_change_button): self
+    {
+//      $layout_elements->add($this->statusChangeModalForm($status_set_modal_layout_options));
+        $this->status_change_button = $status_change_button;
+        return $this;
     }
 
     public function initStatusChangeButton(
         Collection $layout_elements,
-        array $status_set_modal_layout_options,
-        ?Button $status_change_button = null): self
+        array      $status_set_modal_layout_options,
+        ?Button    $status_change_button = null): self
     {
 
         if (!isset($this->status_change_button)) {
@@ -61,23 +70,6 @@ trait StatusChangeCommandTrait
         return $this;
     }
 
-    public function setStatusChangeButton(
-        Collection $layout_elements,
-        array $status_set_modal_layout_options,
-        Button $status_change_button): self
-    {
-//      $layout_elements->add($this->statusChangeModalForm($status_set_modal_layout_options));
-        $this->status_change_button = $status_change_button;
-        return $this;
-    }
-
-
-   public function statusChangeModalLayout(): \Orchid\Screen\Layouts\Modal
-   {
-        return Layout::modal(self::$status_change_modal_name,StatusChangeCommandModalFormLayout::class);
-   }
-
-
     public function statusChangeButton(): Button
     {
 
@@ -88,8 +80,10 @@ trait StatusChangeCommandTrait
 
     }
 
-
-
+    public function statusChangeModalLayout(): \Orchid\Screen\Layouts\Modal
+    {
+        return Layout::modal(self::$status_change_modal_name, StatusChangeCommandModalFormLayout::class)->title(__('Status Change'));
+    }
 
 
 }

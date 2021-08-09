@@ -68,3 +68,31 @@ if (!function_exists('getObjectPropertiesWith')) {
         });
     }
 }
+
+if (!function_exists('forwardToBack')) {
+    /**
+     *
+     * Convert foward slash to backslash from a string
+     *
+     * @param $path string
+     * @return string
+     */
+    function forwardToBack($path)
+    {
+        return str_replace('/', '\\', $path);
+    }
+}
+
+if (!function_exists('backToForward')) {
+    /**
+     *
+     * Convert foward slash to backslash from a string
+     *
+     * @param $path string
+     * @return string
+     */
+    function backToForward($path)
+    {
+        return str_replace('\\', '/', $path);
+    }
+}

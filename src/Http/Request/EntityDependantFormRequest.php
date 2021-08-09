@@ -10,6 +10,7 @@ use function PHPUnit\Framework\isType;
 
 abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\FormRequest
 {
+    //abstract public function entityRouteParamName():string;
     abstract public function entityRouteParamName():string;
 
 

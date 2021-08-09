@@ -2,7 +2,8 @@
 
 return [
 	'system_user_id' => env('SYSTEM_USER_ID'),
-	'aviable_locales' => ['es', 'en'],
+	'available locales' => ['es', 'en'],
+    'klorchid_app_folder' => env('KLORCHID_APP_FOLDER','Klorchid'),
     'models_common_field_names'=>[
         'status'=>'status',
         'reason'=>'cur_status_reason',
