@@ -51,8 +51,5 @@ trait KlorchidEloquentModelsTrait
     }
 
 
-    public function pkPresenter(): PkPresenter
-    {
-        return new PkPresenter($this);
-    }
+
 }

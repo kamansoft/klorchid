@@ -13,7 +13,6 @@ use Orchid\Screen\Actions\Link;
 /**
  * Trait KlorchidScreensCommandBarElementsInterface
  * @method  string getMode()
- * @method  array commandBarElements()
  * @property array $actionRouteNames
  * @package Kamansoft\Klorchid\Screens\Traits
  */

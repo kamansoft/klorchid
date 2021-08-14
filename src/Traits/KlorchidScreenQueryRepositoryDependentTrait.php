@@ -22,7 +22,7 @@ trait KlorchidScreenQueryRepositoryDependentTrait
 
         $this->required_keys->map(function ($element_key) use ($repository) {
             if (is_null($repository->get($element_key))) {
-                throw new Exception("Key name NOT FOUND ( \"$element_key\" ). A Klorchid Layout Instance needs the \"$element_key\" key with some value at the screen's query method returned array.", 1);
+                throw new Exception("Key name NOT FOUND ( \"$element_key\" ). ".static::class ." needs The \"$element_key\" key with some value on the query method returned array of any screen that uses it", 1);
             }
         });
         return $this;
@@ -32,6 +32,8 @@ trait KlorchidScreenQueryRepositoryDependentTrait
     public function getAllScreenQueryRequiredKeysFromMethods(string $needle = "ScreenQueryRequiredKeys"): Collection
     {
         $methods = getObjectMethodsWith($this, $needle);
+
+
         $keys = collect([]);
         $methods->map(function ($query_key_method) use ($keys) {
             collect($this->$query_key_method())->map(function ($required_key) use ($keys) {
