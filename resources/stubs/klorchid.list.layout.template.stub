@@ -1,0 +1,31 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyModelFullClassName;
+use Illuminate\Support\Facades\Route;
+use Kamansoft\Klorchid\Models\Contracts\PkPresentableInterface;
+use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
+use Orchid\Screen\TD;
+
+class DummyClass extends \Kamansoft\Klorchid\Layouts\KlorchidListLayout
+{
+
+    function listColumns(): array
+    {
+        return [
+            TD::make('id', __('Id'))
+                ->sort()
+                ->width(100)
+                ->filter(TD::FILTER_TEXT)
+                ->render(function (PkPresentableInterface $model) {
+                    return $model->pkPresenter()->link(
+                        $this->query->get('actionRouteNames')[KlorchidCrudScreen::EDIT_MODE]
+                    );
+                }),
+
+
+
+        ];
+    }
+}

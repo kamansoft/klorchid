@@ -15,7 +15,7 @@ use Kamansoft\Klorchid\Models\Contracts\BooleanStatusModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidMultiStatusModelInterface;
 use Kamansoft\Klorchid\Models\Traits\BooleanStatusModelTrait;
-use Kamansoft\Klorchid\Models\Traits\KlorchidEloquentModelsTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidModelsExtraCastTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidMultiStatusModelTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -37,7 +37,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
     use Attachable;
 
     //klorchid related
-    use KlorchidEloquentModelsTrait;
+    use KlorchidModelsExtraCastTrait;
     use KlorchidUserBlamingModelsTrait;
     use KlorchidMultiStatusModelTrait ;
     use BooleanStatusModelTrait ;

@@ -33,7 +33,7 @@ class KlorchidListLayoutCommand extends \Illuminate\Console\GeneratorCommand
     protected function getStub(): string
     {
         //return app_path('Kaman/resources/stubs/keditscreen.stub');
-        return __DIR__ . '/../../../resources/stubs/klorchid.multimode.screen.stub';
+        return __DIR__ . '/../../../resources/stubs/klorchid.layout.list.stub';
     }
 
 
