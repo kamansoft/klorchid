@@ -11,6 +11,7 @@ use Kamansoft\Klorchid\Models\Presenters\PkPresenter;
 trait KlorchidModelsExtraCastTrait
 {
 
+    static string $extra_casts_attributes_name_sufix = 'extra_casts';
 
     /**
      * Maps for all protected properties that ends with extra_casts at its name,
@@ -20,7 +21,7 @@ trait KlorchidModelsExtraCastTrait
      */
     public function setCasts(): self
     {
-        getObjectPropertiesWith($this, 'extra_casts', \ReflectionMethod::IS_PROTECTED)
+        getObjectPropertiesWith($this, self::$extra_casts_attributes_name_sufix, \ReflectionMethod::IS_PROTECTED)
             ->map(function ($extra_class) {
 
                 if (!is_array($this->$extra_class)) {

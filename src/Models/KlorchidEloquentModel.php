@@ -17,7 +17,6 @@ class KlorchidEloquentModel extends Model implements KlorchidModelExtraCastInter
 
 {
 
-    use KlorchidModelsExtraCastTrait;
     use KlorchidUserBlamingModelsTrait;
     use KlorchidModelsExtraCastTrait;
     use PkPresentableTrait;
