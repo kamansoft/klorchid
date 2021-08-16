@@ -35,13 +35,13 @@ class KlorchidModelCommand extends GeneratorCommand
      * @var string
      */
    /* protected $signature = 'klorchid:model
-        {name? : The name of the Model Class} 
+        {name? : The name of the Model Class}
         {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
         {--m|migration : Create a migration file using the name of the model}
-        {--s|screen : Create a KlorchidCrudScreen class file using model class name} 
+        {--s|screen : Create a KlorchidCrudScreen class file using model class name}
         {--a|app-name-as-path : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';*/
-    protected $signature = 'klorchid:model
+    protected $signature = 'klorchid:make:model
         {name? : The Class name of the Model} 
         {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
         {--m|migration : Create a migration file using the name of the model} 
@@ -188,11 +188,10 @@ class KlorchidModelCommand extends GeneratorCommand
         }
 
 
-        $this->call('klorchid:migration', [
+        $this->call('klorchid:make:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
             '--status-type' =>$this->status_type,
-            '--uuid'
 
         ]);
     }
@@ -226,7 +225,7 @@ class KlorchidModelCommand extends GeneratorCommand
         }
 
 
-        $stub = str_replace(['{{ table }}', '{{table}}'], [$table, $table], $stub);
+        $stub = str_replace(['{{ table }}', '{{table}}','dummy_table'], [$table, $table,$table], $stub);
 
         return $this;
 

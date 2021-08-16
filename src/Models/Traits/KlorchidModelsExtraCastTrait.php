@@ -21,7 +21,7 @@ trait KlorchidModelsExtraCastTrait
      */
     public function setCasts(): self
     {
-        getObjectPropertiesWith($this, self::$extra_casts_attributes_name_sufix, \ReflectionMethod::IS_PROTECTED)
+        getObjectPropertiesWith($this, self::$extra_casts_attribdutes_name_sufix, \ReflectionMethod::IS_PROTECTED)
             ->map(function ($extra_class) {
 
                 if (!is_array($this->$extra_class)) {

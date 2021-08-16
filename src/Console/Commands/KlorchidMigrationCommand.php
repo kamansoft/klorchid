@@ -37,7 +37,7 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Create a new klorchid binary state model compatible migration file for a table';
+    protected $description = 'Create a new klorchid compatible migration file for a table';
 
     /**
      * The migration creator instance.
