@@ -10,7 +10,7 @@ interface KlorchidModelsInterface
 
     static public function userModelClass(): string;
 
-    public function setCasts(): self;
+
 
 
 }

@@ -3,7 +3,6 @@
 namespace Kamansoft\Klorchid;
 
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -13,24 +12,21 @@ use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidCrudScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
-use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMigrationCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidStorableFormRequestCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
-
+use Kamansoft\Klorchid\Models\KlorchidUser;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Notificator\Notificator;
-
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
-use Kamansoft\Klorchid\Repositories\KlorchidEloquentRepository;
-use Kamansoft\Klorchid\Repositories\Contracts\KlorchidRepositoryInterface;
-use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
+use Orchid\Platform\Models\User;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
 
 class KlorchidServiceProvider extends ServiceProvider
@@ -115,34 +111,6 @@ class KlorchidServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerMigrations(): self
-    {
-
-        if ($this->app->runningInConsole()) {
-            // Export the migration
-
-            $this->publishes([
-                //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
-                __DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
-                __DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php'),
-                __DIR__ . '/../database/migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php' => database_path('migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php'),
-
-                //__DIR__ . '/../database/migrations/2020_09_02_120819_create_app_settings_table.php' => database_path('migrations/2020_09_02_120819_create_app_settings_table.php'),
-                __DIR__ . '/../database/migrations/2021_05_18_112932_create_countries_table.php' => database_path('migrations/2021_05_18_112932_create_countries_table.php'),
-                __DIR__ .'/../database/migrations/2021_05_18_112933_create_regions_table.php'=>database_path('migrations/2021_05_18_112933_create_regions_table.php'),
-                __DIR__ . '/../database/migrations/2021_05_18_161302_create_states_table.php' => database_path('migrations/2021_05_18_161302_create_states_table.php'),
-                __DIR__ . '/../database/migrations/2021_05_18_190635_create_cities_table.php' => database_path('migrations/2021_05_18_190635_create_cities_table.php'),
-
-            ], 'klorchid-migrations');
-
-
-        }
-
-        //$this->loadMigrationsFrom(__DIR__ .'../database/migrations');
-        return $this;
-    }
-
-
     protected function registerSeeders(): self
     {
 
@@ -158,6 +126,33 @@ class KlorchidServiceProvider extends ServiceProvider
 
         }
 
+        return $this;
+    }
+
+    protected function registerMigrations(): self
+    {
+
+        if ($this->app->runningInConsole()) {
+            // Export the migration
+
+            $this->publishes([
+                //__DIR__ . '/../database/migrations/2020_11_03_155647_add_system_user_to_users_table.php' => database_path('migrations/2020_11_03_155647_add_system_user_to_users_table.php'),
+                __DIR__ . '/../database/migrations/' . Self::$blaming_fields_migration_filename . '.php' => database_path('migrations/' . Self::$blaming_fields_migration_filename . '.php'),
+                __DIR__ . '/../database/migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php' => database_path('migrations/2020_11_12_143432_add_kmodel_fields_to_users_table.php'),
+                __DIR__ . '/../database/migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php' => database_path('migrations/2020_12_01_175607_add_klorchid_avatar_column_to_users_table.php'),
+
+                //__DIR__ . '/../database/migrations/2020_09_02_120819_create_app_settings_table.php' => database_path('migrations/2020_09_02_120819_create_app_settings_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_112932_create_countries_table.php' => database_path('migrations/2021_05_18_112932_create_countries_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_112933_create_regions_table.php' => database_path('migrations/2021_05_18_112933_create_regions_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_161302_create_states_table.php' => database_path('migrations/2021_05_18_161302_create_states_table.php'),
+                __DIR__ . '/../database/migrations/2021_05_18_190635_create_cities_table.php' => database_path('migrations/2021_05_18_190635_create_cities_table.php'),
+
+            ], 'klorchid-migrations');
+
+
+        }
+
+        //$this->loadMigrationsFrom(__DIR__ .'../database/migrations');
         return $this;
     }
 
@@ -210,7 +205,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
     public function registerKlorchidUserModel()
     {
-        Dashboard::useModel(\Orchid\Platform\Models\User::class, \Kamansoft\Klorchid\Models\KlorchidUser::class);
+        Dashboard::useModel(User::class, KlorchidUser::class);
         return $this;
     }
 
@@ -271,19 +266,19 @@ class KlorchidServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerNotificater(): self
-    {
-        $this->app->bind(NotificaterInterface::class, Notificator::class);
-
-
-        return $this;
-    }
-
     protected function registerNotificator(): self
     {
         $this->app->singleton(Notificator::class, static function () {
             return new Notificator();
         });
+        return $this;
+    }
+
+    protected function registerNotificater(): self
+    {
+        $this->app->bind(NotificaterInterface::class, Notificator::class);
+
+
         return $this;
     }
 

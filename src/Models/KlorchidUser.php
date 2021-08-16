@@ -9,15 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-
-
 use Kamansoft\Klorchid\Models\Contracts\BooleanStatusModelInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidModelsInterface;
 use Kamansoft\Klorchid\Models\Contracts\KlorchidMultiStatusModelInterface;
 use Kamansoft\Klorchid\Models\Traits\BooleanStatusModelTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidModelsExtraCastTrait;
-use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
 use Kamansoft\Klorchid\Models\Traits\KlorchidMultiStatusModelTrait;
+use Kamansoft\Klorchid\Models\Traits\KlorchidUserBlamingModelsTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Orchid\Attachment\Attachable;
@@ -25,7 +23,7 @@ use Orchid\Attachment\Models\Attachment;
 
 
 class KlorchidUser extends User implements KlorchidModelsInterface,
-    KlorchidMultiStatusModelInterface,BooleanStatusModelInterface
+    KlorchidMultiStatusModelInterface, BooleanStatusModelInterface
 {
 
     use HasApiTokens;
@@ -39,8 +37,8 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
     //klorchid related
     use KlorchidModelsExtraCastTrait;
     use KlorchidUserBlamingModelsTrait;
-    use KlorchidMultiStatusModelTrait ;
-    use BooleanStatusModelTrait ;
+    use KlorchidMultiStatusModelTrait;
+    use BooleanStatusModelTrait;
 
 
     /**
@@ -101,6 +99,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
         'created_at',
         'status'
     ];
+
     protected $casts = [
         'permissions' => 'array',
         'email_verified_at' => 'datetime',
@@ -110,6 +109,8 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
         'cur_status_reason' => 'string',
         //'asigned_pass' => 'boolean',
 
+        'updated_at' => 'datetime:d/m/Y h:m:s a',
+        'created_at' => 'datetime:d/m/Y h:m:s a',
     ];
 
     static public function statusStringValues(): array
