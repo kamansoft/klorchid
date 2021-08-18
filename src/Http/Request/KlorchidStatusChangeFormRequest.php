@@ -60,20 +60,22 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
 
     public function authorize()
     {
-        return checkStatusChangePermission();
+        return $this->checkStatusChangePermission();
     }
 
     protected function checkStatusChangePermission(?string $permission = null)
     {
 
         if (empty($permission)) {
-            if (!empty($this->status_change_permission)) {
-                return $this->loggedUserHasPermission($this->status_change_permission);
+
+            if (!empty(static::$status_change_permission)) {
+                return $this->loggedUserHasPermission(static::$status_change_permission);
             }
             if (!empty($this->permissions_group)) {
                 return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::STATUS_CHANGE_ACTION_NAME));
             }
-            throw new \Exception(self::class . '::checkStatusChangePermission() method is unable to determinate the permission needed to run the request, you may specify the status change permission attribute ("$status_change_permission") at: ' . static::class . ' class');
+            throw new \Exception(self::class . '::checkStatusChangePermission() method is unable to determinate the permission needed to run the request.
+             You may declare the static status change permission attribute ("static string $status_change_permission") at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($permission);
         }

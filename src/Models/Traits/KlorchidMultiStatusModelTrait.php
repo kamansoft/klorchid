@@ -23,7 +23,7 @@ trait  KlorchidMultiStatusModelTrait
     public function getStatusNameAttribute(): string
     {
         $status = $this->status;
-        return self::getStatusName(__($status));
+        return __(self::getStatusName($status));
     }
 
     public function isLockedByStatus(?string $status = null): bool
