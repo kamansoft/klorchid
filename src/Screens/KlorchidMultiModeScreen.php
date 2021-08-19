@@ -62,11 +62,11 @@ abstract class KlorchidMultiModeScreen extends Screen implements KlorchidMultimo
     public function getRouteNameFromAction($action)
     {
         if (!property_exists($this, 'actionRouteNames')) {
-            throw new \Exception(self::class . ' $actionRouteNames property is not setted');
+            throw new \Exception(static::class . ' $actionRouteNames property is not setted');
         }
 
         if (!isset($this->actionRouteNames[$action])) {
-            throw new \Exception(self::class . "a route for $action is not at actionRouteNames screen property ");
+            throw new \Exception(static::class . "a route for $action not found at actionRouteNames array ");
         }
         return $this->actionRouteNames[$action];
     }
