@@ -29,7 +29,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
-        return $this->getMode()==self::CREATE_ACTION_NAME?$this->checkCreatePermission():$this->checkEditPermission();
+        return $this->getMode() == self::CREATE_ACTION_NAME ? $this->checkCreatePermission() : $this->checkEditPermission();
 
     }
 
@@ -38,14 +38,16 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     {
         if (empty($create_permission)) {
             //check premission directly from class attribute
-            if (!empty($this->create_permission)) {
-                return $this->loggedUserHasPermission($this->create_permission);
+            if (!empty(static::$create_permission)) {
+                return $this->loggedUserHasPermission(static::$create_permission);
             }
             //guessing the premition using the permition group
             if (!empty($this->permissions_group)) {
                 return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::CREATE_ACTION_NAME));
             }
-            throw new \Exception(self::class . '::checkCreatePermission() method is unable to determinate the permission needed to run the request, you may specify the status change permission attribute ("$create_permission") at: ' . static::class . ' class');
+
+            throw new \Exception(self::class . '::checkCreatePermission() method is unable to determinate the 
+            permission needed to run the request. You may declare the static create  permission attribute  ( static string $create_permission="permission.string.value" ) at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($create_permission);
         }
@@ -55,14 +57,15 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     {
         if (empty($edit_permission)) {
             //check premission directly from class attribute
-            if (!empty($this->edit_permission)) {
-                return $this->loggedUserHasPermission($this->edit_permission);
+            if (!empty(static::$edit_permission)) {
+                return $this->loggedUserHasPermission(static::$edit_permission);
             }
             //guessing the premition using the permition group
             if (!empty($this->permissions_group)) {
                 return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::EDIT_ACTION_NAME));
             }
-            throw new \Exception(self::class . '::checkEditPermission() method is unable to determinate the permission needed to run the request, you may specify the status change permission attribute ("$edit_permission") at: ' . static::class . ' class');
+            throw new \Exception(self::class . '::checkEditPermission() method is unable to determinate the permission needed to run the request.
+             You may declare the static edit  permission attribute ( static string $edit_permission="permission.string.value" ) at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($edit_permission);
         }
