@@ -6,9 +6,9 @@ namespace Kamansoft\Klorchid\Screens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
-use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
+use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensMultimodeInterface;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreenLayoutElementsTrait;
-use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
+use Kamansoft\Klorchid\Screens\Traits\KlorchidMultiModeScreensTrait;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Screen;
@@ -19,9 +19,9 @@ use PHPUnit\Util\Exception;
  * @package Kamansoft\Klorchid\Screens
  * @property array $actionRouteNames
  */
-abstract class KlorchidMultiModeScreen extends Screen implements KlorchidMultimodeInterface, KlorchidPermissionsInterface
+abstract class KlorchidMultiModeScreen extends Screen implements KlorchidScreensMultimodeInterface, KlorchidPermissionsInterface
 {
-    use KlorchidMultiModeTrait;
+    use KlorchidMultiModeScreensTrait;
     use KlorchidScreenLayoutElementsTrait;
     use KlorchidPermissionsTrait;
 

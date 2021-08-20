@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Kamansoft\Klorchid\Traits;
+namespace Kamansoft\Klorchid\Screens\Traits;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-trait KlorchidMultiModeTrait
+trait KlorchidMultiModeScreensTrait
 {
 
     protected Collection $available_modes;

@@ -4,19 +4,17 @@ namespace Kamansoft\Klorchid\Http\Request;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
-use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
 abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
-    implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
+    implements KlorchidPermissionsInterface
 {
     use KlorchidPermissionsTrait;
-    use KlorchidMultiModeTrait;
+
 
     const CREATE_ACTION_NAME = 'create';
     const EDIT_ACTION_NAME = 'edit';
@@ -29,7 +27,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
-        return $this->getMode() == self::CREATE_ACTION_NAME ? $this->checkCreatePermission() : $this->checkEditPermission();
+        return true;//$this->getMode() == self::CREATE_ACTION_NAME ? $this->checkCreatePermission() : $this->checkEditPermission();
 
     }
 

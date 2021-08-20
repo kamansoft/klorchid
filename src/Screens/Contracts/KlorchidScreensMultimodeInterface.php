@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Kamansoft\Klorchid\Contracts;
+namespace Kamansoft\Klorchid\Screens\Contracts;
 
 use Illuminate\Support\Collection;
 
-interface KlorchidMultimodeInterface
+interface KlorchidScreensMultimodeInterface
 {
 
 
