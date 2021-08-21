@@ -4,9 +4,11 @@
 namespace Kamansoft\Klorchid\Screens\Traits;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Layouts\Traits\StatusFieldsTrait;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
+use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Actions\Link;
 
@@ -22,6 +24,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     use StatusFieldsTrait;
     use StatusChangeCommandTrait;
     use KlorchidPermissionsTrait;
+    use KlorchidActionFromRouteTrait;
 
 
     public KlorchidMultiStatusModel $model;
@@ -31,6 +34,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     {
 
         $this->initCommandBarElements();
+
 
         /*
         dd(
@@ -48,15 +52,17 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                     ->route($this->getRouteNameFromAction(self::EDIT_MODE))
                 );
         }
-        if ($this->getMode() !== self::COLLECTION_MODE and
-            property_exists($this, 'actionRouteNames') and
-            is_array($this->actionRouteNames) and
-            array_key_exists(self::COLLECTION_MODE, $this->actionRouteNames)) {
-            $this->getCommandBarElements()->add(
-                Link::make(__('List'))
-                    ->route($this->actionRouteNames[self::COLLECTION_MODE])
-                    ->icon('list')
-            );
+
+        try {
+            if ($this->getMode() !== self::COLLECTION_MODE and $this->checkActionRoutesMapAttribute()) {
+                $this->getCommandBarElements()->add(
+                    Link::make(__('List'))
+                        ->route($this->getRouteNameFromAction(self::COLLECTION_MODE))
+                        ->icon('list')
+                );
+            }
+        }catch (\Exception $e) {
+            Log::info("List button for crud screen cant be displayed ".$e->getMessage());
         }
 
         $mode = $this->getMode();

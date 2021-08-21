@@ -5,11 +5,11 @@ namespace Kamansoft\Klorchid\Screens;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Route;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensMultimodeInterface;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreenLayoutElementsTrait;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidMultiModeScreensTrait;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
+
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Screen;
 use PHPUnit\Util\Exception;
@@ -21,12 +21,13 @@ use PHPUnit\Util\Exception;
  */
 abstract class KlorchidMultiModeScreen extends Screen implements KlorchidScreensMultimodeInterface, KlorchidPermissionsInterface
 {
+
     use KlorchidMultiModeScreensTrait;
     use KlorchidScreenLayoutElementsTrait;
     use KlorchidPermissionsTrait;
 
     public const MODES_METHODS_NAME_SUFFIX = 'ModeLayout';
-    protected static string $screen_query_mode_keyname = 'screen_mode';
+
 
     /**
      * @throws \ReflectionException
@@ -39,37 +40,6 @@ abstract class KlorchidMultiModeScreen extends Screen implements KlorchidScreens
 
     }
 
-
-
-    /**
-     * @return false|int|string
-     */
-    public function getActionFromCurrentRoute()
-    {
-
-        return $this->getActionFromRouteName(Route::currentRouteName());
-    }
-
-    /**
-     * @param string $action
-     * @return false|int|string
-     */
-    public function getActionFromRouteName(string $action)
-    {
-        return array_search($action, $this->actionRouteNames, true);
-    }
-
-    public function getRouteNameFromAction($action)
-    {
-        if (!property_exists($this, 'actionRouteNames')) {
-            throw new \Exception(static::class . ' $actionRouteNames property is not setted');
-        }
-
-        if (!isset($this->actionRouteNames[$action])) {
-            throw new \Exception(static::class . "a route for $action not found at actionRouteNames array ");
-        }
-        return $this->actionRouteNames[$action];
-    }
 
     public function layoutElements(): array
     {

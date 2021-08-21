@@ -4,10 +4,10 @@
 namespace Kamansoft\Klorchid\Screens\Traits;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 trait KlorchidMultiModeScreensTrait
 {
+
 
     protected Collection $available_modes;
     protected string $mode;
@@ -41,9 +41,17 @@ trait KlorchidMultiModeScreensTrait
         return (bool)$this->getModeMethod($mode);
     }
 
-    public function getModeMethod($mode):string
+    public function getModeMethod($mode): string
     {
         return $this->available_modes->get($mode);
+    }
+
+    public function getAvailableModes(?string $mode_methods_name_suffix = null): Collection
+    {
+        if (!is_null($mode_methods_name_suffix)) {
+            $this->initAvailableModes($mode_methods_name_suffix);
+        }
+        return $this->available_modes;
     }
 
     /**
@@ -71,15 +79,6 @@ trait KlorchidMultiModeScreensTrait
         return $this;
     }
 
-    public function getAvailableModes(?string $mode_methods_name_suffix = null): Collection
-    {
-        if (!is_null($mode_methods_name_suffix)) {
-            $this->initAvailableModes($mode_methods_name_suffix);
-        }
-        return $this->available_modes;
-    }
-
-
     /**
      * Maps thorough the reflectionClass object of an instance of this class,
      * get all the methods which name's ends with the value at $needle
@@ -92,9 +91,6 @@ trait KlorchidMultiModeScreensTrait
     {
         return getObjectMethodsWith($this, $needle);
     }
-
-
-
 
 
 }

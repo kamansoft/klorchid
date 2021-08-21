@@ -14,6 +14,15 @@ trait KlorchidRouteNamesDependantLayoutTrait
 
     private static string $screen_route_names_keyname = 'action_route_names';
 
+    /**
+     * @return string
+     */
+    public static function getScreenRouteNamesKeyname(): string
+    {
+        return self::$screen_route_names_keyname;
+    }
+
+
 
     public function getActionRouteNames()
     {

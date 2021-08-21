@@ -7,11 +7,13 @@ namespace Kamansoft\Klorchid\Layouts;
 use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
 use Kamansoft\Klorchid\Layouts\Contracts\KlorchidCollectionDependantLayoutInterface;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidCollectionDependantLayoutTrait;
+use Kamansoft\Klorchid\Layouts\Traits\KlorchidRouteNamesDependantLayoutTrait;
 use Kamansoft\Klorchid\Layouts\Traits\KlorchidScreenQueryRepositoryDependantLayoutTrait;
 
 abstract class KlorchidListLayout extends \Orchid\Screen\Layouts\Table implements KlorchidScreenQueryRepositoryDependentInterface, KlorchidCollectionDependantLayoutInterface
 {
 
+    use KlorchidRouteNamesDependantLayoutTrait;
     use KlorchidCollectionDependantLayoutTrait;
 
     private static string $screen_query_edit_route_keyname = 'edit_route_name';

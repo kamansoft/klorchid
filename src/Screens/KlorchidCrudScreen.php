@@ -3,6 +3,7 @@
 namespace Kamansoft\Klorchid\Screens;
 
 
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
@@ -16,6 +17,7 @@ use Kamansoft\Klorchid\Screens\Traits\KlorchidCrudScreensCommandBarElementsTrait
 use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensPermissionsTrait;
 use Kamansoft\Klorchid\Screens\Traits\SaveCommandTrait;
 use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
+use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
 
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
 abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
@@ -23,14 +25,14 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     StatusChangeCommandInterface, KlorchidScreensCommandBarElementsInterface
 {
 
-
+    use KlorchidActionFromRouteTrait;
     use KlorchidScreensPermissionsTrait;
     use StatusChangeCommandTrait;
     use SaveCommandTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
 
-    //action
+    //actions
     const CREATE_ACTION = KlorchidStorableFormRequest::CREATE_ACTION_NAME;
     const EDIT_ACTION = KlorchidStorableFormRequest::EDIT_ACTION_NAME;
     const VIEW_ACTION = 'view';
@@ -42,6 +44,8 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     const CREATE_MODE = self::CREATE_ACTION;
     const EDIT_MODE = self::EDIT_ACTION;
     const VIEW_MODE = self::VIEW_ACTION;
+
+    protected static string $screen_query_mode_keyname = 'screen_mode';
 
     //abstract public function permissionsGroupName(): string;
 
@@ -60,19 +64,18 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
 
     public function crudElementsArray(): array
     {
-        $data = $this->getMode() === self::COLLECTION_MODE ?
-            [KlorchidListLayout::getScreenQueryCollectionKeyname() => $this->collectionQuery()->filters()->defaultSort('updated_at', 'desc')->paginate()] :
-            [
-                KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel(),
-                KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => $this->actionRouteNames
-            ];
+        $this->checkActionRoutesMapAttribute();
 
 
-        //\Debugbar::info($this->getMode());
         return array_merge([
-            'actionRouteNames' => $this->actionRouteNames,
             self::$screen_query_mode_keyname => $this->getMode(),
-        ], $data);
+            KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => static::$action_route_names_map
+        ],
+            $this->getMode() === self::COLLECTION_MODE ?
+                [KlorchidListLayout::getScreenQueryCollectionKeyname() => $this->collectionQuery()->filters()->defaultSort('updated_at', 'desc')->paginate()] :
+                [KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel()]
+        );
+
     }
 
     abstract public function collectionQuery();
@@ -107,14 +110,14 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getRouteEntityParamName()
     {
         if ($this->isRouteWithEntityParam()) {
             return request()->route()->parameterNames[0];
         } else {
-            throw new \Exception(self::class . ' There is not a route param to retrieve for the crud screen');
+            throw new Exception(self::class . ' There is not a route param to retrieve for the crud screen');
         }
     }
 
@@ -124,7 +127,7 @@ abstract class KlorchidCrudScreen extends KlorchidMultiModeScreen
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getRouteEntityParamValue()
     {
