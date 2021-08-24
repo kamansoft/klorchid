@@ -24,6 +24,10 @@ trait KlorchidCollectionDependantLayoutTrait
         return self::$screen_query_collection_keyname;
     }
 
+    public static function setScreenQueryCollectionKeyname($value){
+        self::$screen_query_collection_keyname=$value;
+    }
+
     public function collectionDependantScreenQueryRequiredKeys(): array
     {
         return [

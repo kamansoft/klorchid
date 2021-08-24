@@ -161,8 +161,7 @@ class KlorchidMigrationCommand extends BaseCommand
      * @param $action
      * @param $table
      */
-    protected
-    function writeMigration($name, $action, $table, $status = null)
+    protected function writeMigration($name, $action, $table, $status = null)
     {
 
         $file = $this->creator->create(
@@ -181,8 +180,7 @@ class KlorchidMigrationCommand extends BaseCommand
      *
      * @return string
      */
-    protected
-    function getMigrationPath()
+    protected function getMigrationPath()
     {
         if (!is_null($targetPath = $this->input->getOption('path'))) {
             return !$this->usingRealPath()

@@ -12,6 +12,7 @@ use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidCrudScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidListLayoutCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMigrationCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
@@ -48,7 +49,8 @@ class KlorchidServiceProvider extends ServiceProvider
         KlorchidEloquentRepositoryCommand::class,
         KlorchidMultiModeScreenCommand::class,
         KlorchidCrudScreenCommand::class, //
-        KlorchidStorableFormRequestCommand::class
+        KlorchidStorableFormRequestCommand::class,
+        KlorchidListLayoutCommand::class
 
     ];
     protected $dashboard;

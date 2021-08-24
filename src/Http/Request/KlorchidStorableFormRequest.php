@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
+use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
@@ -77,7 +78,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      * to fill the model with. If is an array it will be taken as the values to fill the model with.
      * @return bool
      */
-    public function store(Model $model, $data_to_store = null): bool
+    public function store(KlorchidEloquentModel $model, $data_to_store = null): bool
     {
         Notificator::setMode("alert");
         $isUpdating = $model->exists;

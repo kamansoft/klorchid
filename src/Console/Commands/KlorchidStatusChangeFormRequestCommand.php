@@ -14,7 +14,7 @@ class KlorchidStatusChangeFormRequestCommand extends RequestMakeCommand
      *
      * @var string
      */
-    protected $signature = 'klorchid:make:status-change-form-request
+    protected $signature = 'klorchid:make:status-change-form-rquest
     {name : The model class type which status will be changed, or the name of the form request class if the model option value is empty. }
     {--model= : The model class class type which status will be changed. When used the name argument value will be the form request class name.}
     {--route-param-name= : The route param name used to denote the model.}

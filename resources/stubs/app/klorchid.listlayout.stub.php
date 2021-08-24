@@ -15,7 +15,7 @@ class DummyClass extends \Kamansoft\Klorchid\Layouts\KlorchidListLayout
     public function listColumns(): array
     {
         return [
-            TD::make('id', __('Id'))->sort() ->width(100)->render(function (PkPresentableInterface $model) {return $model->pkPresenter()->link($this->query->get('actionRouteNames')[DummyScreenClass::EDIT_MODE]);}),
+            TD::make('id', __('Id'))->sort() ->width(100)->render(function (PkPresentableInterface $model) {return $model->pkPresenter()->link($this->query->get($this->getScreenQueryRouteNamesKeyname())[DummyScreenClass::EDIT_MODE]);}),
 
             //Add entity fields here
 

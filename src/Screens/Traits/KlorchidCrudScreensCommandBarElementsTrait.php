@@ -15,7 +15,6 @@ use Orchid\Screen\Actions\Link;
 /**
  * Trait KlorchidScreensCommandBarElementsInterface
  * @method  string getMode()
- * @property array $actionRouteNames
  * @package Kamansoft\Klorchid\Screens\Traits
  */
 trait KlorchidCrudScreensCommandBarElementsTrait
@@ -24,7 +23,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     use StatusFieldsTrait;
     use StatusChangeCommandTrait;
     use KlorchidPermissionsTrait;
-    use KlorchidActionFromRouteTrait;
+
 
 
     public KlorchidMultiStatusModel $model;
@@ -72,10 +71,10 @@ trait KlorchidCrudScreensCommandBarElementsTrait
             $mode !== KlorchidCrudScreen::CREATE_MODE
         ) {
             if (!isset($this->model)) {
-                throw new \Exception(' You must initialize the $model attribute with a 
+                throw new \Exception(' You must set the $model attribute with a 
                 ' . KlorchidMultiStatusModel::class . ' object  prior the screen commandBar method call, you can do that at 
-                the screen query method scope , $this->setModel($model) method is available in every ' . self::class . ' 
-                class with this in mind');
+                the screen query method scope of '.self::class.' , $this->setModel($model) method is available in every ' . self::class . ' 
+                class');
             }
             $this->getCommandBarElements()
                 ->add(
