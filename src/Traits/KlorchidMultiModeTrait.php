@@ -1,11 +1,12 @@
 <?php
 
 
-namespace Kamansoft\Klorchid\Screens\Traits;
+namespace Kamansoft\Klorchid\Traits;
 
 use Illuminate\Support\Collection;
+use function getObjectMethodsThatEndsWith;
 
-trait KlorchidMultiModeScreensTrait
+trait KlorchidMultiModeTrait
 {
 
 
@@ -55,7 +56,7 @@ trait KlorchidMultiModeScreensTrait
     }
 
     /**
-     * Store the retun value of getModesByLayoutMethods to available_modes attribute
+     *
      *
      * @return $this
      * @throws \ReflectionException
@@ -67,6 +68,7 @@ trait KlorchidMultiModeScreensTrait
     }
 
     /**
+     * sets available modes' collection attribute from existent class methods with suffix, avoiding overwrite
      * @param string $mode_methods_name_suffix
      * @return $this
      * @throws \ReflectionException
@@ -87,9 +89,9 @@ trait KlorchidMultiModeScreensTrait
      * @return Collection
      * @throws \ReflectionException
      */
-    public function getModesByMethodsName(string $needle = 'Mode'): Collection
+    private function getModesByMethodsName(string $needle = 'Mode'): Collection
     {
-        return getObjectMethodsWith($this, $needle);
+        return getObjectMethodsThatEndsWith($this, $needle);
     }
 
 

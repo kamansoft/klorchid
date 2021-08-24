@@ -3,23 +3,36 @@
 namespace Kamansoft\Klorchid\Http\Request;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
+use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
 abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
-    implements KlorchidPermissionsInterface
+    implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
 {
+    use KlorchidMultiModeTrait;
     use KlorchidPermissionsTrait;
 
 
+    const MODES_METHODS_NAME_SUFFIX = 'authorizeModeOn';
     const CREATE_ACTION_NAME = 'create';
     const EDIT_ACTION_NAME = 'edit';
 
+
+    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    {
+        $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX)->setMode('edit');
+
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
+    }
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +41,9 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
-        return true;//$this->getMode() == self::CREATE_ACTION_NAME ? $this->checkCreatePermission() : $this->checkEditPermission();
+        $mode_method_name = $this->getModeMethod($this->getMode());
 
+        return $this->$mode_method_name();
     }
 
 
@@ -37,8 +51,8 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     {
         if (empty($create_permission)) {
             //check premission directly from class attribute
-            if (!empty(static::$create_permission)) {
-                return $this->loggedUserHasPermission(static::$create_permission);
+            if (!empty(static::CREATE_PERMISSION)) {
+                return $this->loggedUserHasPermission(static::CREATE_PERMISSION);
             }
             //guessing the premition using the permition group
             if (!empty($this->permissions_group)) {
@@ -46,7 +60,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
             }
 
             throw new \Exception(self::class . '::checkCreatePermission() method is unable to determinate the 
-            permission needed to run the request. You may declare the static create  permission attribute  ( static string $create_permission="permission.string.value" ) at: ' . static::class . ' class');
+            permission needed to run the request. You may declare the static create  permission const  "CREATE_PERMISSION" with a value  at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($create_permission);
         }
@@ -56,15 +70,15 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     {
         if (empty($edit_permission)) {
             //check premission directly from class attribute
-            if (!empty(static::$edit_permission)) {
-                return $this->loggedUserHasPermission(static::$edit_permission);
+            if (!empty(static::EDIT_PERMISSION)) {
+                return $this->loggedUserHasPermission(static::EDIT_PERMISSION);
             }
             //guessing the premition using the permition group
             if (!empty($this->permissions_group)) {
                 return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::EDIT_ACTION_NAME));
             }
             throw new \Exception(self::class . '::checkEditPermission() method is unable to determinate the permission needed to run the request.
-             You may declare the static edit  permission attribute ( static string $edit_permission="permission.string.value" ) at: ' . static::class . ' class');
+             You may declare the static edit  permission const "EDIT_PERMISSION" with a value at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($edit_permission);
         }
@@ -114,4 +128,22 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     }
 
     abstract function validationRules(): array;
+
+    abstract public function authorizeModeOnCreate();
+
+    abstract public function authorizeModeOnEdit();
+
+    /**
+     * Maps thorough the reflectionClass object of an instance of this class,
+     * get all the methods which name's ends with the value at $needle
+     * and returns a collection with all of those methods
+     * @param string $needle
+     * @return Collection
+     * @throws \ReflectionException
+     */
+    private function getModesByMethodsName(string $needle = 'Mode'): Collection
+    {
+        return getObjectMethodsThatStartsWith($this, $needle);
+    }
+
 }

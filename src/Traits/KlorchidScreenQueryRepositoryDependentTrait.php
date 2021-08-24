@@ -31,7 +31,7 @@ trait KlorchidScreenQueryRepositoryDependentTrait
 
     public function getAllScreenQueryRequiredKeysFromMethods(string $needle = "ScreenQueryRequiredKeys"): Collection
     {
-        $methods = getObjectMethodsWith($this, $needle);
+        $methods = getObjectMethodsThatEndsWith($this, $needle);
 
 
         $keys = collect([]);

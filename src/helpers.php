@@ -11,7 +11,7 @@ if (!function_exists('implodeWithDot')) {
     }
 }
 
-if (!function_exists('getObjectMethodsWith')) {
+if (!function_exists('getObjectMethodsThatEndsWith')) {
     /**
      *
      * Maps through the $object's reflection class Object, and returns all the methods
@@ -24,18 +24,45 @@ if (!function_exists('getObjectMethodsWith')) {
      * @return \Illuminate\Support\Collection
      * @throws ReflectionException
      */
-    function getObjectMethodsWith($object, $needle, int $accessor = \ReflectionMethod::IS_PUBLIC): \Illuminate\Support\Collection
+    function getObjectMethodsThatEndsWith($object, $needle, int $accessor = \ReflectionMethod::IS_PUBLIC): \Illuminate\Support\Collection
     {
 
         $reflection = new \ReflectionClass($object);
         return collect($reflection->getMethods($accessor))->mapWithKeys(function ($method) use ($needle) {
-            return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
+            return [\Illuminate\Support\Str::snake(strstr($method->name, $needle, true)) => $method->name];
         })->reject(function ($pair) use ($needle) {
             $method_prefix = strstr($pair, $needle, true);
             return !$method_prefix or
                 str_contains($method_prefix, 'set') or
                 str_contains($method_prefix, 'get') or
                 str_contains($method_prefix, 'init');
+        });
+
+    }
+}
+
+if (!function_exists('getObjectMethodsThatStartsWith')) {
+    /**
+     *
+     * Maps through the $object's reflection class Object, and returns all the methods
+     * which name's starts with the value at $needle .
+     * and returns a collection with all of those methods with keys names
+     *
+     * @param $object
+     * @param $needle
+     * @param int $accessor
+     * @return \Illuminate\Support\Collection
+     * @throws ReflectionException
+     */
+    function getObjectMethodsThatStartsWith($object, $needle, int $accessor = \ReflectionMethod::IS_PUBLIC): \Illuminate\Support\Collection
+    {
+
+        $reflection = new \ReflectionClass($object);
+        return collect($reflection->getMethods($accessor))->mapWithKeys(function ($method) use ($needle) {
+            $mode_name = empty(explode($needle, $method->name)[1]) ?: \Illuminate\Support\Str::snake(explode($needle, $method->name)[1]);
+            return [$mode_name => $method->name];
+        })->reject(function ($method_name) use ($needle) {
+            return !str_starts_with($method_name, $needle);
         });
 
     }
