@@ -28,9 +28,11 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
-        $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX)->setMode('edit');
+        $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX);
+
 
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
 
     }
 
@@ -41,11 +43,24 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
+        $this->setMode($this->detectMode());
         $mode_method_name = $this->getModeMethod($this->getMode());
-
         return $this->$mode_method_name();
     }
 
+    public function detectMode()
+    {
+
+
+        $model = ($this->route($this->entityRouteParamName()));
+
+        if (property_exists($model, 'exists') && $model->exists) {
+            return self::EDIT_ACTION_NAME;
+        }
+
+        return self::CREATE_ACTION_NAME;
+
+    }
 
     public function checkCreatePermission(?string $create_permission = null)
     {
@@ -96,9 +111,15 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     {
         Notificator::setMode("alert");
         $isUpdating = $model->exists;
-        if (is_string($data_to_store) and !is_null($this->get($data_to_store))) {
+        if (is_string($data_to_store) && !is_null($this->get($data_to_store))) {
+
             $data_to_store = $this->get($data_to_store);
-        } elseif (!is_array($data_to_store)) {
+            //} elseif (!is_array($data_to_store)) {
+
+        } elseif (is_null($data_to_store) && count($this->rules()) > 0) {
+            $data_to_store = $this->validated();
+
+        } elseif (is_null($data_to_store)) {
             $data_to_store = $this->get(KlorchidCrudFormLayout::getScreenQueryModelKeyname());
         }
         $save_performed = $model->fill($data_to_store)->save();
