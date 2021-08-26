@@ -14,6 +14,8 @@ trait BooleanStatusModelTrait
         'status' => 'boolean'
     ];
 
+
+
     static function lockedStatuses(): array
     {
         return [false];

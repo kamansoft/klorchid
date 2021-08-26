@@ -4,20 +4,13 @@
 namespace App\Http\Requests;
 
 
-use DummyModelFullClassName;
 
 class DummyClass extends \Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest
 {
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        parent::authorize();
-    }
+
+    const CREATE_PERMISSION = 'dummy.create.permission.const';
+    const EDIT_PERMISSION = 'dummy.edit.permission.const';
 
     public function validationRules(): array
     {
@@ -30,12 +23,19 @@ class DummyClass extends \Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRe
 
     public function entityRouteParamName(): string
     {
-        return 'dummy_param_name';
+        return 'dummyEntityRouteParamName';
     }
 
-    public function store(DummyModelClassName $model, $data_to_store = null): bool
+
+    public function authorizeModeOnCreate()
     {
-        return parent::store($model, $data_to_store);
+        //do your logic
+        return true;//$this->checkCreatePermission();
     }
 
+    public function authorizeModeOnEdit()
+    {
+        //do your logic
+        return true;//$this->checkEditPermission();
+    }
 }

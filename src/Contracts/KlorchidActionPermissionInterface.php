@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Kamansoft\Klorchid\Screens\Contracts;
+namespace Kamansoft\Klorchid\Contracts;
 
 
-interface KlorchidScreensPermissionsInterface
+interface KlorchidActionPermissionInterface
 {
     /**
      * Retrives an assoiative array with the name of an action as key and the permission for that action

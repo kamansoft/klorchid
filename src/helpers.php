@@ -87,12 +87,28 @@ if (!function_exists('getObjectPropertiesWith')) {
 
         $reflection = new \ReflectionClass($object);
         return collect($reflection->getProperties($accessor))->mapWithKeys(function ($method) use ($needle) {
-            return [Str::snake(strstr($method->name, $needle, true)) => $method->name];
+            return [\Illuminate\Support\Str::snake(strstr($method->name, $needle, true)) => $method->name];
         })->reject(function ($pair) use ($needle) {
             return !strstr($pair, $needle, true);//or
             //strstr($pair, $needle, true) === 'set' or
             //strstr($pair, $needle, true) === 'get';
         });
+    }
+}
+
+
+if (!function_exists('param_name_for_model')) {
+
+    /**
+     * Get the recomended name for a route param name related to a model
+     *
+     * @param string $model_class
+     * @return void
+     */
+    function param_name_for_model(string $model_class)
+    {
+        $exploded_class = explode('\\',$model_class);
+        return \Illuminate\Support\Str::snake(end($exploded_class));
     }
 }
 

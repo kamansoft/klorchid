@@ -4,8 +4,6 @@
 namespace Kamansoft\Klorchid\Layouts\Contracts;
 
 
-use Kamansoft\Klorchid\Contracts\KlorchidScreenQueryRepositoryDependentInterface;
-
 interface MultiModeScreensLayoutInterface
 {
 
@@ -14,4 +12,6 @@ interface MultiModeScreensLayoutInterface
     public function getScreenQueryModeKeyname(): string;
 
     public function getScreenMode(): string;
+
+
 }

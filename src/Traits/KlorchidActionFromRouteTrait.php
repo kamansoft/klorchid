@@ -5,7 +5,11 @@ namespace Kamansoft\Klorchid\Traits;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-
+/**
+ *
+ * @property array $action_route_names_map
+ *
+ */
 trait KlorchidActionFromRouteTrait
 {
 
@@ -53,6 +57,12 @@ trait KlorchidActionFromRouteTrait
 
         }
         return true;
+    }
+
+    public function getActionRoutesMapAttribute():array
+    {
+        $this->checkActionRoutesMapAttribute();
+        return static::$action_route_names_map;
     }
 
     /**

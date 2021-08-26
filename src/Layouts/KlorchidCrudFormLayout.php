@@ -57,9 +57,11 @@ abstract class KlorchidCrudFormLayout extends KlorchidBasicFormLayout
             $this->getScreenMode() === KlorchidCrudScreen::CREATE_MODE;
     }
 
-    public function isDisplayable()
+    public function isDisplayableOnCurrentMode() : bool
     {
-        $mode = $this->getScreenMode();
+
         return in_array($this->getScreenMode(), static::$displayable_modes, true);
     }
+
+
 }

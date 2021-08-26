@@ -6,42 +6,44 @@ namespace Kamansoft\Klorchid\Screens;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Kamansoft\Klorchid\Contracts\KlorchidActionFromRouteInterface;
+use Kamansoft\Klorchid\Http\Request\KlorchidDeleteFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Layouts\KlorchidListLayout;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarElementsInterface;
-use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensPermissionsInterface;
 use Kamansoft\Klorchid\Screens\Contracts\SaveCommandInterface;
 use Kamansoft\Klorchid\Screens\Contracts\StatusChangeCommandInterface;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidCrudScreensCommandBarElementsTrait;
-use Kamansoft\Klorchid\Screens\Traits\KlorchidScreensPermissionsTrait;
 use Kamansoft\Klorchid\Screens\Traits\SaveCommandTrait;
 use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
 use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
+use Kamansoft\Klorchid\Traits\KlorchidActionPermissionTrait;
+use Kamansoft\Klorchid\Contracts\KlorchidActionPermissionInterface;
 
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
 abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
-    implements KlorchidActionFromRouteInterface, KlorchidScreensPermissionsInterface, SaveCommandInterface,
+    implements KlorchidActionFromRouteInterface, KlorchidActionPermissionInterface, SaveCommandInterface,
     StatusChangeCommandInterface, KlorchidScreensCommandBarElementsInterface
 {
 
     use KlorchidActionFromRouteTrait;
-    use KlorchidScreensPermissionsTrait;
+    use KlorchidActionPermissionTrait;
     use StatusChangeCommandTrait;
     use SaveCommandTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
 
-    //actions
+    //crud common actions
+    const SHOW_LIST_ACTION = 'list';
     const CREATE_ACTION = KlorchidStorableFormRequest::CREATE_ACTION_NAME;
     const EDIT_ACTION = KlorchidStorableFormRequest::EDIT_ACTION_NAME;
     const VIEW_ACTION = 'view';
-    const DELETE_ACTION = 'delete';
+    const DELETE_ACTION = KlorchidDeleteFormRequest::DELETE_ACTION_NAME;
     const STATUS_CHANGE_ACTION = KlorchidStatusChangeFormRequest::STATUS_CHANGE_ACTION_NAME;
 
-    //modes
-    const COLLECTION_MODE = 'list';
+    //crud common modes
+    const COLLECTION_MODE = self::SHOW_LIST_ACTION;
     const CREATE_MODE = self::CREATE_ACTION;
     const EDIT_MODE = self::EDIT_ACTION;
     const VIEW_MODE = self::VIEW_ACTION;
@@ -97,7 +99,6 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
             $mode = self::CREATE_MODE;
         }
 
-
         //dd($action_from_route === self::EDIT_MODE , !empty($this->getRouteEntityParamValue()) , $this->loggedUserHasActionPermission(self::EDIT_MODE));
         if ($action_from_route === self::EDIT_MODE && !empty($this->getRouteEntityParamValue()) && $this->loggedUserHasActionPermission(self::EDIT_MODE)) {
             $mode = self::EDIT_MODE;
@@ -119,9 +120,9 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
     {
         if ($this->isRouteWithEntityParam()) {
             return request()->route()->parameterNames[0];
-        } else {
-            throw new Exception(self::class . ' There is not a route param to retrieve for the crud screen');
         }
+
+        throw new Exception(self::class . ' There is not a route param to retrieve for the crud screen');
     }
 
     public function isRouteWithEntityParam(): bool

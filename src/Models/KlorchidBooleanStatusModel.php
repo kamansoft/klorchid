@@ -12,4 +12,5 @@ class KlorchidBooleanStatusModel extends KlorchidMultiStatusModel implements  Bo
 {
     use BooleanStatusModelTrait;
 
+
 }

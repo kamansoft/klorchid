@@ -17,22 +17,18 @@ use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
  * @package Kamansoft\Klorchid\Http\Request
  * @method KlorchidMultiStatusModel getModel()
  */
-abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormRequest
+abstract class KlorchidDeleteFormRequest extends EntityDependantFormRequest
     implements KlorchidPermissionsInterface
 {
     use KlorchidPermissionsTrait;
 
-    const STATUS_CHANGE_ACTION_NAME = 'status_change';
+    const DELETE_ACTION_NAME = 'delete';
 
     public function rules(): array
     {
 
         return [
-            KlorchidCrudFormLayout::fullFormInputAttributeName('new_status_reason') => [
-                'required',
-                'string',
-                Rule::notIn([$this->getModel()->cur_status_reason])
-            ]
+
         ];
     }
 
@@ -68,14 +64,14 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
 
         if (empty($permission)) {
 
-            if (!empty(static::STATUS_CHANGE_PERMISSION)) {
-                return $this->loggedUserHasPermission(static::STATUS_CHANGE_PERMISSION);
+            if (!empty(static::DELETE_PERMISSION)) {
+                return $this->loggedUserHasPermission(static::DELETE_PERMISSION);
             }
             if (!empty($this->permissions_group)) {
-                return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::STATUS_CHANGE_ACTION_NAME));
+                return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::DELETE_ACTION_NAME));
             }
             throw new \Exception(self::class . '::checkStatusChangePermission() method is unable to determinate the permission needed to run the request.
-             You may declare the static status change permission const "STATUS_CHANGE_PERMISSION" at: ' . static::class . ' class');
+             You may declare the static status change permission const "DELETE_PERMISSION" at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($permission);
         }

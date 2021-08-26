@@ -61,7 +61,7 @@ trait SaveCommandTrait
         return Button::make(__("Save"))
             ->icon('save')
             ->method("store")
-            ->confirm("Update Record");
+            ->confirm(__("You are abobut to save this entry."));
 
     }
 

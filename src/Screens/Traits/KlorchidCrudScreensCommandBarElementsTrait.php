@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Layouts\Traits\StatusFieldsTrait;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
 use Kamansoft\Klorchid\Screens\KlorchidCrudScreen;
-use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 use Orchid\Screen\Actions\Link;
 
@@ -23,7 +22,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     use StatusFieldsTrait;
     use StatusChangeCommandTrait;
     use KlorchidPermissionsTrait;
-
+    use DeleteCommandTrait;
 
 
     public KlorchidMultiStatusModel $model;
@@ -33,15 +32,6 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     {
 
         $this->initCommandBarElements();
-
-
-        /*
-        dd(
-            $this->getMode() !== self::COLLECTION_MODE and
-            property_exists($this, 'actionRouteNames') and
-            is_array($this->actionRouteNames) and
-            array_key_exists(self::COLLECTION_MODE, $this->actionRouteNames)
-        );*/
 
         if ($this->getMode() == self::COLLECTION_MODE) {
             $this->getCommandBarElements()
@@ -60,11 +50,12 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                         ->icon('list')
                 );
             }
-        }catch (\Exception $e) {
-            Log::info("List button for crud screen cant be displayed ".$e->getMessage());
+        } catch (\Exception $e) {
+            Log::info("List button for crud screen cant be displayed " . $e->getMessage());
         }
 
         $mode = $this->getMode();
+
         if (
             $this->isEnableStatusChangeButton() == true and
             $mode !== KlorchidCrudScreen::COLLECTION_MODE and
@@ -73,7 +64,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
             if (!isset($this->model)) {
                 throw new \Exception(' You must set the $model attribute with a 
                 ' . KlorchidMultiStatusModel::class . ' object  prior the screen commandBar method call, you can do that at 
-                the screen query method scope of '.self::class.' , $this->setModel($model) method is available in every ' . self::class . ' 
+                the screen query method scope of ' . self::class . ' , $this->setModel($model) method is available in every ' . self::class . ' 
                 class');
             }
             $this->getCommandBarElements()
@@ -91,8 +82,11 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                 $this->statusChangeModalLayout()
             );
 
-        }
 
+        }
+        if ($this->isEnableDeleteButton() == true and $mode === KlorchidCrudScreen::EDIT_MODE) {
+            $this->getCommandBarElements()->add($this->getDeleteButton());
+        }
         if ($this->isEnableSaveButton() == true and $mode !== KlorchidCrudScreen::COLLECTION_MODE) {
             $this->getCommandBarElements()->add($this->getSaveButton());
         }
@@ -167,7 +161,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                 $action->isSee() and
                 !method_exists($this, $action->get('method'))
             ) {
-                throw new \Exception("The command bar of some Klorchid Screen has a action element named: \"" . $action->get('name') . "\" with a method attribute name set to (\"" . $action->get('method') . "\"). Method name is not implemented (do not exists) on " . self::class . " instance");
+                throw new \Exception(self::class . ': the command bar element named "' . $action->get('name') . "\" has it's \"method\" attribute name set to (\"" . $action->get('method') . "\"). But the a method \"" . $action->get('method') . "()\" is not implemented (do not exists) on " . static::class . ' screen');
             }
         });
         return $this;
