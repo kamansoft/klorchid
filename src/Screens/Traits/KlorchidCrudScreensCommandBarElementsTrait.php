@@ -74,7 +74,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
                         $this->getModel()
                             ->statusPresenter()
                             ->getOptions()
-                    )
+                    )->class('btn btn-link text-'.$this->getModel()->getStatusColorClass())
                 );
 
 

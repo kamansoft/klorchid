@@ -10,7 +10,6 @@ interface KlorchidMultiStatusModelInterface
 {
 
 
-    public static function getStatusName($status);
 
     public function getStatusColorClass(?string $status_name = null): string;
 

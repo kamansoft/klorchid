@@ -23,6 +23,7 @@ class MultiStatusModelPresenter extends \Orchid\Support\Presenter
      */
     public function getOptions(): array
     {
+        //$this->entity->checkNameValueStatusMap();
         return collect($this->entity::NAME_VALUE_STATUS_MAP)
             ->mapWithKeys(function ($value, $key) {
                 $value = is_bool($value) ? intval($value) : $value;

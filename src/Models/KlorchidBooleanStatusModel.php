@@ -11,6 +11,7 @@ class KlorchidBooleanStatusModel extends KlorchidMultiStatusModel implements Boo
 {
     use BooleanStatusModelTrait;
 
+
     public const NAME_VALUE_STATUS_MAP = [
         'active' => true,
         'inactive' => false
@@ -19,6 +20,7 @@ class KlorchidBooleanStatusModel extends KlorchidMultiStatusModel implements Boo
     public const EDIT_LOCKED_STATUS_VALUES = [
         false
     ];
+
     public const CLASS_NAME_STATUS_VALUE_MAP = [
         'danger'=>false,
         'success' => true
