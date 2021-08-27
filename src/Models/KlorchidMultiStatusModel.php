@@ -17,4 +17,5 @@ abstract class KlorchidMultiStatusModel extends KlorchidEloquentModel implements
     protected array $multi_status_extra_appends = [
         'statusName'
     ];
+
 }

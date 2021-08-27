@@ -14,40 +14,4 @@ trait BooleanStatusModelTrait
         'status' => 'boolean'
     ];
 
-
-
-    static function lockedStatuses(): array
-    {
-        return [false];
-    }
-
-
-    static function statusValues(): array
-    {
-        return [
-            'inactive' => false,
-            'active' => true,
-        ];
-    }
-
-    static function statusColorClasses(): array
-    {
-        return [
-            'inactive'=>'text-danger',
-            'active'=>'text-success'
-        ];
-    }
-
-
-
-
-    static function getStatusName(?bool $status): string
-    {
-        $status_values = self::statusValues();
-        return array_search($status, $status_values);
-    }
-
-
-
-
 }

@@ -21,6 +21,9 @@ trait MultiStatusModelLayoutTrait
 
 
 
+    public function getStatusFieldClass():string{
+        return 'form-control text-' . $this->getModel()->getStatusColorClass();
+    }
 
     public function getStatus()
     {

@@ -42,7 +42,14 @@ class PkPresenter extends \Orchid\Support\Presenter
     {
         $display_text = $display_text ?: $this->short();
 
-        return Link::make($display_text)->route(
+
+        $text_class="btn btn-link ";
+
+        if ($this->entity->isLockedByStatus()){
+            $text_class.="text-".$this->entity->getStatusColorClass();
+        }
+
+        return Link::make($display_text)->class($text_class)->route(
             $url_name,
             $this->entity->getKey()
         );

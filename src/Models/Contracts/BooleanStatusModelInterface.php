@@ -4,7 +4,7 @@
 namespace Kamansoft\Klorchid\Models\Contracts;
 
 
-interface BooleanStatusModelInterface
+interface BooleanStatusModelInterface extends KlorchidMultiStatusModelInterface
 {
-    static function getStatusName(bool $status): string;
+
 }

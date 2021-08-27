@@ -113,15 +113,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
         'created_at' => 'datetime:d/m/Y h:m:s a',
     ];
 
-    static public function statusStringValues(): array
-    {
 
-        return [
-            __('Inactive') => '0',
-            __('Active') => '1'
-
-        ];
-    }
 
     /*protected  $attributes =[
         'uses_two_factor_auth' => False
@@ -192,7 +184,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
                 $to_return = parent::delete();
             }
         } catch (\Exception $e) {
-            throw new \Exception('cant delete user, ' . $e->getMessage());
+            throw new \Exception('cant delete user its referencing to itself, ' . $e->getMessage());
 
         }
 
