@@ -41,7 +41,7 @@ class KlorchidModelCommand extends GeneratorCommand
         {--s|screen : Create a KlorchidCrudScreen class file using model class name}
         {--a|app-name-as-path : Create files inside a folder with the name as laravel app_name config value}
         {--pivot}';*/
-    protected $signature = 'klorchid:make:model
+    protected $signature = 'klorchid:make:model     
         {name? : The Class name of the Model} 
         {--status-type= : Specify The type of model based on status: [ ' . self::BOOLEAN_BINARY . ' (default), ' . self::INTEGER_MULTI . ', ' . self::STRING_MULTI . ' ]  }
         {--m|migration : Create a migration file using the name of the model} 
@@ -73,7 +73,7 @@ class KlorchidModelCommand extends GeneratorCommand
     {
         $stub_path = __DIR__ . '/../../../resources/stubs/';
 
-        $booan_binary = 'klorchid.model.boolean.binary.stub';
+        $booanq_binary = 'klorchid.model.boolean.binary.stub';
 
         //intentionally used switch for other cases like integer and string status
         switch ($this->status_type) {

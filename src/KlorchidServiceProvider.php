@@ -2,6 +2,7 @@
 
 namespace Kamansoft\Klorchid;
 
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +26,8 @@ use Kamansoft\Klorchid\Models\KlorchidUser;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Notificator\Notificator;
 use Kamansoft\Klorchid\Providers\KlorchidRouteServiceProvider;
+use Laravel\Jetstream\JetstreamServiceProvider;
+use Livewire\LivewireServiceProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\Models\User;
@@ -378,8 +381,11 @@ class KlorchidServiceProvider extends ServiceProvider
     {
 
         return [
+            LivewireServiceProvider::class,
+            JetstreamServiceProvider::class,
             OrchidFoundationServiceProvider::class,
             KlorchidRouteServiceProvider::class,
+
 
         ];
     }

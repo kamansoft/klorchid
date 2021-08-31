@@ -40,7 +40,7 @@ class KlorchidUser extends User implements KlorchidModelsInterface,
     use KlorchidMultiStatusModelTrait;
     use BooleanStatusModelTrait;
 
-
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *

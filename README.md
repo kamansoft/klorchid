@@ -64,13 +64,13 @@ Just add kamansoft/klorchid as normal composer package
     
     $ composer require kamansoft/klorchid
     
-Lets set klorchid Kuser model as default model used by auth, so you must change the value of the entry `providers.users.model` from the default `App\Models\User::class` to the klorchid one `Kamansoft\Klorchid\Models\Kuser::class` on the config/auth.php file
+Lets set klorchid Kuser model as default model used by auth, so you must change the value of the entry `providers.users.model` from the default `App\Models\User::class` to the klorchid one `Kamansoft\Klorchid\Models\KlorchidUser::class` on the config/auth.php file
 
     //config/auth.php
     'providers' => [
        'users' => [
            'driver' => 'eloquent',
-           'model' => Kamansoft\Klorchid\Models\KlorchidUserModelKlorchidMulti::class,
+           'model' => Kamansoft\Klorchid\Models\KlorchidUser::class,
        ],
        .
        .
