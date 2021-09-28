@@ -58,7 +58,7 @@ trait  KlorchidUserBlamingModelsTrait
 
     public function updater(): BelongsTo
     {
-        return $this->belongsTo(self::userModelClass(), config('klorchid.models_common_field_names.last_updater'), 'id');
+        return $this->belongsTo(self::userModelClass(), config('klorchid.models_common_field_names.updater'), 'id');
     }
 
 
