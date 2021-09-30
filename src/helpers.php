@@ -97,10 +97,30 @@ if (!function_exists('getObjectPropertiesWith')) {
 }
 
 
+if (!function_exists('csv_count')) {
+
+
+    /**
+     * count all the rows in a csv file 
+     * 
+     * @param  string  the csv file name and path
+     * @return int
+     */
+    function csv_count(string $file): int
+    {
+
+        $file = new \SplFileObject($file, 'r');
+        $file->seek(PHP_INT_MAX);
+        return $file->key();
+    }
+
+}
+
+
 if (!function_exists('param_name_for_model')) {
 
     /**
-     * Get the recomended name for a route param name related to a model
+     * Get the recomended name for a route param name related to a model to be use for example defining routes with params
      *
      * @param string $model_class
      * @return void
