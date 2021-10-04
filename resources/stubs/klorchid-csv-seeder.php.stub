@@ -1,0 +1,32 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Eloquent\Model;
+use Kamansoft\Klorchid\Database\Seeders\CsvSeeder;
+
+
+class FuneraryPlaceSeeder extends CsvSeeder
+{
+
+    //Use this attribute
+    // In case this seeder uses more than one file, or if the csv file path and name dosent match the convention
+
+    /**
+     * In case the seeder uses more than one file, or if the csv file path and name dosent match the convention it must
+     * be specified as one element of this array attribute.
+     *
+     *
+     * @var array
+     */
+    //public array $files = [];
+
+    /**
+     * The model class the seeder will use to seed. if this property dosent exists or if its value is null,
+     * the instatiated object will look for a model at app/models with a name that match with the plural name of this
+     * seeder
+     * @var Model
+     */
+    //public Model $model = ;
+
+}

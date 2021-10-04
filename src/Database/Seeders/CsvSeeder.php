@@ -1,11 +1,17 @@
 <?php
 
-namespace Kamansoft\Klorchid\src\Database\Seeders;
+namespace Kamansoft\Klorchid\Database\Seeders;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 abstract class CsvSeeder extends \Illuminate\Database\Seeder
 {
+
+
+    static public $common_extra_fields= [];
+
 
     /**
      *
@@ -13,20 +19,20 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
      */
     public function getCsvFilePaths(): array
     {
-        if (isset($this->file) and !empty($this->file)) {
-            if (is_string($this->file)) {
-                return [$this->file];
+        if (isset($this->files) and !empty($this->files)) {
+            if (is_string($this->files)) {
+                return [$this->files];
             }
-            if (is_array($this->file)) {
-                return $this->file;
+            if (is_array($this->files)) {
+                return $this->files;
             }
             $message = static::class . ' the "file" attribute does not have a valid type. valid types are string or array';
             Log::error($message);
             throw \Exception($message);
         }
         $class_name_segments = explode('\\', static::class);
-        $class_name = Str::snake(Str::plural(str_replace("Seeder", "", end($class_name_segments))));
-        return [static::getCsvSeedersPath($class_name . ".csv")];
+        $csv_file_name = Str::snake(Str::plural(str_replace("Seeder", "", end($class_name_segments))));
+        return [static::getCsvSeedersPath($csv_file_name . ".csv")];
     }
 
 
@@ -41,14 +47,14 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         }
         $class_name_segments = explode('\\', static::class);
         $class_name = str_replace("Seeder", "", end($class_name_segments));
-        return 'App\Models\\' . $class_name;
+        return $this->models_namespace. $class_name;
     }
 
     /**
      * A helper method to retrive a  string using the name of the seeder class
      * @return string
      */
-    public static function getCsvSeedersPath(): string
+    public static function getCsvSeedersPath(string $filename): string
     {
         $relative_file_path = implode(DIRECTORY_SEPARATOR, [
             "database",
@@ -65,6 +71,8 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
      */
     public function runWithCsv()
     {
+
+
         DB::beginTransaction();
         try {
             foreach ($this->getCsvFilePaths() as $file) {
@@ -106,10 +114,8 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
                 $firstline = false;
                 continue;
             }
-            $data = collect($data)->mapWithKeys(function ($value, $index) use ($columns) {
-                return [$columns[$index] => $value];
-            })->toArray();
-            $model::updateOrCreate($data);
+            $data_with_keys = array_combine($columns,$data);
+            $model::updateOrCreate(array_merge($data_with_keys,static::$common_extra_fields));
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();
