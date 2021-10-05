@@ -10,6 +10,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
 {
 
     static public $models_namespace="App\Models";
+    static public $csv_separator = ";";
     static public $common_extra_fields= [];
 
 
@@ -108,13 +109,20 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         $this->command->getOutput()->progressStart($toral_rows);
         $firstline = true;
         $columns = [];
-        while (($data = fgetcsv($file, 2000, ";")) !== FALSE) {
+        while (($data = fgetcsv($file, 2000, static::$csv_separator)) !== FALSE) {
             if ($firstline) {
                 $columns = $data;
                 $firstline = false;
                 continue;
             }
-            $data_with_keys = array_combine($columns,$data);
+            try {
+                $data_with_keys = array_combine($columns, $data);
+            }
+            catch (\Exception $e){
+
+                throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (".static::$csv_separator.") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. ".$e->getMessage() );
+            }
+
             $model::updateOrCreate(array_merge($data_with_keys,static::$common_extra_fields));
             $this->command->getOutput()->progressAdvance();
         }
