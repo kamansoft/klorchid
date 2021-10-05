@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 abstract class CsvSeeder extends \Illuminate\Database\Seeder
 {
 
-
+    static public $models_namespace="App\Models";
     static public $common_extra_fields= [];
 
 
@@ -47,7 +47,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         }
         $class_name_segments = explode('\\', static::class);
         $class_name = str_replace("Seeder", "", end($class_name_segments));
-        return $this->models_namespace. $class_name;
+        return static::$models_namespace."\\".$class_name;
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            $message = static::class." cant run seeder with csv file ".$e->getMessage();
+            $message = static::class." cant run seeder with csv file.   Error: ".$e->getMessage();
             Log::error($message);
             throw new \Exception($message);
 
