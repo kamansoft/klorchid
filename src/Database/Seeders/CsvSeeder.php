@@ -13,6 +13,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
     static public $csv_separator = ";";
     static public $common_extra_fields= [];
 
+    abstract public function handleCsvRow(array $data):array;
 
     /**
      *
@@ -117,13 +118,14 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
             }
             try {
                 $data_with_keys = array_combine($columns, $data);
+                $data_to_store = $this->handleCsvRow($data_with_keys);
             }
             catch (\Exception $e){
 
                 throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (".static::$csv_separator.") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. ".$e->getMessage() );
             }
 
-            $model::updateOrCreate(array_merge($data_with_keys,static::$common_extra_fields));
+            $model::updateOrCreate(array_merge($data_to_store,static::$common_extra_fields));
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();
