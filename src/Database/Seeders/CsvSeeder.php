@@ -9,11 +9,11 @@ use Illuminate\Support\Str;
 abstract class CsvSeeder extends \Illuminate\Database\Seeder
 {
 
-    static public $models_namespace="App\Models";
+    static public $models_namespace = "App\Models";
     static public $csv_separator = ";";
-    static public $common_extra_fields= [];
+    static public $common_extra_fields = [];
 
-    abstract public function handleCsvRow(array $data):array;
+    abstract public function handleCsvRow(array $data): array;
 
     /**
      *
@@ -34,7 +34,8 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         }
         $class_name_segments = explode('\\', static::class);
         $csv_file_name = Str::snake(Str::plural(str_replace("Seeder", "", end($class_name_segments))));
-        return [static::getCsvSeedersPath($csv_file_name . ".csv")];
+        //return [static::getCsvSeedersPath($csv_file_name . ".csv")];
+        return [$csv_file_name . ".csv"];
     }
 
 
@@ -49,7 +50,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         }
         $class_name_segments = explode('\\', static::class);
         $class_name = str_replace("Seeder", "", end($class_name_segments));
-        return static::$models_namespace."\\".$class_name;
+        return static::$models_namespace . "\\" . $class_name;
     }
 
     /**
@@ -67,6 +68,18 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         return base_path($relative_file_path);
     }
 
+    public function handleFullFilePath(string $file)
+    {
+        if (file_exists(static::getCsvSeedersPath($file))) {
+            return static::getCsvSeedersPath($file);
+        }
+        if (file_exists($file)) {
+            return $file;
+        }
+
+        throw \Exception(static::class . " can't find the file: " . $file . " inside the csv seeders folder, or in the project folder. Make sure the file exits ");
+    }
+
     /**
      * fire the seeding pross from an files array
      * @throws \Exception
@@ -78,13 +91,14 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         DB::beginTransaction();
         try {
             foreach ($this->getCsvFilePaths() as $file) {
-                $this->populateFromCsv($file);
+
+                $this->populateFromCsv($this->handleFullFilePath($file));
             }
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            $message = static::class." cant run seeder with csv file.   Error: ".$e->getMessage();
+            $message = static::class . " cant run seeder with csv file.   Error: " . $e->getMessage();
             Log::error($message);
             throw new \Exception($message);
 
@@ -106,32 +120,33 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         $this->command->line("With model:");
         $this->command->line($model);
         $toral_rows = csv_count($file);
-        $file = fopen($file, "r");
-        $this->command->getOutput()->progressStart($toral_rows);
-        $firstline = true;
-        $columns = [];
-        while (($data = fgetcsv($file, 2000, static::$csv_separator)) !== FALSE) {
-            if ($firstline) {
-                $columns = $data;
-                $firstline = false;
-                continue;
-            }
-            try {
-                $data_with_keys = array_combine($columns, $data);
-                $data_to_store = $this->handleCsvRow($data_with_keys);
-            }
-            catch (\Exception $e){
+        if ($toral_rows > 2) {
 
-                throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (".static::$csv_separator.") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. ".$e->getMessage() );
-            }
+            $file = fopen($file, "r");
+            $this->command->getOutput()->progressStart($toral_rows);
+            $firstline = true;
+            $columns = [];
+            while (($data = fgetcsv($file, 2000, static::$csv_separator)) !== FALSE) {
+                if ($firstline) {
+                    $columns = $data;
+                    $firstline = false;
+                    continue;
+                }
+                try {
+                    $data_with_keys = array_combine($columns, $data);
+                    $data_to_store = $this->handleCsvRow($data_with_keys);
+                } catch (\Exception $e) {
 
-            $model::updateOrCreate($data_to_store);
-            $this->command->getOutput()->progressAdvance();
+                    throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (" . static::$csv_separator . ") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. " . $e->getMessage());
+                }
+
+                $model::updateOrCreate($data_to_store);
+                $this->command->getOutput()->progressAdvance();
+            }
+            $this->command->getOutput()->progressFinish();
+
+            fclose($file);
         }
-        $this->command->getOutput()->progressFinish();
-
-        fclose($file);
-
 
     }
 
@@ -140,7 +155,8 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
      *
      * @return void
      */
-    public function run(){
+    public function run()
+    {
         $this->runWithCsv();
     }
 
