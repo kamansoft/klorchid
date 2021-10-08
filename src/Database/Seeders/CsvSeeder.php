@@ -91,10 +91,8 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         DB::beginTransaction();
         try {
             foreach ($this->getCsvFilePaths() as $file) {
-
                 $this->populateFromCsv($this->handleFullFilePath($file));
             }
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
