@@ -118,19 +118,20 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         $this->command->line("With model:");
         $this->command->line($model);
         $toral_rows = csv_count($file)-1;
-        $chunk_size= 200;
+
+        /*
+        $chunk_size = 4;
         $total_chunks = ceil($toral_rows/$chunk_size);
         $chunk_count = $total_count = 1;
-         $chunk = [];
+        $chunk = [];
+        */
+
         if ($toral_rows > 1) {
 
             $file = fopen($file, "r");
             $this->command->getOutput()->progressStart($toral_rows);
             $firstline = true;
             $columns = [];
-
-
-
 
             while (($data = fgetcsv($file, 2000, static::$csv_separator)) !== FALSE) {
 
@@ -139,7 +140,6 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
                     $firstline = false;
                     continue;
                 }
-
                 try {
                     $data_with_keys = array_combine($columns, $data);
                     $data_to_store = $this->handleCsvRow($data_with_keys);
@@ -148,27 +148,23 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
 
                     throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (" . static::$csv_separator . ") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. " . $e->getMessage());
                 }
-
-
-
-
-                if ($chunk_count*$total_count<$chunk_count*$chunk_size){
+                /*
+                $fill_chunk=$total_count<$chunk_count*$chunk_size;
+                if ($fill_chunk){
                     $chunk[] = $data_to_store;
                 }
 
-                if ($data_to_store["code"]=="ES"){
-                    dd($chunk,$chunk_count,$total_count,$chunk_size);
-                }
+                $persit_chunk=!($fill_chunk) or $total_count == $toral_rows;
 
-                if (($chunk_count*$total_count==$chunk_count*$chunk_size) or $total_count == $toral_rows) {
+                if ($persit_chunk) {
                     $chunk[] = $data_to_store;
                     $model::updateOrCreate(...$chunk);
                     $chunk = [];
                     $chunk_count++;
-                }
+                }*/
 
-                //$model::updateOrCreate($data_to_store);
-                $total_count ++;
+                $model::updateOrCreate($data_to_store);
+                //$total_count ++;
                 $this->command->getOutput()->progressAdvance();
 
             }
