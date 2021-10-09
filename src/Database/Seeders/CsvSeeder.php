@@ -117,29 +117,60 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
         $model = $this->getModelClass();
         $this->command->line("With model:");
         $this->command->line($model);
-        $toral_rows = csv_count($file);
-        if ($toral_rows > 2) {
+        $toral_rows = csv_count($file)-1;
+        $chunk_size= 200;
+        $total_chunks = ceil($toral_rows/$chunk_size);
+        $chunk_count = $total_count = 1;
+         $chunk = [];
+        if ($toral_rows > 1) {
 
             $file = fopen($file, "r");
             $this->command->getOutput()->progressStart($toral_rows);
             $firstline = true;
             $columns = [];
+
+
+
+
             while (($data = fgetcsv($file, 2000, static::$csv_separator)) !== FALSE) {
+
                 if ($firstline) {
                     $columns = $data;
                     $firstline = false;
                     continue;
                 }
+
                 try {
                     $data_with_keys = array_combine($columns, $data);
                     $data_to_store = $this->handleCsvRow($data_with_keys);
+
                 } catch (\Exception $e) {
 
                     throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (" . static::$csv_separator . ") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. " . $e->getMessage());
                 }
 
-                $model::updateOrCreate($data_to_store);
+
+
+
+                if ($chunk_count*$total_count<$chunk_count*$chunk_size){
+                    $chunk[] = $data_to_store;
+                }
+
+                if ($data_to_store["code"]=="ES"){
+                    dd($chunk,$chunk_count,$total_count,$chunk_size);
+                }
+
+                if (($chunk_count*$total_count==$chunk_count*$chunk_size) or $total_count == $toral_rows) {
+                    $chunk[] = $data_to_store;
+                    $model::updateOrCreate(...$chunk);
+                    $chunk = [];
+                    $chunk_count++;
+                }
+
+                //$model::updateOrCreate($data_to_store);
+                $total_count ++;
                 $this->command->getOutput()->progressAdvance();
+
             }
             $this->command->getOutput()->progressFinish();
 
