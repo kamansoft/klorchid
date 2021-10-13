@@ -31,6 +31,7 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
             KlorchidCrudFormLayout::fullFormInputAttributeName('new_status_reason') => [
                 'required',
                 'string',
+                'min:15',
                 Rule::notIn([$this->getModel()->cur_status_reason])
             ]
         ];
