@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddKlorchidFieldsToRolesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+
+
+        Schema::table('roles', function (Blueprint $table) {
+            $table->boolean(config('klorchid.models_common_field_names.status'))->default(1);
+            $table->text(config('klorchid.models_common_field_names.reason'))->nullable();
+        });
+
+        Schema::table('roles', function (Blueprint $table) {
+            $system_user_id = config('klorchid.system_user_id');
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default($system_user_id);
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.updater'))->default($system_user_id);
+
+
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.updater'))->default(null)->change();
+            $table->unsignedBigInteger(config('klorchid.models_common_field_names.creator'))->default(null)->change();
+
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->foreign(config('klorchid.models_common_field_names.updater'))->references('id')->on('users');
+            $table->foreign(config('klorchid.models_common_field_names.creator'))->references('id')->on('users');
+        });
+
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('roles', function (Blueprint $table) {
+
+
+            $table->dropColumn(config('klorchid.models_common_field_names.status'));
+            $table->dropColumn(config('klorchid.models_common_field_names.reason'));
+            $table->dropForeign('roles_'.config('klorchid.models_common_field_names.updater').'_foreign');
+            $table->dropForeign('roles_'.config('klorchid.models_common_field_names.creator').'_foreign');
+            $table->dropColumn(config('klorchid.models_common_field_names.updater'));
+            $table->dropColumn(config('klorchid.models_common_field_names.creator'));
+        });
+    }
+}

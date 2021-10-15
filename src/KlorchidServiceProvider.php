@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Kamansoft\Klorchid\Console\Commands\BackupAction;
+use Kamansoft\Klorchid\Console\Commands\DbBackupCommand;
 use Kamansoft\Klorchid\Console\Commands\KeditScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidCrudScreenCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidEloquentRepositoryCommand;
@@ -22,6 +22,7 @@ use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidLocalization;
+use Kamansoft\Klorchid\Models\KlorchidRole;
 use Kamansoft\Klorchid\Models\KlorchidUser;
 use Kamansoft\Klorchid\Notificator\NotificaterInterface;
 use Kamansoft\Klorchid\Notificator\Notificator;
@@ -30,6 +31,7 @@ use Laravel\Jetstream\JetstreamServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
+use Orchid\Platform\Models\Role;
 use Orchid\Platform\Models\User;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
 
@@ -44,7 +46,7 @@ class KlorchidServiceProvider extends ServiceProvider
      */
     public $commands = [
         SystemUserAddCommand::class,
-        BackupAction::class,
+        DbBackupCommand::class,
         KeditScreenCommand::class,
         KlorchidMigrationCommand::class,
         KlorchidModelCommand::class,
@@ -64,7 +66,7 @@ class KlorchidServiceProvider extends ServiceProvider
 
         $this->dashboard = $dashboard;
         $this
-            ->registerKlorchidUserModel()
+            ->registerKlorchidModelsForOrchid()
             ->registerConfig()
             ->registerKlorchid()
             //->registerProviders()
@@ -151,7 +153,7 @@ class KlorchidServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/2021_05_18_112933_create_regions_table.php' => database_path('migrations/2021_05_18_112933_create_regions_table.php'),
                 __DIR__ . '/../database/migrations/2021_05_18_161302_create_states_table.php' => database_path('migrations/2021_05_18_161302_create_states_table.php'),
                 __DIR__ . '/../database/migrations/2021_05_18_190635_create_cities_table.php' => database_path('migrations/2021_05_18_190635_create_cities_table.php'),
-
+                 __DIR__ . '/../database/migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php ' => database_path('migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php'),
             ], 'klorchid-migrations');
 
 
@@ -208,9 +210,10 @@ class KlorchidServiceProvider extends ServiceProvider
         return $this;
     }
 
-    public function registerKlorchidUserModel()
+    public function registerKlorchidModelsForOrchid()
     {
         Dashboard::useModel(User::class, KlorchidUser::class);
+        Dashboard::useModel(Role::class, KlorchidRole::class);
         return $this;
     }
 

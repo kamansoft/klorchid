@@ -8,11 +8,13 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Kamansoft\Klorchid\Console\Commands\KlorchidInstallCommand;
+use Kamansoft\Klorchid\Console\Commands\Traits\EnvFileVarConcatenetorTrait;
 use Kamansoft\Klorchid\KlorchidServiceProvider;
 use Kamansoft\Klorchid\Models\Kuser;
 
 class SystemUserAddCommand extends Command
 {
+    use EnvFileVarConcatenetorTrait;
     public static $system_user_id_const_name = 'SYSTEM_USER_ID';
     /**
      * The name and signature of the console command.
@@ -58,7 +60,7 @@ class SystemUserAddCommand extends Command
 
             $this->info(self::$system_user_id_const_name . ' not setted');
             $user = $this->handleUser();
-            $this->setValueEnv(self::$system_user_id_const_name, $user->id);
+            $this->setEnvValue(self::$system_user_id_const_name, $user->id);
         };
 
 
@@ -132,44 +134,5 @@ class SystemUserAddCommand extends Command
     }
 
 
-    private function envConstantExists(string $constant): bool
-    {
-        $str = $this->fileGetContent(app_path('../.env'));
-        return !($str !== false && strpos($str, $constant) === false);
-    }
 
-    /**
-     * @param string $constant
-     * @param string $value
-     * @return self
-     * @throws Exception
-     */
-    private function setValueEnv(string $constant, string $value = 'null'): self
-    {
-        $this->info("Atempt to set $constant=$value to .env file");
-        $str = $this->fileGetContent(app_path('../.env'));
-
-        if ($str !== false && strpos($str, $constant) === false) {
-            file_put_contents(app_path('../.env'), $str . PHP_EOL . $constant . '=' . $value . PHP_EOL);
-        } else {
-            throw new Exception('Cant add ' . $constant . ' entry on the project´s .env  file you must  remove it  by hand');
-        }
-
-        $this->info("Constant successfully added to file");
-        return $this;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return false|string
-     */
-    private function fileGetContent(string $file)
-    {
-        if (!is_file($file)) {
-            return '';
-        }
-
-        return file_get_contents($file);
-    }
 }

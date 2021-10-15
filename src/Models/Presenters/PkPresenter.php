@@ -5,6 +5,7 @@ namespace Kamansoft\Klorchid\Models\Presenters;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Icons\Icon;
 use Orchid\Screen\Actions\Link;
 
 /**
@@ -31,6 +32,10 @@ class PkPresenter extends \Orchid\Support\Presenter
         return substr($this->entity->getKey(), -12);
     }
 
+    public function shortPkWithIcon(string $orchid_icon='doc'){
+        return "<x-orchid-icon path=\"$orchid_icon\"/>".substr($this->entity->getKey(), -12);
+    }
+
     /**
      *  Returns a formated commom link for klorchid
      *
@@ -44,6 +49,8 @@ class PkPresenter extends \Orchid\Support\Presenter
 
 
         $text_class="btn btn-link ";
+
+
 
         if ($this->entity->isLockedByStatus()){
             $text_class.="text-".$this->entity->getStatusColorClass();
