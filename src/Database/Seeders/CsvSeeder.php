@@ -87,7 +87,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
     public function runWithCsv()
     {
 
-        $time_start = microtime(true);
+
         DB::beginTransaction();
 
         try {
@@ -96,7 +96,6 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
             }
             DB::commit();
             $time_elapsed_secs = microtime(true) - $time_start;
-            $this->command->line("total seeder execution time: " . ($time_elapsed_secs) . ' Secounds');
         } catch (\Exception $e) {
             DB::rollback();
             $message = static::class . " cant run seeder with csv file.   Error: " . $e->getMessage();
