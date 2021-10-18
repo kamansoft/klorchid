@@ -95,7 +95,6 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
                 $this->populateFromCsv($this->handleFullFilePath($file));
             }
             DB::commit();
-            $time_elapsed_secs = microtime(true) - $time_start;
         } catch (\Exception $e) {
             DB::rollback();
             $message = static::class . " cant run seeder with csv file.   Error: " . $e->getMessage();
