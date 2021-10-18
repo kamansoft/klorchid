@@ -87,21 +87,22 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
     public function runWithCsv()
     {
 
-
+        $time_start = microtime(true);
         DB::beginTransaction();
+
         try {
             foreach ($this->getCsvFilePaths() as $file) {
                 $this->populateFromCsv($this->handleFullFilePath($file));
             }
             DB::commit();
+            $time_elapsed_secs = microtime(true) - $time_start;
+            $this->command->line("total seeder execution time: " . ($time_elapsed_secs) . ' Secounds');
         } catch (\Exception $e) {
             DB::rollback();
             $message = static::class . " cant run seeder with csv file.   Error: " . $e->getMessage();
             Log::error($message);
             throw new \Exception($message);
-
         }
-
     }
 
     /**
@@ -110,14 +111,14 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
      */
     private function populateFromCsv(string $file)
     {
-
+        $time_start = microtime(true);
         $this->command->line("");
         $this->command->line("Attempt to seed using csv:");
         $this->command->line($file);
         $model = $this->getModelClass();
         $this->command->line("With model:");
         $this->command->line($model);
-        $toral_rows = csv_count($file)-1;
+        $toral_rows = csv_count($file) - 1;
 
         /*
         $chunk_size = 4;
@@ -143,7 +144,6 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
                 try {
                     $data_with_keys = array_combine($columns, $data);
                     $data_to_store = $this->handleCsvRow($data_with_keys);
-
                 } catch (\Exception $e) {
 
                     throw new  \Exception("The seeder needs the first line of the csv as header for columns. Using (" . static::$csv_separator . ") as separator. It looks like the csv header columns  doesnt match with the columns of one row of the csv. " . $e->getMessage());
@@ -163,16 +163,18 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
                     $chunk_count++;
                 }*/
 
+                //dd($data_to_store);
+
                 $model::updateOrCreate($data_to_store);
                 //$total_count ++;
                 $this->command->getOutput()->progressAdvance();
-
             }
             $this->command->getOutput()->progressFinish();
 
             fclose($file);
+            $time_elapsed_secs = microtime(true) - $time_start;
+            $this->command->line("Single File processing time : " . ($time_elapsed_secs * 1000) . ' Milliseconds');
         }
-
     }
 
     /**
@@ -184,5 +186,4 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
     {
         $this->runWithCsv();
     }
-
 }
