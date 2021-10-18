@@ -172,7 +172,7 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
 
             fclose($file);
             $time_elapsed_secs = microtime(true) - $time_start;
-            $this->command->line("Single File processing time : " . ($time_elapsed_secs * 1000) . ' Milliseconds');
+            $this->command->line("Single File processed (" . ($time_elapsed_secs * 1000) . 'ms');
         }
     }
 
