@@ -23,6 +23,7 @@ abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\Fo
         //TODO: this must be improoved
         //if there is a TypeError there must be a wrong binding needed for a request to work
         return $this->route($this->entityRouteParamName());
+
     }
 
 

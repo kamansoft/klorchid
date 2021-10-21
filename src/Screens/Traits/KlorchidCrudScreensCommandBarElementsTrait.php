@@ -23,6 +23,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
     use StatusChangeCommandTrait;
     use KlorchidPermissionsTrait;
     use DeleteCommandTrait;
+    use KlorchidModelDependantScreenTrait;
 
 
     public KlorchidMultiStatusModel $model;
@@ -129,23 +130,7 @@ trait KlorchidCrudScreensCommandBarElementsTrait
         return $this;
     }
 
-    /**
-     * @return \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel
-     */
-    public function getModel(): KlorchidMultiStatusModel
-    {
-        return $this->model;
-    }
 
-    /**
-     * @param \Kamansoft\Klorchid\Models\KlorchidMultiStatusModel $model
-     * @return KlorchidCrudScreensCommandBarElementsTrait
-     */
-    public function setModel(KlorchidMultiStatusModel $model): self
-    {
-        $this->model = $model;
-        return $this;
-    }
 
     /**
      * Makes sure exists all the methos name as attributte of each action if exists

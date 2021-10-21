@@ -11,10 +11,12 @@ use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Layouts\KlorchidListLayout;
+use Kamansoft\Klorchid\Screens\Contracts\KlorchidModelDependantScreenInterface;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidScreensCommandBarElementsInterface;
 use Kamansoft\Klorchid\Screens\Contracts\SaveCommandInterface;
 use Kamansoft\Klorchid\Screens\Contracts\StatusChangeCommandInterface;
 use Kamansoft\Klorchid\Screens\Traits\KlorchidCrudScreensCommandBarElementsTrait;
+use Kamansoft\Klorchid\Screens\Traits\KlorchidModelDependantScreenTrait;
 use Kamansoft\Klorchid\Screens\Traits\SaveCommandTrait;
 use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
 use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
@@ -24,13 +26,14 @@ use Kamansoft\Klorchid\Contracts\KlorchidActionPermissionInterface;
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
 abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
     implements KlorchidActionFromRouteInterface, KlorchidActionPermissionInterface, SaveCommandInterface,
-    StatusChangeCommandInterface, KlorchidScreensCommandBarElementsInterface
+    StatusChangeCommandInterface,KlorchidModelDependantScreenInterface, KlorchidScreensCommandBarElementsInterface
 {
 
     use KlorchidActionFromRouteTrait;
     use KlorchidActionPermissionTrait;
     use StatusChangeCommandTrait;
     use SaveCommandTrait;
+    use KlorchidModelDependantScreenTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
 

@@ -51,12 +51,13 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     public function detectMode()
     {
 
-
         $model = ($this->route($this->entityRouteParamName()));
 
         if (property_exists($model, 'exists') && $model->exists) {
             return self::EDIT_ACTION_NAME;
         }
+
+        //dd($this->route($this->entityRouteParamName()),$this->route()->parameters());
 
         return self::CREATE_ACTION_NAME;
 
@@ -107,8 +108,10 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      * to fill the model with. If is an array it will be taken as the values to fill the model with.
      * @return bool
      */
-    public function store(KlorchidEloquentModel $model, $data_to_store = null): bool
+    public function store(Model $model, $data_to_store = null): bool
     {
+
+
         Notificator::setMode("alert");
         $isUpdating = $model->exists;
         if (is_string($data_to_store) && !is_null($this->get($data_to_store))) {
