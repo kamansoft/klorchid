@@ -6,6 +6,7 @@ namespace Kamansoft\Klorchid\Screens;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Kamansoft\Klorchid\Contracts\KlorchidActionFromRouteInterface;
+use Kamansoft\Klorchid\Contracts\KlorchidModelRelationLoadbleInterface;
 use Kamansoft\Klorchid\Http\Request\KlorchidDeleteFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
@@ -22,11 +23,19 @@ use Kamansoft\Klorchid\Screens\Traits\StatusChangeCommandTrait;
 use Kamansoft\Klorchid\Traits\KlorchidActionFromRouteTrait;
 use Kamansoft\Klorchid\Traits\KlorchidActionPermissionTrait;
 use Kamansoft\Klorchid\Contracts\KlorchidActionPermissionInterface;
+use Kamansoft\Klorchid\Traits\KlorchidModelRelationLoadbleTrait;
+
 
 //class KlorchidTestScreen extends KlorchidMultiModeScreen
 abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
-    implements KlorchidActionFromRouteInterface, KlorchidActionPermissionInterface, SaveCommandInterface,
-    StatusChangeCommandInterface,KlorchidModelDependantScreenInterface, KlorchidScreensCommandBarElementsInterface
+implements
+    KlorchidActionFromRouteInterface,
+    KlorchidActionPermissionInterface,
+    SaveCommandInterface,
+    StatusChangeCommandInterface,
+    KlorchidModelDependantScreenInterface,
+    KlorchidModelRelationLoadbleInterface,
+    KlorchidScreensCommandBarElementsInterface
 {
 
     use KlorchidActionFromRouteTrait;
@@ -34,6 +43,7 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
     use StatusChangeCommandTrait;
     use SaveCommandTrait;
     use KlorchidModelDependantScreenTrait;
+    use KlorchidModelRelationLoadbleTrait;
     use KlorchidCrudScreensCommandBarElementsTrait;
 
 
@@ -59,10 +69,13 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
     {
         parent::__construct();
         $this->initPermission()->setMode('default');
-
-
     }
 
+
+    public function modelRelations():array
+    {
+        return [];
+    }
     public function mergeWithCrudElements(array $elements): array
     {
         return array_merge($this->crudElementsArray(), $elements);
@@ -73,10 +86,11 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
         $this->checkActionRoutesMapAttribute();
 
 
-        $query_elements = array_merge([
-            self::$screen_query_mode_keyname => $this->getMode(),
-            KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => static::$action_route_names_map
-        ],
+        $query_elements = array_merge(
+            [
+                self::$screen_query_mode_keyname => $this->getMode(),
+                KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => static::$action_route_names_map
+            ],
             $this->getMode() === self::COLLECTION_MODE ?
                 [KlorchidListLayout::getScreenQueryCollectionKeyname() => $this->collectionQuery()->filters()->defaultSort('updated_at', 'desc')->paginate()] :
                 [KlorchidCrudFormLayout::getScreenQueryModelKeyname() => $this->getModel()]
@@ -113,7 +127,6 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
 
 
         return $mode;
-
     }
 
     /**
@@ -160,5 +173,4 @@ abstract class KlorchidCrudScreen extends  KlorchidMultiModeScreen
     abstract function createModeLayout(): array;
 
     abstract function viewModeLayout(): array;
-
 }

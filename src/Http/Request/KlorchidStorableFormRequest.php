@@ -29,11 +29,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX);
-
-
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-
     }
 
     /**
@@ -56,8 +52,6 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
         if (property_exists($model, 'exists') && $model->exists) {
             return self::EDIT_ACTION_NAME;
         }
-
-        //dd($this->route($this->entityRouteParamName()),$this->route()->parameters());
 
         return self::CREATE_ACTION_NAME;
 
