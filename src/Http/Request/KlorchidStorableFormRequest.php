@@ -26,6 +26,8 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     const EDIT_ACTION_NAME = 'edit';
 
 
+
+
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX);
@@ -39,6 +41,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function authorize()
     {
+        //dd($this->detectMode());
         $this->setMode($this->detectMode());
         $mode_method_name = $this->getModeMethod($this->getMode());
         return $this->$mode_method_name();

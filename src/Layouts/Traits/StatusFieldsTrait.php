@@ -21,8 +21,8 @@ trait StatusFieldsTrait
     public function statusFields($screen_query_model_keyname,?string $field_class = null): array
     {
         return [
-            $this->statusField($screen_query_model_keyname, $field_class),
-            $this->statusReasonField($screen_query_model_keyname, $field_class),
+            'status_text'=>$this->statusField($screen_query_model_keyname, $field_class),
+            'status_reason'=>$this->statusReasonField($screen_query_model_keyname, $field_class),
         ];
     }
 
