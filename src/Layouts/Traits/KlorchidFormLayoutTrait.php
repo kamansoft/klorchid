@@ -60,6 +60,14 @@ trait KlorchidFormLayoutTrait
         return $this;
     }
 
+    public function getFormFields():Collection{
+        return $this->form_fields;
+    }
+
+    public function getFormField(string $field){
+        return $this->getFormFields()->get($field);
+    }
+
     public function fields(): array
     {
         $this->initFormFields();
