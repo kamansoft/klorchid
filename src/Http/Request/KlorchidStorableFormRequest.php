@@ -2,30 +2,34 @@
 
 namespace Kamansoft\Klorchid\Http\Request;
 
+use App\Models\Tanatory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Mix;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Kamansoft\Klorchid\Contracts\KlorchidModelRelationLoadbleInterface;
 use Kamansoft\Klorchid\Contracts\KlorchidMultimodeInterface;
 use Kamansoft\Klorchid\Contracts\KlorchidPermissionsInterface;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Models\KlorchidEloquentModel;
 use Kamansoft\Klorchid\Support\Facades\Notificator;
+use Kamansoft\Klorchid\Traits\KlorchidModelRelationLoadbleTrait;
 use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
 abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
-    implements KlorchidPermissionsInterface, KlorchidMultimodeInterface
+    implements KlorchidPermissionsInterface, KlorchidMultimodeInterface, KlorchidModelRelationLoadbleInterface
 {
     use KlorchidMultiModeTrait;
     use KlorchidPermissionsTrait;
+    use KlorchidModelRelationLoadbleTrait;
 
 
     const MODES_METHODS_NAME_SUFFIX = 'authorizeModeOn';
     const CREATE_ACTION_NAME = 'create';
     const EDIT_ACTION_NAME = 'edit';
-
-
 
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -50,9 +54,9 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
     public function detectMode()
     {
 
-        $model = ($this->route($this->entityRouteParamName()));
+        $model = $this->getModelFromRoute();
 
-        if (property_exists($model, 'exists') && $model->exists) {
+        if (!is_null($model) && property_exists($model, 'exists') && $model->exists) {
             return self::EDIT_ACTION_NAME;
         }
 
@@ -73,7 +77,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
             }
 
             throw new \Exception(self::class . '::checkCreatePermission() method is unable to determinate the 
-            permission needed to run the request. You may declare the static create  permission const  "CREATE_PERMISSION" with a value  at: ' . static::class . ' class');
+            permission needed to run the request. You may declare the static create permission const  "CREATE_PERMISSION" with a value  at: ' . static::class . ' class');
         } else {
             return $this->loggedUserHasPermission($create_permission);
         }
@@ -107,8 +111,6 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
      */
     public function store(Model $model, $data_to_store = null): bool
     {
-
-
         Notificator::setMode("alert");
         $isUpdating = $model->exists;
         if (is_string($data_to_store) && !is_null($this->get($data_to_store))) {
@@ -120,7 +122,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
             $data_to_store = $this->validated();
 
         } elseif (is_null($data_to_store)) {
-            $data_to_store = $this->get(KlorchidCrudFormLayout::getScreenQueryModelKeyname());
+            $data_to_store = $this->getCrudFormData();
         }
         $save_performed = $model->fill($data_to_store)->save();
 
@@ -142,20 +144,23 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
         return $save_performed;
     }
 
+    public function getCrudFormData(){
+        return $this->get(KlorchidCrudFormLayout::getScreenQueryModelKeyname());
+    }
 
     public function rules(): array
     {
         return empty($this->all()) ? [] : $this->validationRules();
     }
 
-    abstract function validationRules(): array;
+    //abstract public function validationRules(Model $model): array;
 
     abstract public function authorizeModeOnCreate();
 
     abstract public function authorizeModeOnEdit();
 
     /**
-     * Maps thorough the reflectionClass object of an instance of this class,
+     * Maps thorough thereflectionClass object of an instance of this class,
      * get all the methods which name's ends with the value at $needle
      * and returns a collection with all of those methods
      * @param string $needle

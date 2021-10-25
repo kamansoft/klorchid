@@ -15,7 +15,7 @@ use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 /**
  * Class KlorchidStatusChangeFormRequest
  * @package Kamansoft\Klorchid\Http\Request
- * @method KlorchidMultiStatusModel getModel()
+ * @method KlorchidMultiStatusModel getModelFromRoute()
  */
 abstract class KlorchidDeleteFormRequest extends EntityDependantFormRequest
     implements KlorchidPermissionsInterface

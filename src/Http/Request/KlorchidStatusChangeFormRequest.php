@@ -15,7 +15,7 @@ use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 /**
  * Class KlorchidStatusChangeFormRequest
  * @package Kamansoft\Klorchid\Http\Request
- * @method KlorchidMultiStatusModel getModel()
+ * @method KlorchidMultiStatusModel getModelFromRoute()
  */
 abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormRequest
     implements KlorchidPermissionsInterface
@@ -32,7 +32,7 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
                 'required',
                 'string',
                 'min:15',
-                Rule::notIn([$this->getModel()->cur_status_reason])
+                Rule::notIn([$this->getModelFromRoute()->cur_status_reason])
             ]
         ];
     }
