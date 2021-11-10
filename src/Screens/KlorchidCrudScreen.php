@@ -72,10 +72,7 @@ implements
     }
 
 
-    public function modelRelations():array
-    {
-        return [];
-    }
+
     public function mergeWithCrudElements(array $elements): array
     {
         return array_merge($this->crudElementsArray(), $elements);
