@@ -9,7 +9,7 @@ use Kamansoft\Klorchid\Contracts\KlorchidActionFromRouteInterface;
 use Kamansoft\Klorchid\Contracts\KlorchidModelRelationLoadbleInterface;
 use Kamansoft\Klorchid\Http\Request\KlorchidDeleteFormRequest;
 use Kamansoft\Klorchid\Http\Request\KlorchidStatusChangeFormRequest;
-use Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest;
+use Kamansoft\Klorchid\Http\Request\KlorchidCrudFormRequest;
 use Kamansoft\Klorchid\Layouts\KlorchidCrudFormLayout;
 use Kamansoft\Klorchid\Layouts\KlorchidListLayout;
 use Kamansoft\Klorchid\Screens\Contracts\KlorchidModelDependantScreenInterface;
@@ -49,8 +49,8 @@ implements
 
     //crud common actions
     const SHOW_LIST_ACTION = 'list';
-    const CREATE_ACTION = KlorchidStorableFormRequest::CREATE_ACTION_NAME;
-    const EDIT_ACTION = KlorchidStorableFormRequest::EDIT_ACTION_NAME;
+    const CREATE_ACTION = KlorchidCrudFormRequest::CREATE_ACTION_NAME;
+    const EDIT_ACTION = KlorchidCrudFormRequest::EDIT_ACTION_NAME;
     const VIEW_ACTION = 'view';
     const DELETE_ACTION = KlorchidDeleteFormRequest::DELETE_ACTION_NAME;
     const STATUS_CHANGE_ACTION = KlorchidStatusChangeFormRequest::STATUS_CHANGE_ACTION_NAME;

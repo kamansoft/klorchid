@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 
 use DummyModelFullClassName;
 
-class DummyClass extends \Kamansoft\Klorchid\Http\Request\KlorchidStorableFormRequest
+class DummyClass extends \Kamansoft\Klorchid\Http\Request\KlorchidCrudFormRequest
 {
 
     /**

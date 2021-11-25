@@ -7,7 +7,7 @@ use Illuminate\Foundation\Console\RequestMakeCommand;
 use Illuminate\Support\Str;
 
 
-class KlorchidStorableFormRequestCommand extends RequestMakeCommand
+class KlorchidCrudFormRequestCommand extends RequestMakeCommand
 {
 
 
@@ -41,7 +41,7 @@ class KlorchidStorableFormRequestCommand extends RequestMakeCommand
      *
      * @var string
      */
-    protected $type = 'KlorchidStorableFormRequest';
+    protected $type = 'KlorchidCrudFormRequest';
 
     /**
      * Get the stub file for the generator.

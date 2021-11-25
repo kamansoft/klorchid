@@ -19,7 +19,7 @@ use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
-abstract class KlorchidStorableFormRequest extends KlorchidMultimodeFormRequest
+abstract class KlorchidCrudFormRequest extends KlorchidMultimodeFormRequest
     implements KlorchidPermissionsInterface, KlorchidMultimodeInterface, KlorchidModelRelationLoadbleInterface
 {
 
@@ -33,7 +33,18 @@ abstract class KlorchidStorableFormRequest extends KlorchidMultimodeFormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
-  
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        //dd($this->detectMode());
+        $this->setMode($this->detectMode());
+        $mode_method_name = $this->getModeMethod($this->getMode());
+        return $this->$mode_method_name();
+    }
 
     public function detectMode()
     {

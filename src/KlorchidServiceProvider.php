@@ -17,7 +17,7 @@ use Kamansoft\Klorchid\Console\Commands\KlorchidListLayoutCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMigrationCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidModelCommand;
 use Kamansoft\Klorchid\Console\Commands\KlorchidMultiModeScreenCommand;
-use Kamansoft\Klorchid\Console\Commands\KlorchidStorableFormRequestCommand;
+use Kamansoft\Klorchid\Console\Commands\KlorchidCrudFormRequestCommand;
 use Kamansoft\Klorchid\Console\Commands\SystemUserAddCommand;
 use Kamansoft\Klorchid\Database\Migrations\KlorchidMigrationCreator;
 use Kamansoft\Klorchid\Http\Middleware\KlorchidKuserEnabled;
@@ -54,7 +54,7 @@ class KlorchidServiceProvider extends ServiceProvider
         KlorchidEloquentRepositoryCommand::class,
         KlorchidMultiModeScreenCommand::class,
         KlorchidCrudScreenCommand::class, //
-        KlorchidStorableFormRequestCommand::class,
+        KlorchidCrudFormRequestCommand::class,
         KlorchidListLayoutCommand::class
 
     ];

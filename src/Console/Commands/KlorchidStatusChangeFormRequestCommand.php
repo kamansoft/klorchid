@@ -32,7 +32,7 @@ class KlorchidStatusChangeFormRequestCommand extends RequestMakeCommand
      *
      * @var string
      */
-    protected $type = 'KlorchidStorableFormRequest';
+    protected $type = 'KlorchidCrudFormRequest';
 
     /**
      * Get the stub file for the generator.

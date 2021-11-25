@@ -25,18 +25,7 @@ abstract class KlorchidMultimodeFormRequest   extends EntityDependantFormRequest
         $this->initAvailableModes(self::MODES_METHODS_NAME_SUFFIX);
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
-  /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        //dd($this->detectMode());
-        $this->setMode($this->detectMode());
-        $mode_method_name = $this->getModeMethod($this->getMode());
-        return $this->$mode_method_name();
-    }
+
 
       public function rules(): array
     {
