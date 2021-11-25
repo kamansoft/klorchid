@@ -19,15 +19,10 @@ use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
-abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
+abstract class KlorchidStorableFormRequest extends KlorchidMultimodeFormRequest
     implements KlorchidPermissionsInterface, KlorchidMultimodeInterface, KlorchidModelRelationLoadbleInterface
 {
-    use KlorchidMultiModeTrait;
-    use KlorchidPermissionsTrait;
-    use KlorchidModelRelationLoadbleTrait;
 
-
-    const MODES_METHODS_NAME_SUFFIX = 'authorizeModeOn';
     const CREATE_ACTION_NAME = 'create';
     const EDIT_ACTION_NAME = 'edit';
 
@@ -38,18 +33,7 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        //dd($this->detectMode());
-        $this->setMode($this->detectMode());
-        $mode_method_name = $this->getModeMethod($this->getMode());
-        return $this->$mode_method_name();
-    }
+  
 
     public function detectMode()
     {
@@ -159,17 +143,6 @@ abstract class KlorchidStorableFormRequest extends EntityDependantFormRequest
 
     abstract public function authorizeModeOnEdit();
 
-    /**
-     * Maps thorough thereflectionClass object of an instance of this class,
-     * get all the methods which name's ends with the value at $needle
-     * and returns a collection with all of those methods
-     * @param string $needle
-     * @return Collection
-     * @throws \ReflectionException
-     */
-    private function getModesByMethodsName(string $needle = 'Mode'): Collection
-    {
-        return getObjectMethodsThatStartsWith($this, $needle);
-    }
+
 
 }

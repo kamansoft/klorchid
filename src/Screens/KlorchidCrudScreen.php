@@ -61,7 +61,7 @@ implements
     const EDIT_MODE = self::EDIT_ACTION;
     const VIEW_MODE = self::VIEW_ACTION;
 
-    protected static string $screen_query_mode_keyname = 'screen_mode';
+    
 
     //abstract public function permissionsGroupName(): string;
 
@@ -75,7 +75,7 @@ implements
 
     public function mergeWithCrudElements(array $elements): array
     {
-        return array_merge($this->crudElementsArray(), $elements);
+        return $this->mergeWithMultimodeElements($this->crudElementsArray(), $elements);
     }
 
     public function crudElementsArray(): array
@@ -85,7 +85,6 @@ implements
 
         $query_elements = array_merge(
             [
-                self::$screen_query_mode_keyname => $this->getMode(),
                 KlorchidCrudFormLayout::getScreenQueryRouteNamesKeyname() => static::$action_route_names_map
             ],
             $this->getMode() === self::COLLECTION_MODE ?

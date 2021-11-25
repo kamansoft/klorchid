@@ -29,13 +29,14 @@ if (!function_exists('getObjectMethodsThatEndsWith')) {
 
         $reflection = new \ReflectionClass($object);
         return collect($reflection->getMethods($accessor))->mapWithKeys(function ($method) use ($needle) {
+
             return [\Illuminate\Support\Str::snake(strstr($method->name, $needle, true)) => $method->name];
         })->reject(function ($pair) use ($needle) {
             $method_prefix = strstr($pair, $needle, true);
             return !$method_prefix or
-                str_contains($method_prefix, 'set') or
-                str_contains($method_prefix, 'get') or
-                str_contains($method_prefix, 'init');
+                str_starts_with($method_prefix, 'set') or
+                str_starts_with($method_prefix, 'get') or
+                str_starts_with($method_prefix, 'init');
         });
 
     }

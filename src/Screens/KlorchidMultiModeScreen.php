@@ -23,7 +23,18 @@ abstract class KlorchidMultiModeScreen extends Screen implements KlorchidMultimo
     use KlorchidPermissionsTrait;
 
     public const MODES_METHODS_NAME_SUFFIX = 'ModeLayout';
+    protected static string $screen_query_mode_keyname = 'screen_mode';
 
+    private function multimodeElements():array{
+        return [
+          static::$screen_query_mode_keyname=>$this->getMode()
+        ];
+    }
+
+    public function mergeWithMultimodeElements(array $array):array
+    {
+        return array_merge($this->multimodeElements(), $array);
+    }
 
     /**
      * @throws \ReflectionException

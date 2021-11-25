@@ -86,8 +86,6 @@ abstract class CsvSeeder extends \Illuminate\Database\Seeder
      */
     public function runWithCsv()
     {
-
-
         DB::beginTransaction();
 
         try {
