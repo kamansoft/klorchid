@@ -19,13 +19,17 @@ use Kamansoft\Klorchid\Traits\KlorchidMultiModeTrait;
 use Kamansoft\Klorchid\Traits\KlorchidPermissionsTrait;
 
 
-abstract class KlorchidCrudFormRequest extends KlorchidMultimodeFormRequest
+abstract class KlorchidCrudFormRequest extends EntityDependantFormRequest
     implements KlorchidPermissionsInterface, KlorchidMultimodeInterface, KlorchidModelRelationLoadbleInterface
 {
+        use KlorchidMultiModeTrait;
+    use KlorchidPermissionsTrait;
+    use KlorchidModelRelationLoadbleTrait;
 
     const CREATE_ACTION_NAME = 'create';
     const EDIT_ACTION_NAME = 'edit';
 
+    const MODES_METHODS_NAME_SUFFIX = 'authorizeModeOn';
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
@@ -33,18 +37,7 @@ abstract class KlorchidCrudFormRequest extends KlorchidMultimodeFormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        //dd($this->detectMode());
-        $this->setMode($this->detectMode());
-        $mode_method_name = $this->getModeMethod($this->getMode());
-        return $this->$mode_method_name();
-    }
+
 
     public function detectMode()
     {
@@ -149,6 +142,19 @@ abstract class KlorchidCrudFormRequest extends KlorchidMultimodeFormRequest
     }
 
     //abstract public function validationRules(Model $model): array;
+
+            /**
+     * Maps thorough thereflectionClass object of an instance of this class,
+     * get all the methods which name's ends with the value at $needle
+     * and returns a collection with all of those methods
+     * @param string $needle
+     * @return Collection
+     * @throws \ReflectionException
+     */
+    private function getModesByMethodsName(string $needle = 'Mode'): Collection
+    {
+        return getObjectMethodsThatStartsWith($this, $needle);
+    }
 
     abstract public function authorizeModeOnCreate();
 

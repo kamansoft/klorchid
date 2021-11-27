@@ -5,10 +5,13 @@ namespace Kamansoft\Klorchid\Http\Request;
 
 
 use Illuminate\Support\Facades\Log;
+use Kamansoft\Klorchid\Contracts\KlorchidModelRelationLoadbleInterface;
 use Kamansoft\Klorchid\Models\KlorchidMultiStatusModel;
+use Kamansoft\Klorchid\Traits\KlorchidModelRelationLoadbleTrait;
 
-abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\FormRequest
+abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\FormRequest implements KlorchidModelRelationLoadbleInterface
 {
+    use KlorchidModelRelationLoadbleTrait;
     //abstract public function entityRouteParamName():string;
     abstract public function entityRouteParamName(): string;
  
@@ -27,13 +30,14 @@ abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\Fo
         //return $this->route($this->entityRouteParamName());
         $param_key='model';
         if (array_key_exists($param_key, $this->route()->parameters())) {
-            return $this->route()->parameters()[$param_key];
+            return $this->loadModelRelations($this->route()->parameters()[$param_key]);
         }
 
         return null ;
 
 
     }
+    abstract public function modelRelations():array;
 
 
 }

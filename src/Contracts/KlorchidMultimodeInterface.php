@@ -39,4 +39,6 @@ interface KlorchidMultimodeInterface
     public function getAvailableModes(?string $mode_methods_name_suffix = null): Collection;
 
 
+
+
 }

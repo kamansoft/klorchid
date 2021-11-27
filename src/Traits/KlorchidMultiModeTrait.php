@@ -4,6 +4,7 @@
 namespace Kamansoft\Klorchid\Traits;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use function getObjectMethodsThatEndsWith;
 
 trait KlorchidMultiModeTrait
@@ -29,22 +30,26 @@ trait KlorchidMultiModeTrait
      */
     public function setMode(string $mode): self
     {
+        //dd($mode);
         if ($this->isValidMode($mode)) {
             $this->mode = $mode;
         } else {
-            throw new \Exception('Can\'t set "' . $mode . '" as current  mode, due to "' . $mode . '" is not a ' . self::class . ' valid mode. ');
+            throw new \Exception('Can\'t set "' . $mode . '" as current  mode, due to "' . $mode . '" is not a ' . static::class . ' valid mode. You must implement "'.Str::camel($mode).static::MODES_METHODS_NAME_SUFFIX.'()" at  ' . static::class .' in order to use that mode');
         }
         return $this;
     }
 
     public function isValidMode($mode): bool
     {
+
         return (bool)$this->getModeMethod($mode);
     }
 
     public function getModeMethod($mode): string
     {
-        return $this->available_modes->get($mode);
+
+
+        return $this->available_modes->get($mode)??'';
     }
 
     public function getAvailableModes(?string $mode_methods_name_suffix = null): Collection
