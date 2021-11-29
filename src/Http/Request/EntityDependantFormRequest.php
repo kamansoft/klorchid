@@ -30,7 +30,8 @@ abstract class EntityDependantFormRequest extends \Illuminate\Foundation\Http\Fo
         //return $this->route($this->entityRouteParamName());
         $param_key='model';
         if (array_key_exists($param_key, $this->route()->parameters())) {
-            return $this->loadModelRelations($this->route()->parameters()[$param_key]);
+            return $this->route()->parameters()[$param_key];
+            //return $this->loadModelRelations($this->route()->parameters()[$param_key]);
         }
 
         return null ;
