@@ -72,12 +72,19 @@ abstract class KlorchidMultimodeFormRequest extends EntityDependantFormRequest
     public function authorize()
     {
 
+        if ($this->route()->parameters('model')){
+            //$this->route()->setParameter('model',$this->loadModelRelations($this->getModelFromRoute()));
+        }
         $detected_mode = $this->modeDetect();
+        if (!$this->isValidMode($detected_mode)){
+            $detected_mode='default';
+        }
+
         $this->setMode($detected_mode);
         $method_mode_authorize_name=$this->getModeMethod($this->getMode());
         return $this->$method_mode_authorize_name();
         //return true;
     }
 
-    abstract public function defaultModeAutorize():array;
+    abstract public function defaultModeAutorize():bool;
 }
