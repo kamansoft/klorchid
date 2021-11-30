@@ -75,7 +75,8 @@ implements
 
     public function mergeWithCrudElements(array $elements): array
     {
-        return $this->mergeWithMultimodeElements($this->crudElementsArray(), $elements);
+
+        return array_merge( $elements,$this->crudElementsArray(),$this->multimodeElements());
     }
 
     public function crudElementsArray(): array
