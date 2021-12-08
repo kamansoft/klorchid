@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kamansoft\Klorchid\Screens\Actions;
+namespace Kamansoft\Klorchid\Screen\Actions;
 
 
 
