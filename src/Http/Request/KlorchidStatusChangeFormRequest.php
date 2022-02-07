@@ -26,7 +26,7 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
 
     public function rules(): array
     {
-
+        
         return [
             KlorchidCrudFormLayout::fullFormInputAttributeName('new_status_reason') => [
                 'required',
@@ -73,7 +73,11 @@ abstract class KlorchidStatusChangeFormRequest extends EntityDependantFormReques
                 return $this->loggedUserHasPermission(static::STATUS_CHANGE_PERMISSION);
             }
             if (!empty($this->permissions_group)) {
-                return $this->loggedUserHasPermission(implodeWithDot($this->permissions_group, self::STATUS_CHANGE_ACTION_NAME));
+                return $this->loggedUserHasPermission(
+                    implodeWithDot(
+                    $this->permissions_group, self::STATUS_CHANGE_ACTION_NAME
+                    )
+                );
             }
             throw new \Exception(self::class . '::checkStatusChangePermission() method is unable to determinate the permission needed to run the request.
              You may declare the static status change permission const "STATUS_CHANGE_PERMISSION" at: ' . static::class . ' class');
