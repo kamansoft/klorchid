@@ -154,7 +154,7 @@ class KlorchidServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/2021_05_18_112933_create_regions_table.php' => database_path('migrations/2021_05_18_112933_create_regions_table.php'),
                 __DIR__ . '/../database/migrations/2021_05_18_161302_create_states_table.php' => database_path('migrations/2021_05_18_161302_create_states_table.php'),
                 __DIR__ . '/../database/migrations/2021_05_18_190635_create_cities_table.php' => database_path('migrations/2021_05_18_190635_create_cities_table.php'),
-                 __DIR__ . '/../database/migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php ' => database_path('migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php'),
+                __DIR__ . '/../database/migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php' => database_path('migrations/2021_10_14_131712_add_klorchid_fields_to_roles_table.php'),
             ], 'klorchid-migrations');
 
 
