@@ -34,6 +34,7 @@ use Orchid\Platform\ItemPermission;
 use Orchid\Platform\Models\Role;
 use Orchid\Platform\Models\User;
 use Orchid\Platform\Providers\FoundationServiceProvider as OrchidFoundationServiceProvider;
+use Kamansoft\LaravelMultiorg\LaravelMultiorgServiceProvider;
 
 class KlorchidServiceProvider extends ServiceProvider
 {
@@ -386,7 +387,9 @@ class KlorchidServiceProvider extends ServiceProvider
         return [
             LivewireServiceProvider::class,
             JetstreamServiceProvider::class,
+            LaravelMultiorgServiceProvider::class,
             OrchidFoundationServiceProvider::class,
+
             KlorchidRouteServiceProvider::class,
 
 
