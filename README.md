@@ -11,7 +11,7 @@ this package is made with the intention to help in your RAPID web development wi
 
 The next list of commands must be executed in strictly in the order they are mentioned as packages needed by klorchid:
 
-Klorchid needs 7.4 version of php, also some extensions
+Klorchid needs 8.0 version of php, also some extensions
 
 As all identificators are uuids you need:
 
@@ -21,7 +21,7 @@ As all identificators are uuids you need:
 
 they can be installed on debian/ubuntu with:
 
-    sudo apt-get install php7.4-ctype php7.4-gmp php7.4-bcmath
+    sudo apt-get install php8.0-ctype php8.0-gmp php8.0-bcmath
 
 Create a new laravel Project
 
