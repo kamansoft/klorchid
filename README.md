@@ -53,7 +53,7 @@ Lets add Orchid:
     $ composer require orchid/platform:11.0.1
 
     
-**Important note:*** as matter of fact, currently there is no compatibility with laravel 9 so orchid/plaform 11.0.1 was the last version suporting laravel 8, so you might need to specify the version on composer command.
+**Important note:** as matter of fact, currently there is no compatibility with laravel 9 so orchid/plaform 11.0.1 was the last version suporting laravel 8, so you might need to specify the version on composer command.
 
     $ composer require orchid/platform:11.0.1
 
