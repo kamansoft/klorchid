@@ -51,8 +51,16 @@ As this package is currently on development you need `Debugbar` of barryvdh   pe
 Lets add Orchid:
 
     $ composer require orchid/platform
-    $ php artisan orchid:install
+
     
+**Important note:** as matter of fact, currently there is no compatibility with laravel 9 so orchid/plaform 11.0.1 was the last version suporting laravel 8, so you might need to specify the version on composer command.
+
+    $ composer require orchid/platform:11.0.1
+
+Then you must install the platform
+
+    $ php artisan orchid:install
+
 We need to change the "true" value by "false" at the auth entry on the config/platform.php config file in order to use jetstream.
 
     //config/platform.php
