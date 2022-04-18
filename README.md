@@ -57,7 +57,7 @@ Lets add Orchid:
 
     $ composer require orchid/platform:11.0.1
 
-Then you must install the plaform
+Then you must install the platform
 
     $ php artisan orchid:install
 
