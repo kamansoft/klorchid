@@ -50,7 +50,7 @@ As this package is currently on development you need `Debugbar` of barryvdh   pe
 
 Lets add Orchid:
 
-    $ composer require orchid/platform:11.0.1
+    $ composer require orchid/platform
 
     
 **Important note:** as matter of fact, currently there is no compatibility with laravel 9 so orchid/plaform 11.0.1 was the last version suporting laravel 8, so you might need to specify the version on composer command.
