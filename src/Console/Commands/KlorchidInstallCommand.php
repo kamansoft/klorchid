@@ -42,7 +42,7 @@ class KlorchidInstallCommand extends Command {
 		}
 
 		$this
-            ->executeCommand('laravel-multiorg:install')
+            ->executeCommand('platform-multiorg:install')
 			->executeCommand('vendor:publish', [
 				'--provider' => KlorchidServiceProvider::class,
 				//'--force' => true,
